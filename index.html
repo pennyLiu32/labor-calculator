@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>加班費試算｜勞工權益計算機</title>
+  <meta name="description" content="依勞基法第24條試算平日與休息日加班費，輸入月薪和加班時數，立即算出應領金額。">
+  <style>
+    :root {
+      --bg: #f5f6f8;
+      --card: #ffffff;
+      --text: #1f2933;
+      --muted: #616e7c;
+      --primary: #2563eb;
+      --border: #d9dee5;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #111827;
+        --card: #1f2937;
+        --text: #f3f4f6;
+        --muted: #9ca3af;
+        --primary: #60a5fa;
+        --border: #374151;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, "Noto Sans TC", sans-serif;
+      line-height: 1.6;
+    }
+    main { max-width: 560px; margin: 0 auto; padding: 24px 16px; }
+    h1 { font-size: 1.6rem; margin: 0 0 4px; }
+    .sub { color: var(--muted); margin: 0 0 20px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    label { display: block; font-weight: 600; margin: 12px 0 6px; }
+    input, select {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text);
+    }
+    button {
+      width: 100%;
+      margin-top: 18px;
+      padding: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      background: var(--primary);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .total { font-size: 2rem; font-weight: 800; color: var(--primary); margin: 4px 0 12px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+    td { padding: 6px 0; border-bottom: 1px solid var(--border); }
+    td:last-child { text-align: right; }
+    .error { color: #dc2626; font-weight: 600; }
+    .note { font-size: 0.85rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>加班費試算</h1>
+    <p class="sub">依勞基法第 24 條，計算平日與休息日的加班費。</p>
+
+    <div class="card">
+      <label for="salary">月薪（元）</label>
+      <input id="salary" type="number" min="0" placeholder="例如 40000">
+
+      <label for="dayType">加班類型</label>
+      <select id="dayType">
+        <option value="weekday">平日加班（正常工時後）</option>
+        <option value="restday">休息日加班</option>
+      </select>
+
+      <label for="hours">加班時數</label>
+      <input id="hours" type="number" min="0" step="0.5" placeholder="例如 2">
+
+      <button id="calcBtn">開始計算</button>
+    </div>
+
+    <div class="card" id="result" hidden></div>
+
+    <p class="note">
+      時薪以「月薪 ÷ 30 ÷ 8」計算。本工具僅供參考，實際金額以勞動部規定及公司薪資制度為準。
+    </p>
+  </main>
+
+  <script>
+    // 各段時數的加成倍率（勞基法第 24 條）
+    const RULES = {
+      weekday: { max: 4, tiers: [
+        { hours: 2, rate: 4 / 3, label: "前 2 小時（× 1⅓）" },
+        { hours: 2, rate: 5 / 3, label: "第 3–4 小時（× 1⅔）" }
+      ]},
+      restday: { max: 12, tiers: [
+        { hours: 2, rate: 4 / 3, label: "前 2 小時（× 1⅓）" },
+        { hours: 6, rate: 5 / 3, label: "第 3–8 小時（× 1⅔）" },
+        { hours: 4, rate: 8 / 3, label: "第 9–12 小時（× 2⅔）" }
+      ]}
+    };
+
+    function calculate(salary, hours, dayType) {
+      const hourly = salary / 30 / 8;
+      let remaining = hours;
+      let total = 0;
+      const rows = [];
+
+      for (const tier of RULES[dayType].tiers) {
+        const h = Math.min(remaining, tier.hours);
+        if (h <= 0) break;
+        const pay = hourly * h * tier.rate;
+        rows.push({ label: tier.label, hours: h, pay });
+        total += pay;
+        remaining -= h;
+      }
+      return { hourly, total, rows };
+    }
+
+    document.getElementById("calcBtn").addEventListener("click", () => {
+      const salary = Number(document.getElementById("salary").value);
+      const hours = Number(document.getElementById("hours").value);
+      const dayType = document.getElementById("dayType").value;
+      const box = document.getElementById("result");
+      const max = RULES[dayType].max;
+
+      box.hidden = false;
+
+      if (!salary || salary <= 0 || !hours || hours <= 0) {
+        box.innerHTML = '<p class="error">請輸入大於 0 的月薪和加班時數。</p>';
+        return;
+      }
+      if (hours > max) {
+        box.innerHTML = `<p class="error">此類型加班依法最多 ${max} 小時，請重新輸入。</p>`;
+        return;
+      }
+
+      const r = calculate(salary, hours, dayType);
+      const fmt = n => Math.round(n).toLocaleString("zh-TW");
+
+      box.innerHTML = `
+        <div>應領加班費約</div>
+        <div class="total">${fmt(r.total)} 元</div>
+        <table>
+          <tr><td>換算時薪</td><td>${r.hourly.toFixed(1)} 元</td></tr>
+          ${r.rows.map(row =>
+            `<tr><td>${row.label}　${row.hours} 小時</td><td>${fmt(row.pay)} 元</td></tr>`
+          ).join("")}
+        </table>
+      `;
+    });
+  </script>
+</body>
+</html>
