@@ -71,6 +71,10 @@ td:last-child { text-align: right; }
 .faq summary { cursor: pointer; font-weight: 600; }
 .faq details p { margin: 8px 0 0; color: var(--muted); }
 
+/* 頁尾瀏覽人次 */
+.site-footer { margin-top: 24px; text-align: center; }
+#stats iframe { border: none; max-width: 100%; }
+
 /* 首頁工具清單 */
 .tool {
   display: block;
