@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>資遣費試算｜勞工權益計算機</title>
+  <meta name="description" content="依勞工退休金條例第12條（勞退新制），輸入到職日、離職日與平均工資，立即試算資遣費。">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <a class="back" href="index.html">← 回首頁</a>
+    <h1>資遣費試算</h1>
+    <p class="sub">依勞工退休金條例第 12 條（勞退新制），試算你可以領多少資遣費。</p>
+
+    <div class="card">
+      <label for="startDate">到職日</label>
+      <input id="startDate" type="date">
+
+      <label for="endDate">離職日（最後工作日）</label>
+      <input id="endDate" type="date">
+
+      <label for="wage">平均月薪（元）</label>
+      <input id="wage" type="number" min="0" placeholder="離職前 6 個月工資總額 ÷ 6">
+
+      <button id="calcBtn">開始計算</button>
+    </div>
+
+    <div class="card" id="result" hidden></div>
+
+    <div class="card">
+      <table>
+        <tr><td>每滿 1 年</td><td>0.5 個月平均工資</td></tr>
+        <tr><td>未滿 1 年的部分</td><td>依比例計算</td></tr>
+        <tr><td>最高上限</td><td>6 個月平均工資</td></tr>
+      </table>
+    </div>
+
+    <p class="note">
+      平均工資指離職前 6 個月的工資總額除以 6，包含加班費、津貼等經常性給與。
+      本工具只計算 2005 年 7 月 1 日後適用勞退新制的年資；若有舊制年資，計算方式不同。
+      公司資遣時另需依年資給予預告期間或預告工資。本工具僅供參考，實際以勞動部規定為準。
+    </p>
+  </main>
+
+  <script>
+    // 年資拆成：滿幾年、幾個月、幾天
+    function serviceLength(start, end) {
+      let years = end.getFullYear() - start.getFullYear();
+      let months = end.getMonth() - start.getMonth();
+      let days = end.getDate() - start.getDate();
+
+      if (days < 0) {
+        months -= 1;
+        // 借上一個月的天數
+        days += new Date(end.getFullYear(), end.getMonth(), 0).getDate();
+      }
+      if (months < 0) {
+        years -= 1;
+        months += 12;
+      }
+      return { years, months, days };
+    }
+
+    function severance(wage, s) {
+      const serviceYears = s.years + s.months / 12 + s.days / 365;
+      const base = Math.min(serviceYears * 0.5, 6); // 最多 6 個月
+      return { base, amount: wage * base, capped: serviceYears * 0.5 > 6 };
+    }
+
+    document.getElementById("calcBtn").addEventListener("click", () => {
+      const startVal = document.getElementById("startDate").value;
+      const endVal = document.getElementById("endDate").value;
+      const wage = Number(document.getElementById("wage").value);
+      const box = document.getElementById("result");
+      box.hidden = false;
+
+      if (!startVal || !endVal || !wage || wage <= 0) {
+        box.innerHTML = '<p class="error">請輸入到職日、離職日和大於 0 的平均月薪。</p>';
+        return;
+      }
+
+      const start = new Date(startVal + "T00:00:00");
+      // 離職日當天也算在職，所以多加一天
+      const end = new Date(endVal + "T00:00:00");
+      end.setDate(end.getDate() + 1);
+
+      if (end <= start) {
+        box.innerHTML = '<p class="error">離職日不能早於到職日。</p>';
+        return;
+      }
+
+      const s = serviceLength(start, end);
+      const r = severance(wage, s);
+      const fmt = n => Math.round(n).toLocaleString("zh-TW");
+
+      box.innerHTML = `
+        <div>資遣費約</div>
+        <div class="total">${fmt(r.amount)} 元</div>
+        <table>
+          <tr><td>年資</td><td>${s.years} 年 ${s.months} 個月 ${s.days} 天</td></tr>
+          <tr><td>基數</td><td>${r.base.toFixed(3)} 個月</td></tr>
+          <tr><td>平均月薪</td><td>${fmt(wage)} 元</td></tr>
+        </table>
+        ${r.capped ? '<p class="note">已達法定上限 6 個月。</p>' : ""}
+      `;
+    });
+  </script>
+</body>
+</html>
