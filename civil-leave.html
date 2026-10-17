@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>公務員休假天數試算｜公務人員請假規則｜勞工權益計算機</title>
+  <meta name="description" content="依公務人員請假規則第7條，輸入初任到職日，算出今年有幾天休假、休假年資，以及下次休假天數增加的年度。初任二月以後到職者自動按比例計算。">
+  <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "公務人員第一年有休假嗎？",
+     "acceptedAnswer": {"@type": "Answer", "text": "到職當年沒有休假。1 月到職的人，次年起有 7 天；2 月以後到職的人，次年 1 月依到職當月到年底的在職月數比例計算。"}},
+    {"@type": "Question", "name": "按比例算出來有小數怎麼辦？",
+     "acceptedAnswer": {"@type": "Answer", "text": "依公務人員請假規則第 3 條，尾數未滿半日以半日計，超過半日未滿一日以一日計。"}},
+    {"@type": "Question", "name": "調到其他機關，休假會重新計算嗎？",
+     "acceptedAnswer": {"@type": "Answer", "text": "轉調並繼續任職，或退休、辭職後再任且年資銜接的，休假接續核給，不會歸零。年資沒有銜接的，轉任當年依在職月數比例計算。"}}
+  ]
+}
+  </script>
+</head>
+<body>
+  <main>
+    <a class="back" href="index.html">← 回首頁</a>
+    <h1>公務員休假天數試算</h1>
+    <p class="sub">依公務人員請假規則第 7 條，算出你今年有幾天休假。</p>
+
+    <div class="card">
+      <label for="startDate">初任到職日</label>
+      <input id="startDate" type="date">
+
+      <label for="year">查詢年度（西元）</label>
+      <input id="year" type="number" min="1990" max="2100">
+
+      <button id="calcBtn">開始計算</button>
+    </div>
+
+    <div class="card" id="result" hidden></div>
+
+    <div class="card">
+      <table>
+        <tr><td>至年終服務滿 1 年（第 2 年起）</td><td>7 天</td></tr>
+        <tr><td>滿 3 年（第 4 年起）</td><td>14 天</td></tr>
+        <tr><td>滿 6 年（第 7 年起）</td><td>21 天</td></tr>
+        <tr><td>滿 9 年（第 10 年起）</td><td>28 天</td></tr>
+        <tr><td>滿 14 年（第 15 年起）</td><td>30 天</td></tr>
+      </table>
+    </div>
+
+    <div class="card faq">
+      <h2>常見問題</h2>
+      <details>
+        <summary>公務人員第一年有休假嗎？</summary>
+        <p>到職當年沒有休假。1 月到職的人，次年起有 7 天；2 月以後到職的人，次年 1 月依到職當月到年底的在職月數比例計算。</p>
+      </details>
+      <details>
+        <summary>按比例算出來有小數怎麼辦？</summary>
+        <p>依公務人員請假規則第 3 條，尾數未滿半日以半日計，超過半日未滿一日以一日計。</p>
+      </details>
+      <details>
+        <summary>調到其他機關，休假會重新計算嗎？</summary>
+        <p>轉調並繼續任職，或退休、辭職後再任且年資銜接的，休假接續核給，不會歸零。年資沒有銜接的，轉任當年依在職月數比例計算。</p>
+      </details>
+    </div>
+
+    <p class="note">
+      依公務人員請假規則（2025 年 9 月 18 日修正）計算，以曆年制、年資連續且未中斷為準。
+      教師、約聘僱人員等適用不同規定。本工具僅供參考，實際天數以服務機關人事單位核定為準。
+    </p>
+    <footer class="site-footer">
+      <div id="stats"></div>
+    </footer>
+  </main>
+  <script src="counter.js"></script>
+
+  <script>
+    // 依「至年終服務滿幾年」決定休假天數（第 7 條第 1 項）
+    function tierDays(years) {
+      if (years >= 14) return 30;
+      if (years >= 9) return 28;
+      if (years >= 6) return 21;
+      if (years >= 3) return 14;
+      if (years >= 1) return 7;
+      return 0;
+    }
+
+    // 尾數：未滿半日以半日計，超過半日未滿一日以一日計（第 3 條第 2 項）
+    function roundHalf(x) {
+      const whole = Math.floor(x + 1e-9);
+      const frac = x - whole;
+      if (frac < 1e-9) return whole;
+      if (frac <= 0.5 + 1e-9) return whole + 0.5;
+      return whole + 1;
+    }
+
+    // 查詢年度的休假天數
+    function leaveFor(year, hireYear, hireMonth) {
+      if (year <= hireYear) return { days: 0, months: 0, prorated: false };
+
+      // 到職當月算起，到前一年年底的在職月數
+      const months = (year - 1 - hireYear) * 12 + (13 - hireMonth);
+
+      // 第 2 年：2 月以後到職者按比例
+      if (year === hireYear + 1 && hireMonth >= 2) {
+        return { days: roundHalf(7 * (13 - hireMonth) / 12), months, prorated: true };
+      }
+      return { days: tierDays(Math.floor(months / 12)), months, prorated: false };
+    }
+
+    const yearInput = document.getElementById("year");
+    yearInput.value = new Date().getFullYear();
+
+    document.getElementById("calcBtn").addEventListener("click", () => {
+      const startVal = document.getElementById("startDate").value;
+      const year = Number(yearInput.value);
+      const box = document.getElementById("result");
+      box.hidden = false;
+
+      if (!startVal || !year) {
+        box.innerHTML = '<p class="error">請輸入初任到職日和查詢年度。</p>';
+        return;
+      }
+
+      const hireYear = Number(startVal.slice(0, 4));
+      const hireMonth = Number(startVal.slice(5, 7));
+
+      if (year < hireYear) {
+        box.innerHTML = '<p class="error">查詢年度不能早於到職年度。</p>';
+        return;
+      }
+
+      const r = leaveFor(year, hireYear, hireMonth);
+      const fmtMonths = m => `${Math.floor(m / 12)} 年 ${m % 12} 個月`;
+
+      let explain;
+      if (year === hireYear) {
+        explain = "到職當年沒有休假，次年 1 月起才開始核給。";
+      } else if (r.prorated) {
+        explain = `${hireMonth} 月到職，按 ${13 - hireMonth}／12 的比例計算 7 天，尾數依規定進位。`;
+      } else {
+        explain = `至 ${year - 1} 年底的休假年資為 ${fmtMonths(r.months)}。`;
+      }
+
+      // 往後 5 年的天數，並找出下次增加的年度
+      let rows = "";
+      let nextUp = null;
+      for (let y = year; y <= year + 5; y++) {
+        const d = leaveFor(y, hireYear, hireMonth).days;
+        rows += `<tr><td>${y} 年</td><td>${d} 天</td></tr>`;
+      }
+      for (let y = year + 1; y <= year + 40; y++) {
+        const d = leaveFor(y, hireYear, hireMonth).days;
+        if (d > r.days) { nextUp = { y, d }; break; }
+      }
+
+      box.innerHTML = `
+        <div>${year} 年休假天數</div>
+        <div class="total">${r.days} 天</div>
+        <p>${explain}</p>
+        <p>${nextUp ? `下次增加：<strong>${nextUp.y} 年起為 ${nextUp.d} 天</strong>` : "已達最高 30 天。"}</p>
+        <table>${rows}</table>
+      `;
+    });
+  </script>
+</body>
+</html>
