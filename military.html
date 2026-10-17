@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>退伍軍人轉職資源試算｜退輔會補助、職訓、輔導期限｜勞工權益計算機</title>
   <meta name="description" content="志願役退伍可以申請哪些退輔會資源？輸入服役年資與軍中專長，算出輔導類別、輔導期限，並列出職訓補助、就業津貼、考試進修補助與適合的轉職方向。">
-  <link rel="stylesheet" href="style.css?v=2">
+  <link rel="stylesheet" href="style.css?v=3">
   <style>
     .item { margin: 0 0 14px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
     .item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
@@ -33,6 +33,7 @@
         <a href="resources.html"><span>被資遣後可以申請什麼？</span><small>失業給付與職訓</small></a>
         <p class="nav-group">軍警消、公務員</p>
         <a href="military.html" class="active" aria-current="page"><span>退伍軍人轉職資源</span><small>退輔會補助與輔導期限</small></a>
+        <a href="veteran-benefits.html"><span>榮民權益與補助</span><small>就醫、子女教育、急難救助</small></a>
         <a href="police-fire.html"><span>警消轉職資源</span><small>退撫權益與轉職方向</small></a>
         <a href="civil-leave.html"><span>公務員休假天數試算</span><small>公務人員請假規則</small></a>
         <p class="nav-group">其他</p>
@@ -51,12 +52,31 @@
         <option value="conscript">義務役</option>
       </select>
 
-      <label for="enlistDate">入伍日期</label>
-      <input id="enlistDate" type="date">
-
       <label for="dischargeDate">退伍日期</label>
       <input id="dischargeDate" type="date">
-      <p class="note" style="margin:6px 0 0">若中間曾退伍再入伍，請以實際服役期間合計為準。</p>
+
+      <label for="mode">服役年資怎麼輸入</label>
+      <select id="mode">
+        <option value="manual">直接輸入年資（建議，以退伍令或審定資料為準）</option>
+        <option value="dates">用入伍日期估算</option>
+      </select>
+
+      <div id="manualBox" class="row2">
+        <div><label for="svcYears">年</label><input id="svcYears" type="number" min="0" max="50" placeholder="例如 11"></div>
+        <div><label for="svcMonths">個月</label><input id="svcMonths" type="number" min="0" max="11" placeholder="例如 0"></div>
+      </div>
+
+      <div id="datesBox" hidden>
+        <label for="enlistDate">入伍日期</label>
+        <input id="enlistDate" type="date">
+        <label for="deduct">留職停薪等不計年資的月數（選填）</label>
+        <input id="deduct" type="number" min="0" placeholder="例如 6">
+      </div>
+
+      <details class="hint">
+        <summary>為什麼建議直接輸入年資？</summary>
+        <p>國軍年資的採計很複雜：軍校在學期間是否採計、志願士兵與士官的起算點、預備役期間、留職停薪或停役期間是否扣除，都依身分和法規而不同。用日期相減只是粗估，<strong>退伍令或退除給與審定資料上的年資才是正式數字</strong>。</p>
+      </details>
 
       <label for="specialty">軍中主要專長</label>
       <select id="specialty">
@@ -90,7 +110,7 @@
   </main>
   </div>
   <script src="counter.js"></script>
-  <script src="nav.js?v=2"></script>
+  <script src="nav.js?v=3"></script>
 
   <script>
     // 第二類退除役官兵：服役年資 → 輔導期限（年）
@@ -125,35 +145,50 @@
       return `${d.getFullYear()} 年 ${d.getMonth() + 1} 月 ${d.getDate()} 日`;
     }
 
+    // 切換年資輸入方式
+    document.getElementById("mode").addEventListener("change", e => {
+      const manual = e.target.value === "manual";
+      document.getElementById("manualBox").hidden = !manual;
+      document.getElementById("datesBox").hidden = manual;
+    });
+
     document.getElementById("calcBtn").addEventListener("click", () => {
       const type = document.getElementById("type").value;
-      const enlistVal = document.getElementById("enlistDate").value;
+      const mode = document.getElementById("mode").value;
       const dischargeVal = document.getElementById("dischargeDate").value;
       const specialty = document.getElementById("specialty").value;
       const disabled = document.getElementById("disabled").checked;
       const box = document.getElementById("result");
       box.hidden = false;
+      const showError = msg => { box.innerHTML = `<div class="card"><p class="error">${msg}</p></div>`; };
 
-      if (!enlistVal || !dischargeVal) {
-        box.innerHTML = '<div class="card"><p class="error">請輸入入伍日期和退伍日期。</p></div>';
-        return;
-      }
-
-      const enlist = new Date(enlistVal + "T00:00:00");
+      if (!dischargeVal) return showError("請輸入退伍日期。");
       const discharge = new Date(dischargeVal + "T00:00:00");
-      if (discharge < enlist) {
-        box.innerHTML = '<div class="card"><p class="error">退伍日期不能早於入伍日期。</p></div>';
-        return;
+
+      let months;
+      if (mode === "manual") {
+        const y = Number(document.getElementById("svcYears").value || 0);
+        const m = Number(document.getElementById("svcMonths").value || 0);
+        if (y < 0 || m < 0 || m > 11 || (y === 0 && m === 0)) return showError("請輸入服役年資（月數為 0～11）。");
+        months = y * 12 + m;
+      } else {
+        const enlistVal = document.getElementById("enlistDate").value;
+        if (!enlistVal) return showError("請輸入入伍日期。");
+        const enlist = new Date(enlistVal + "T00:00:00");
+        if (discharge < enlist) return showError("退伍日期不能早於入伍日期。");
+        // 入伍日到退伍日（退伍當天也算在內），再扣除不計年資的月數
+        const dayAfter = new Date(discharge);
+        dayAfter.setDate(dayAfter.getDate() + 1);
+        months = (dayAfter.getFullYear() - enlist.getFullYear()) * 12
+               + (dayAfter.getMonth() - enlist.getMonth());
+        if (dayAfter.getDate() < enlist.getDate()) months -= 1;
+        months -= Number(document.getElementById("deduct").value || 0);
+        if (months <= 0) return showError("扣除後年資小於等於 0，請確認輸入。");
       }
 
-      // 服役年資：入伍日到退伍日（退伍當天也算在內）
-      const dayAfter = new Date(discharge);
-      dayAfter.setDate(dayAfter.getDate() + 1);
-      let months = (dayAfter.getFullYear() - enlist.getFullYear()) * 12
-                 + (dayAfter.getMonth() - enlist.getMonth());
-      if (dayAfter.getDate() < enlist.getDate()) months -= 1;
       const years = months / 12;
-      const serviceText = `${Math.floor(months / 12)} 年 ${months % 12} 個月`;
+      const serviceText = `${Math.floor(months / 12)} 年 ${months % 12} 個月`
+        + (mode === "dates" ? "（依日期估算）" : "");
       const today = new Date();
       const volunteer = type === "volunteer";
 
@@ -198,12 +233,18 @@
           <p class="note">要在開課 7 個工作天前提出，結訓後 6 個月內就業才能請領。第一次申請且訓後從事相關工作滿 3 個月，可超過上限全額補助。</p>
         `);
 
+        // 榮民與第二類的就業津貼金額不同
+        const first = category === "first";
+        const trainA = first ? "12,000" : "6,000";
+        const trainB = first ? "8,000" : "4,000";
+        const referral = first ? "8,000" : "4,000";
+
         html += item("訓後就業津貼", inPeriod, `
-          <p>完成全日制職訓、6 個月內就業並在同一家公司做滿 3 個月：前 6 個月每月 <strong>6,000 元</strong>，之後 6 個月每月 <strong>4,000 元</strong>。</p>
+          <p>完成全日制職訓、6 個月內就業並在同一家公司做滿 3 個月：前 6 個月每月 <strong>${trainA} 元</strong>，之後 6 個月每月 <strong>${trainB} 元</strong>。</p>
         `);
 
         html += item("推介就業津貼", inPeriod, `
-          <p>經榮民服務處或職訓中心推介就業，在同一家公司做滿 3 個月，每月 <strong>4,000 元</strong>。</p>
+          <p>經榮民服務處或職訓中心推介就業，在同一家公司做滿 3 個月，每月 <strong>${referral} 元</strong>。</p>
           <p class="note">訓後就業津貼和推介就業津貼合計最多領 12 個月。</p>
         `);
 
@@ -217,6 +258,7 @@
           <p>服役滿 10 年（或因戰、因公致傷病）的榮民可以報考，退伍前 2 個月就能應考。約每 2 年舉辦一次，考上可轉任公務員。</p>
         ` : "<p>限服役滿 10 年或因戰、因公致傷病的榮民報考。可改考一般公務人員考試，並用就業考試進修補助準備。</p>");
 
+        html += `<p style="margin-top:12px"><a href="veteran-benefits.html">→ 查看就醫、子女教育、急難救助、就養等生活補助</a></p>`;
         html += "</div>";
       }
 

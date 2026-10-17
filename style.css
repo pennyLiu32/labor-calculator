@@ -1,21 +1,27 @@
+/* 溫和暖色調：鵝黃底、奶油白卡片、焦糖橘重點色 */
 :root {
-  --bg: #f5f6f8;
-  --card: #ffffff;
-  --text: #1f2933;
-  --muted: #616e7c;
-  --primary: #2563eb;
-  --border: #d9dee5;
+  --bg: #fdf6e3;
+  --card: #fffdf7;
+  --text: #3d2e1f;
+  --muted: #7a6550;
+  --primary: #b45309;
+  --on-primary: #ffffff;
+  --border: #eadfc8;
+  --soft: #fbeed3;
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #111827;
-    --card: #1f2937;
-    --text: #f3f4f6;
-    --muted: #9ca3af;
-    --primary: #60a5fa;
-    --border: #374151;
+    --bg: #1f1a14;
+    --card: #2a231b;
+    --text: #f5ebdd;
+    --muted: #bfae98;
+    --primary: #f0a43a;
+    --on-primary: #1f1a14;
+    --border: #463a2c;
+    --soft: #3a2f22;
   }
 }
+[hidden] { display: none !important; }
 * { box-sizing: border-box; }
 body {
   margin: 0;
@@ -70,10 +76,19 @@ main { min-width: 0; }
 }
 .sidebar nav a span { display: block; font-weight: 600; }
 .sidebar nav a small { display: block; color: var(--muted); font-size: 0.8rem; }
-.sidebar nav a:hover { background: var(--bg); }
+.sidebar nav a:hover { background: var(--soft); }
 .sidebar nav a.active { background: var(--primary); }
 .sidebar nav a.active span,
-.sidebar nav a.active small { color: #fff; }
+.sidebar nav a.active small { color: var(--on-primary); }
+
+/* 表單小元件 */
+.check { display: flex; align-items: center; gap: 8px; font-weight: 600; margin-top: 12px; }
+.check input { width: auto; }
+.checks .check { font-weight: 400; margin-top: 6px; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.hint { margin-top: 12px; padding: 10px 12px; background: var(--soft); border-radius: 8px; font-size: 0.9rem; }
+.hint summary { cursor: pointer; font-weight: 600; }
+.hint p { margin: 8px 0 0; }
 
 /* 手機：選單改成上方可左右滑動的按鈕列 */
 @media (max-width: 768px) {
@@ -126,7 +141,7 @@ button {
   padding: 12px;
   font-size: 1rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--on-primary);
   background: var(--primary);
   border: none;
   border-radius: 8px;

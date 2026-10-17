@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>公務員休假天數試算｜公務人員請假規則｜勞工權益計算機</title>
   <meta name="description" content="依公務人員請假規則第7條，輸入初任到職日，算出今年有幾天休假、休假年資，以及下次休假天數增加的年度。初任二月以後到職者自動按比例計算。">
-  <link rel="stylesheet" href="style.css?v=2">
+  <link rel="stylesheet" href="style.css?v=3">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -35,6 +35,7 @@
         <a href="resources.html"><span>被資遣後可以申請什麼？</span><small>失業給付與職訓</small></a>
         <p class="nav-group">軍警消、公務員</p>
         <a href="military.html"><span>退伍軍人轉職資源</span><small>退輔會補助與輔導期限</small></a>
+        <a href="veteran-benefits.html"><span>榮民權益與補助</span><small>就醫、子女教育、急難救助</small></a>
         <a href="police-fire.html"><span>警消轉職資源</span><small>退撫權益與轉職方向</small></a>
         <a href="civil-leave.html" class="active" aria-current="page"><span>公務員休假天數試算</span><small>公務人員請假規則</small></a>
         <p class="nav-group">其他</p>
@@ -52,6 +53,16 @@
 
       <label for="year">查詢年度（西元）</label>
       <input id="year" type="number" min="1990" max="2100">
+
+      <details class="hint">
+        <summary>有轉任、併計年資或留職停薪？（選填）</summary>
+        <p>從其他機關轉調且年資銜接，或曾留職停薪，休假年資會不同。可在這裡調整：</p>
+        <div class="row2">
+          <div><label for="extraMonths">可併計的其他年資（月）</label><input id="extraMonths" type="number" min="0" placeholder="例如 24"></div>
+          <div><label for="deductMonths">留職停薪等不計的月數</label><input id="deductMonths" type="number" min="0" placeholder="例如 6"></div>
+        </div>
+        <p>哪些年資可以併計，以服務機關人事單位核定為準。</p>
+      </details>
 
       <button id="calcBtn">開始計算</button>
     </div>
@@ -95,7 +106,7 @@
   </main>
   </div>
   <script src="counter.js"></script>
-  <script src="nav.js?v=2"></script>
+  <script src="nav.js?v=3"></script>
 
   <script>
     // 依「至年終服務滿幾年」決定休假天數（第 7 條第 1 項）
@@ -118,14 +129,18 @@
     }
 
     // 查詢年度的休假天數
+    // 選填調整：可併計的其他年資（+）、留職停薪等不計的月數（−）
+    let adj = { extra: 0, deduct: 0 };
+
     function leaveFor(year, hireYear, hireMonth) {
       if (year <= hireYear) return { days: 0, months: 0, prorated: false };
 
-      // 到職當月算起，到前一年年底的在職月數
-      const months = (year - 1 - hireYear) * 12 + (13 - hireMonth);
+      // 到職當月算起，到前一年年底的在職月數，再加減調整
+      const base = (year - 1 - hireYear) * 12 + (13 - hireMonth);
+      const months = Math.max(0, base + adj.extra - adj.deduct);
 
-      // 第 2 年：2 月以後到職者按比例
-      if (year === hireYear + 1 && hireMonth >= 2) {
+      // 第 2 年：2 月以後到職者按比例（有併計年資＝年資銜接，接續核給，不按比例）
+      if (year === hireYear + 1 && hireMonth >= 2 && adj.extra === 0) {
         return { days: roundHalf(7 * (13 - hireMonth) / 12), months, prorated: true };
       }
       return { days: tierDays(Math.floor(months / 12)), months, prorated: false };
@@ -145,6 +160,11 @@
         return;
       }
 
+      adj = {
+        extra: Math.max(0, Number(document.getElementById("extraMonths").value || 0)),
+        deduct: Math.max(0, Number(document.getElementById("deductMonths").value || 0))
+      };
+
       const hireYear = Number(startVal.slice(0, 4));
       const hireMonth = Number(startVal.slice(5, 7));
 
@@ -162,7 +182,8 @@
       } else if (r.prorated) {
         explain = `${hireMonth} 月到職，按 ${13 - hireMonth}／12 的比例計算 7 天，尾數依規定進位。`;
       } else {
-        explain = `至 ${year - 1} 年底的休假年資為 ${fmtMonths(r.months)}。`;
+        explain = `至 ${year - 1} 年底的休假年資為 ${fmtMonths(r.months)}`
+          + (adj.extra || adj.deduct ? `（已加計 ${adj.extra} 個月、扣除 ${adj.deduct} 個月）` : "") + "。";
       }
 
       // 往後 5 年的天數，並找出下次增加的年度

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>榮民權益與補助查詢｜就醫、子女教育、急難救助、就養｜勞工權益計算機</title>
+  <meta name="description" content="榮民與第二類退除役官兵可以向榮民服務處申請哪些補助？依身分、有無職業、家庭經濟與子女就學狀況，列出健保補助、子女教育補助、急難救助、三節慰問、公費安養等項目與金額。">
+  <link rel="stylesheet" href="style.css?v=3">
+  <style>
+    .item { margin: 0 0 14px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+    .item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .item h3 { margin: 0 0 4px; font-size: 1.05rem; }
+    .item p { margin: 0; }
+    .tag { display: inline-block; font-size: 0.8rem; padding: 2px 8px; border-radius: 999px; margin-left: 6px; vertical-align: middle; }
+    .ok { background: #dcfce7; color: #166534; }
+    .no { background: #fee2e2; color: #991b1b; }
+    .maybe { background: #fef3c7; color: #92400e; }
+    a { color: var(--primary); }
+    ul { margin: 6px 0 0; padding-left: 20px; }
+    h2.sec { margin-top: 0; font-size: 1.2rem; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <a class="brand" href="index.html">勞工權益計算機</a>
+      <nav>
+        <a href="index.html"><span>首頁</span><small>所有工具一覽</small></a>
+        <p class="nav-group">一般勞工</p>
+        <a href="overtime.html"><span>加班費試算</span><small>平日、休息日加班費</small></a>
+        <a href="annual-leave.html"><span>特休天數試算</span><small>依到職日算特休</small></a>
+        <a href="severance.html"><span>資遣費試算</span><small>勞退新制資遣費</small></a>
+        <a href="notice-period.html"><span>離職預告期試算</span><small>最晚哪天提離職</small></a>
+        <a href="resources.html"><span>被資遣後可以申請什麼？</span><small>失業給付與職訓</small></a>
+        <p class="nav-group">軍警消、公務員</p>
+        <a href="military.html"><span>退伍軍人轉職資源</span><small>退輔會補助與輔導期限</small></a>
+        <a href="veteran-benefits.html" class="active" aria-current="page"><span>榮民權益與補助</span><small>就醫、子女教育、急難救助</small></a>
+        <a href="police-fire.html"><span>警消轉職資源</span><small>退撫權益與轉職方向</small></a>
+        <a href="civil-leave.html"><span>公務員休假天數試算</span><small>公務人員請假規則</small></a>
+        <p class="nav-group">其他</p>
+        <a href="about.html"><span>關於本站</span></a>
+        <a href="privacy.html"><span>隱私權政策</span></a>
+      </nav>
+    </aside>
+  <main>
+    <h1>榮民權益與補助</h1>
+    <p class="sub">依你的狀況，列出可以向榮民服務處申請的生活補助。</p>
+
+    <div class="card">
+      <label for="identity">身分</label>
+      <select id="identity">
+        <option value="first">榮民（第一類：志願役滿 10 年，或因戰、因公致傷病）</option>
+        <option value="second">第二類退除役官兵（志願役 4～10 年），在輔導期限內</option>
+        <option value="expired">第二類，已超過輔導期限</option>
+      </select>
+      <p class="note" style="margin:6px 0 0">不確定身分或輔導期限？先用 <a href="military.html">退伍軍人轉職資源</a> 查詢。</p>
+
+      <label for="employed">目前是否有固定工作</label>
+      <select id="employed">
+        <option value="yes">有工作（有職榮民）</option>
+        <option value="no">沒有工作（健保以榮民身分投保）</option>
+      </select>
+
+      <label for="income">家庭經濟狀況</label>
+      <select id="income">
+        <option value="normal">一般</option>
+        <option value="midlow">中低收入戶</option>
+        <option value="low">低收入戶</option>
+      </select>
+
+      <label for="age">年齡</label>
+      <input id="age" type="number" min="18" max="110" placeholder="例如 35">
+
+      <label>子女就學狀況（可複選）</label>
+      <div class="checks">
+        <label class="check"><input type="checkbox" id="kidElem"> 國中、國小</label>
+        <label class="check"><input type="checkbox" id="kidHigh"> 高中、高職、五專前三年</label>
+        <label class="check"><input type="checkbox" id="kidUni"> 大學以上</label>
+      </div>
+
+      <label class="check"><input type="checkbox" id="injured"> 因戰、因公致傷殘</label>
+
+      <button id="calcBtn">查看我的補助</button>
+    </div>
+
+    <div id="result" hidden></div>
+
+    <div class="card faq">
+      <h2>常見問題</h2>
+      <details>
+        <summary>補助要去哪裡申請？</summary>
+        <p>帶身分證和榮民證（或權益卡）到戶籍所在地的縣市榮民服務處申請。不確定要準備什麼文件，可以先打免付費電話 0800-212-154 詢問。</p>
+      </details>
+      <details>
+        <summary>有工作的榮民也有就醫優惠嗎？</summary>
+        <p>有。有職榮民到退輔會醫療機構免掛號費，健保部分負擔也由退輔會全額補助；2026 年 10 月 1 日起，到國軍醫院就醫的健保部分負擔也可以補助。</p>
+      </details>
+      <details>
+        <summary>第二類退除役官兵可以申請哪些？</summary>
+        <p>在輔導期限內，主要是就學、就業相關補助，急難救助也可以依榮民的規定申請；沒有工作者到退輔會醫療機構免掛號費。超過輔導期限後，多數補助就不能申請。</p>
+      </details>
+    </div>
+
+    <p class="note">
+      依國軍退除役官兵輔導委員會公告整理（2026 年 10 月），三節慰問依年度預算核發，公費安養等項目需經審核。
+      實際資格與金額以退輔會及各地榮民服務處公告為準，本工具僅供參考。
+    </p>
+    <footer class="site-footer">
+      <p class="footer-links"><a href="about.html">關於本站</a>｜<a href="privacy.html">隱私權政策</a></p>
+      <div id="stats"></div>
+    </footer>
+  </main>
+  </div>
+  <script src="counter.js"></script>
+  <script src="nav.js?v=3"></script>
+
+  <script>
+    // eligible: true 符合、false 不符合、"maybe" 可能符合（需審核）、null 不標示
+    function item(title, eligible, body) {
+      let tag = "";
+      if (eligible === true) tag = '<span class="tag ok">符合</span>';
+      else if (eligible === false) tag = '<span class="tag no">不符合</span>';
+      else if (eligible === "maybe") tag = '<span class="tag maybe">可能符合，需審核</span>';
+      return `<div class="item"><h3>${title}${tag}</h3>${body}</div>`;
+    }
+
+    const card = (title, inner) => `<div class="card"><h2 class="sec">${title}</h2>${inner}</div>`;
+
+    document.getElementById("calcBtn").addEventListener("click", () => {
+      const identity = document.getElementById("identity").value;
+      const employed = document.getElementById("employed").value === "yes";
+      const income = document.getElementById("income").value;
+      const age = Number(document.getElementById("age").value);
+      const kidElem = document.getElementById("kidElem").checked;
+      const kidHigh = document.getElementById("kidHigh").checked;
+      const kidUni = document.getElementById("kidUni").checked;
+      const injured = document.getElementById("injured").checked;
+      const box = document.getElementById("result");
+      box.hidden = false;
+
+      if (!age) {
+        box.innerHTML = '<div class="card"><p class="error">請輸入年齡。</p></div>';
+        return;
+      }
+
+      if (identity === "expired") {
+        box.innerHTML = card("你的狀況", `
+          <p>第二類退除役官兵超過輔導期限後，退輔會的多數補助就不能申請了，可以改用一般勞工與社福資源。</p>
+          <p style="margin-top:8px"><a href="resources.html">→ 查看一般勞工的職訓與補助資源</a></p>`);
+        return;
+      }
+
+      const first = identity === "first";
+      const poor = income === "low" || income === "midlow";
+      let html = "";
+
+      // ── 就醫 ──
+      let med = "";
+      med += item("退輔會醫療機構免掛號費", first || !employed, first || !employed
+        ? "<p>到榮民總醫院、榮民醫院等退輔會醫療機構看診，<strong>免掛號費</strong>。</p>"
+        : "<p>第二類退除役官兵限<strong>沒有工作</strong>者才能免掛號費。</p>");
+
+      if (first) {
+        med += item("健保部分負擔補助", true, employed
+          ? "<p>有職榮民：到<strong>退輔會醫療機構</strong>看診，健保部分負擔全額補助；2026 年 10 月 1 日起，到<strong>國軍醫院</strong>也全額補助。</p>"
+          : "<p>無職榮民：到<strong>任何健保特約醫療院所</strong>看診，健保部分負擔都全額補助。</p>");
+
+        med += item("健保保費補助", !employed, !employed
+          ? "<p>本人保費<strong>全額補助（每月 1,377 元）</strong>；依附投保的無職業眷屬補助 70%（每月 964 元）。</p><p class=\"note\">需以榮民身分（第 6 類第 1 目）投保健保。</p>"
+          : "<p>限沒有工作、以榮民身分投保健保者。有工作的人由公司投保，不適用。</p>");
+
+        med += item("健保不給付的自費項目", !employed, !employed
+          ? "<p>在退輔會醫療機構，醫師認定必要的部分自費項目（例如特定藥材、衛材）可以補助，看診時直接扣除。</p>"
+          : "<p>限無職榮民。</p>");
+
+        med += item("輔具補助", null, "<p>輪椅、助聽器、眼鏡、假牙等輔具，可向榮民服務處或榮譽國民之家申請。</p>");
+      }
+      html += card("就醫", med);
+
+      // ── 子女教育（榮民） ──
+      if (first) {
+        let edu = "";
+        const anyKid = kidElem || kidHigh || kidUni;
+        if (!anyKid) {
+          edu = "<p>沒有勾選子女就學狀況。榮民子女就學補助適用 30 歲以下的子女。</p>";
+        }
+        if (kidUni) {
+          edu += item("大學以上子女就學補助", true, "<p>公私立大學、研究所，每學期 <strong>10,000 元</strong>。</p>");
+          edu += item("榮民子女獎學金", "maybe", "<p>碩博士 15,000 元、大學 12,000 元，依成績審核。</p>");
+        }
+        if (kidHigh) {
+          edu += item("高中職子女就學補助", true, "<p>高中、高職、五專前三年，每學期 <strong>6,240 元</strong>。</p>");
+        }
+        if (kidElem) {
+          edu += item("國中小子女就學補助", true, "<p>每學期 <strong>500 元</strong>。</p>");
+          edu += item("假日午餐補助", poor ? "maybe" : false, poor
+            ? "<p>低收入、中低收入或經濟困難家庭的國中小子女，寒暑假及週末假日每天 <strong>100 元</strong>（2026 年 7 月 1 日起）。</p>"
+            : "<p>限低收入、中低收入或經濟困難家庭。</p>");
+        }
+        html += card("子女教育", edu);
+      }
+
+      // ── 急難救助與慰問 ──
+      let aid = "";
+      aid += item("急難救助", "maybe", `
+        <p>遭遇意外、重病或其他原因導致生活陷入困境時可申請，最高 <strong>${poor ? "20,000" : "10,000"} 元</strong>${poor ? "（低收入、中低收入戶）" : "；低收入、中低收入戶最高 20,000 元"}。</p>`);
+
+      aid += item("三節慰問", poor ? "maybe" : false, poor
+        ? "<p>春節、端午、中秋每戶每節 <strong>3,000 元</strong>。依年度預算核發，低收入戶優先，再來是中低收入戶。</p>"
+        : "<p>限低收入、中低收入戶或經評估有特殊事由者，依年度預算核發。</p>");
+
+      aid += item("微型保險", poor && age <= 75, poor && age <= 75
+        ? "<p>低收入、中低收入戶的榮民可參加微型保險，意外身故或失能最高理賠 <strong>30 萬元</strong>。</p>"
+        : "<p>限低收入、中低收入戶，且 75 歲以下。</p>");
+
+      aid += item("法律諮詢", true, "<p>遇到權益問題，可到縣市榮民服務處申請免費法律諮詢。</p>");
+      html += card("急難救助與慰問", aid);
+
+      // ── 就養（榮民） ──
+      if (first) {
+        const careAge = age >= 61 || injured;
+        const careOk = careAge && !employed && poor;
+        html += card("安居就養", item("公費安養", careOk ? "maybe" : false, careOk
+          ? "<p>每月就養給付 <strong>15,471 元</strong>，也可以申請公費進住榮譽國民之家。</p><p class=\"note\">需經審核家庭收入等條件。</p>"
+          : "<p>需同時符合：年滿 61 歲或因戰、因公傷殘；沒有固定職業；家庭收入符合標準。</p>"));
+      }
+
+      // ── 家屬須知 ──
+      if (first) {
+        html += card("家屬可以知道的", item("喪葬慰問", null, `
+          <p>未就養、未領月退休俸的有眷榮民過世後，在臺配偶或直系血親可在 6 個月內申請一次性慰問金 <strong>30,000 元</strong>（低收入、中低收入戶 40,000 元），但不能同時請領勞保等喪葬給付。</p>`));
+      }
+
+      html += card("申請管道", `
+        <ul>
+          <li>戶籍所在地的縣市<strong>榮民服務處</strong>：各項補助申請</li>
+          <li>免付費電話：0800-212-154、0800-212-510（週一至週五 08:00～17:00）</li>
+          <li>24 小時服務專線：(02) 2725-5700</li>
+          <li><a href="https://www.vac.gov.tw" target="_blank" rel="noopener">國軍退除役官兵輔導委員會</a>：完整規定與表單</li>
+        </ul>`);
+
+      box.innerHTML = html;
+    });
+  </script>
+</body>
+</html>

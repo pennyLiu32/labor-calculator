@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>警消轉職資源試算｜離職退撫基金、年資保留、轉職方向｜勞工權益計算機</title>
   <meta name="description" content="警察、消防人員離職轉職前必看：輸入到職與離職日期，查看退撫基金發還或年資保留資格、可參加的職訓，並依專長找出適合的轉職方向。">
-  <link rel="stylesheet" href="style.css?v=2">
+  <link rel="stylesheet" href="style.css?v=3">
   <style>
     .item { margin: 0 0 14px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
     .item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
@@ -33,6 +33,7 @@
         <a href="resources.html"><span>被資遣後可以申請什麼？</span><small>失業給付與職訓</small></a>
         <p class="nav-group">軍警消、公務員</p>
         <a href="military.html"><span>退伍軍人轉職資源</span><small>退輔會補助與輔導期限</small></a>
+        <a href="veteran-benefits.html"><span>榮民權益與補助</span><small>就醫、子女教育、急難救助</small></a>
         <a href="police-fire.html" class="active" aria-current="page"><span>警消轉職資源</span><small>退撫權益與轉職方向</small></a>
         <a href="civil-leave.html"><span>公務員休假天數試算</span><small>公務人員請假規則</small></a>
         <p class="nav-group">其他</p>
@@ -56,6 +57,15 @@
 
       <label for="endDate">離職日期（預計）</label>
       <input id="endDate" type="date">
+
+      <details class="hint">
+        <summary>年資跟日期算的不一樣？（選填）</summary>
+        <p>退撫年資可能因為曾任軍職併計、留職停薪期間不計等原因，跟到職日相減的結果不同。如果知道銓敘審定的<strong>退撫年資</strong>，可以直接填在這裡，會優先使用：</p>
+        <div class="row2">
+          <div><label for="svcYears">年</label><input id="svcYears" type="number" min="0" placeholder="例如 6"></div>
+          <div><label for="svcMonths">個月</label><input id="svcMonths" type="number" min="0" max="11" placeholder="例如 3"></div>
+        </div>
+      </details>
 
       <label for="age">離職時年齡</label>
       <input id="age" type="number" min="18" max="70" placeholder="例如 35">
@@ -93,7 +103,7 @@
   </main>
   </div>
   <script src="counter.js"></script>
-  <script src="nav.js?v=2"></script>
+  <script src="nav.js?v=3"></script>
 
   <script>
     // 專長 → 民間轉職方向
@@ -150,8 +160,16 @@
       let months = (dayAfter.getFullYear() - start.getFullYear()) * 12
                  + (dayAfter.getMonth() - start.getMonth());
       if (dayAfter.getDate() < start.getDate()) months -= 1;
+
+      // 有填審定的退撫年資就優先使用
+      const sy = document.getElementById("svcYears").value;
+      const sm = document.getElementById("svcMonths").value;
+      const manual = sy !== "" || sm !== "";
+      if (manual) months = Number(sy || 0) * 12 + Math.min(11, Number(sm || 0));
+
       const years = months / 12;
-      const serviceText = `${Math.floor(months / 12)} 年 ${months % 12} 個月`;
+      const serviceText = `${Math.floor(months / 12)} 年 ${months % 12} 個月`
+        + (manual ? "（依你輸入的退撫年資）" : "（依到職、離職日期計算）");
 
       // 2023/7/1 後初任者適用個人專戶制
       const newSystem = start >= new Date("2023-07-01T00:00:00");

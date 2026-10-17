@@ -14,6 +14,7 @@
 | | 離職預告期試算 | 勞基法第 16 條 |
 | | 被資遣後可以申請什麼？（失業給付、職訓資源） | 就業保險法 |
 | 軍警消、公務員 | 退伍軍人轉職資源（輔導類別、輔導期限、退輔會補助） | 國軍退除役官兵輔導條例 |
+| | 榮民權益與補助（就醫、子女教育、急難救助、就養） | 退輔會公告 |
 | | 警消轉職資源（退撫基金發還、年資保留） | 公務人員退休資遣撫卹法 |
 | | 公務員休假天數試算（含初任按比例計算） | 公務人員請假規則第 7 條 |
 
@@ -49,7 +50,7 @@ flowchart TD
 ## 技術與做法
 
 - **前端**：純 HTML、CSS、JavaScript，不依賴框架，載入快、維護簡單
-- **版面**：CSS Grid 左右分欄（選單 1/3、內容 2/3），手機版自動改為上方滑動選單；支援深色模式
+- **版面**：CSS Grid 左右分欄（選單 1/3、內容 2/3），手機版自動改為上方滑動選單；暖色調設計並支援深色模式
 - **部署**：GitHub Pages + 自訂網域（Porkbun DNS，強制 HTTPS）
 - **SEO**：每頁獨立網址、`<title>` / `description`、`sitemap.xml`、FAQPage 結構化資料（JSON-LD）
 - **數據**：GoatCounter 統計瀏覽量（不使用追蹤 Cookie）
@@ -65,6 +66,7 @@ flowchart TD
 ├── notice-period.html  離職預告期試算
 ├── resources.html      資遣後補助與職訓資源
 ├── military.html       退伍軍人轉職資源
+├── veteran-benefits.html 榮民權益與補助
 ├── police-fire.html    警消轉職資源
 ├── civil-leave.html    公務員休假天數試算
 ├── about.html          關於本站
