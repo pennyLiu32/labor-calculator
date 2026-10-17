@@ -4,8 +4,38 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>資遣費試算｜勞工權益計算機</title>
-  <meta name="description" content="依勞工退休金條例第12條（勞退新制），輸入到職日、離職日與平均工資，立即試算資遣費。">
+  <meta name="description" content="依勞工退休金條例第12條（勞退新制），輸入到職日、離職日與各期間薪資，自動算出平均工資與資遣費。">
   <link rel="stylesheet" href="style.css">
+  <style>
+    .period {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      padding: 12px;
+      margin-top: 10px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    .period .full { grid-column: 1 / -1; }
+    .period label { margin: 0 0 4px; font-size: 0.9rem; }
+    .period-head { display: flex; justify-content: space-between; align-items: center; }
+    .period-head strong { font-size: 0.95rem; }
+    .remove {
+      width: auto;
+      margin: 0;
+      padding: 4px 10px;
+      font-size: 0.85rem;
+      background: transparent;
+      color: #dc2626;
+      border: 1px solid #dc2626;
+    }
+    .add {
+      background: transparent;
+      color: var(--primary);
+      border: 1px dashed var(--primary);
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
   <main>
@@ -20,8 +50,10 @@
       <label for="endDate">離職日（最後工作日）</label>
       <input id="endDate" type="date">
 
-      <label for="wage">平均月薪（元）</label>
-      <input id="wage" type="number" min="0" placeholder="離職前 6 個月工資總額 ÷ 6">
+      <label>各期間的月薪</label>
+      <p class="note" style="margin:0">薪資有調整就分段輸入，例如 1～4 月 30,000、5～8 月 32,000。</p>
+      <div id="periods"></div>
+      <button type="button" class="add" id="addBtn">＋ 新增一段薪資</button>
 
       <button id="calcBtn">開始計算</button>
     </div>
@@ -37,22 +69,71 @@
     </div>
 
     <p class="note">
-      平均工資指離職前 6 個月的工資總額除以 6，包含加班費、津貼等經常性給與。
-      本工具只計算 2005 年 7 月 1 日後適用勞退新制的年資；若有舊制年資，計算方式不同。
+      依勞基法，平均工資是「離職前 6 個月的工資總額 ÷ 6」；工作未滿 6 個月的，以實際工作的月份平均。
+      月薪請填含加班費、津貼等經常性給與的金額，本工具以整月計算。
+      只計算 2005 年 7 月 1 日後適用勞退新制的年資；若有舊制年資，計算方式不同。
       公司資遣時另需依年資給予預告期間或預告工資。本工具僅供參考，實際以勞動部規定為準。
     </p>
   </main>
 
   <script>
+    const periodsBox = document.getElementById("periods");
+
+    // 新增一段薪資輸入
+    function addPeriod(from = "", to = "", salary = "") {
+      const div = document.createElement("div");
+      div.className = "period";
+      div.innerHTML = `
+        <div class="period-head full">
+          <strong>薪資期間</strong>
+          <button type="button" class="remove">刪除</button>
+        </div>
+        <div><label>起始月份</label><input type="month" class="from" value="${from}"></div>
+        <div><label>結束月份</label><input type="month" class="to" value="${to}"></div>
+        <div class="full"><label>這段期間的月薪（元）</label>
+          <input type="number" class="salary" min="0" placeholder="例如 30000" value="${salary}"></div>
+      `;
+      div.querySelector(".remove").addEventListener("click", () => {
+        if (periodsBox.children.length > 1) div.remove();
+      });
+      periodsBox.appendChild(div);
+    }
+
+    document.getElementById("addBtn").addEventListener("click", () => addPeriod());
+    addPeriod();
+
+    // "2026-05" 轉成連續的月份編號，方便比較大小
+    const monthIndex = s => {
+      const [y, m] = s.split("-").map(Number);
+      return y * 12 + (m - 1);
+    };
+    const monthLabel = i => `${Math.floor(i / 12)}/${(i % 12) + 1}`;
+
+    // 把各段薪資展開成「每個月 → 月薪」
+    function buildSalaryMap() {
+      const map = new Map();
+      for (const p of periodsBox.querySelectorAll(".period")) {
+        const from = p.querySelector(".from").value;
+        const to = p.querySelector(".to").value;
+        const salary = Number(p.querySelector(".salary").value);
+        if (!from || !to || !salary || salary <= 0) {
+          return { error: "每一段薪資都要填起始月份、結束月份和月薪。" };
+        }
+        if (monthIndex(to) < monthIndex(from)) {
+          return { error: "薪資期間的結束月份不能早於起始月份。" };
+        }
+        for (let i = monthIndex(from); i <= monthIndex(to); i++) map.set(i, salary);
+      }
+      return { map };
+    }
+
     // 年資拆成：滿幾年、幾個月、幾天
     function serviceLength(start, end) {
       let years = end.getFullYear() - start.getFullYear();
       let months = end.getMonth() - start.getMonth();
       let days = end.getDate() - start.getDate();
-
       if (days < 0) {
         months -= 1;
-        // 借上一個月的天數
         days += new Date(end.getFullYear(), end.getMonth(), 0).getDate();
       }
       if (months < 0) {
@@ -62,47 +143,56 @@
       return { years, months, days };
     }
 
-    function severance(wage, s) {
-      const serviceYears = s.years + s.months / 12 + s.days / 365;
-      const base = Math.min(serviceYears * 0.5, 6); // 最多 6 個月
-      return { base, amount: wage * base, capped: serviceYears * 0.5 > 6 };
-    }
-
     document.getElementById("calcBtn").addEventListener("click", () => {
       const startVal = document.getElementById("startDate").value;
       const endVal = document.getElementById("endDate").value;
-      const wage = Number(document.getElementById("wage").value);
       const box = document.getElementById("result");
       box.hidden = false;
+      const showError = msg => { box.innerHTML = `<p class="error">${msg}</p>`; };
 
-      if (!startVal || !endVal || !wage || wage <= 0) {
-        box.innerHTML = '<p class="error">請輸入到職日、離職日和大於 0 的平均月薪。</p>';
-        return;
-      }
+      if (!startVal || !endVal) return showError("請輸入到職日和離職日。");
 
       const start = new Date(startVal + "T00:00:00");
-      // 離職日當天也算在職，所以多加一天
       const end = new Date(endVal + "T00:00:00");
-      end.setDate(end.getDate() + 1);
+      end.setDate(end.getDate() + 1); // 離職日當天也算在職
+      if (end <= start) return showError("離職日不能早於到職日。");
 
-      if (end <= start) {
-        box.innerHTML = '<p class="error">離職日不能早於到職日。</p>';
-        return;
+      const built = buildSalaryMap();
+      if (built.error) return showError(built.error);
+
+      // 取離職前 6 個月（含離職當月），但不早於到職月份
+      const lastMonth = monthIndex(endVal.slice(0, 7));
+      const firstMonth = Math.max(lastMonth - 5, monthIndex(startVal.slice(0, 7)));
+      const used = [];
+      for (let i = firstMonth; i <= lastMonth; i++) {
+        if (!built.map.has(i)) return showError(`請補上 ${monthLabel(i)} 月的薪資。`);
+        used.push({ month: i, salary: built.map.get(i) });
       }
 
-      const s = serviceLength(start, end);
-      const r = severance(wage, s);
       const fmt = n => Math.round(n).toLocaleString("zh-TW");
+      const total = used.reduce((sum, u) => sum + u.salary, 0);
+      const wage = total / used.length;
+
+      // 全部輸入期間的平均，僅供參考
+      const allSalaries = [...built.map.values()];
+      const allAvg = allSalaries.reduce((a, b) => a + b, 0) / allSalaries.length;
+
+      const s = serviceLength(start, end);
+      const serviceYears = s.years + s.months / 12 + s.days / 365;
+      const base = Math.min(serviceYears * 0.5, 6);
+      const amount = wage * base;
 
       box.innerHTML = `
         <div>資遣費約</div>
-        <div class="total">${fmt(r.amount)} 元</div>
+        <div class="total">${fmt(amount)} 元</div>
         <table>
           <tr><td>年資</td><td>${s.years} 年 ${s.months} 個月 ${s.days} 天</td></tr>
-          <tr><td>基數</td><td>${r.base.toFixed(3)} 個月</td></tr>
-          <tr><td>平均月薪</td><td>${fmt(wage)} 元</td></tr>
+          <tr><td>基數</td><td>${base.toFixed(3)} 個月</td></tr>
+          <tr><td>平均工資（${monthLabel(firstMonth)}～${monthLabel(lastMonth)}，共 ${used.length} 個月）</td><td>${fmt(wage)} 元</td></tr>
+          <tr><td>全部輸入期間平均（參考）</td><td>${fmt(allAvg)} 元</td></tr>
         </table>
-        ${r.capped ? '<p class="note">已達法定上限 6 個月。</p>' : ""}
+        <p class="note">資遣費依法用「離職前 6 個月」的平均工資計算，不是全年平均。</p>
+        ${serviceYears * 0.5 > 6 ? '<p class="note">已達法定上限 6 個月。</p>' : ""}
         <p><a class="back" href="resources.html">→ 被資遣後還可以申請哪些補助與職訓？</a></p>
       `;
     });
