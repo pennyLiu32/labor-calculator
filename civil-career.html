@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>公務員、警消退休後轉職資源與補助｜再任限制、中高齡職訓｜勞工權益計算機</title>
-  <meta name="description" content="公務員、警消退休後還能工作嗎？哪些工作會停發月退休金？依退休方式、年齡和想做的工作，列出再任限制、中高齡職訓補助、銀髮就業資源與轉職方向。">
+  <title>公務員退休後轉職資源與補助｜再任限制、中高齡職訓｜勞工權益計算機</title>
+  <meta name="description" content="公務員退休後還能工作嗎？哪些工作會停發月退休金？依退休方式、年齡和想做的工作，列出再任限制、中高齡職訓補助、銀髮就業資源與轉職方向。">
   <link rel="stylesheet" href="style.css?v=5">
   <style>
     .item { margin: 0 0 14px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
@@ -63,14 +63,14 @@
     </aside>
   <main>
     <h1>退休後轉職資源與補助</h1>
-    <p class="sub">公務員、警消退休後想繼續工作，先看哪些工作會影響月退休金，再找適合的訓練與資源。</p>
+    <p class="sub">公務員退休後想繼續工作，先看哪些工作會影響月退休金，再找適合的訓練與資源。</p>
 
     <div class="card">
-      <label for="role">退休前身分</label>
+      <label for="role">退休前職務類別</label>
       <select id="role">
-        <option value="civil">一般公務人員</option>
-        <option value="police">警察</option>
-        <option value="fire">消防</option>
+        <option value="admin">一般行政類</option>
+        <option value="tech">技術類（工程、資訊、地政等）</option>
+        <option value="special">特殊性質職務（監所、海巡、移民、關務等）</option>
       </select>
 
       <label for="plan">退休金領取方式</label>
@@ -111,9 +111,9 @@
 
   <script>
     const DIRECTIONS = {
-      civil: ["企業行政、人資、法務助理", "政府標案、採購相關顧問", "社會福利、長照機構行政"],
-      police: ["企業安全管理、保全公司幹部", "保險理賠調查、企業稽核", "社區總幹事、物業管理"],
-      fire: ["科技廠緊急應變（ERT）、職業安全衛生", "消防設備士（師）、消防安全設備檢修", "防火管理、公共安全檢查"]
+      admin: ["企業行政、人資、法務助理", "政府標案、採購相關顧問", "社會福利、長照機構行政"],
+      tech: ["工程顧問公司、技師事務所", "企業資訊、系統維運", "營造或建設公司的品管、工地管理"],
+      special: ["保全公司幹部、企業安全管理", "物業管理、社區總幹事", "職業安全衛生管理"]
     };
 
     function item(title, tag, body) {
