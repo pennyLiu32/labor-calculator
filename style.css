@@ -64,6 +64,13 @@ td:last-child { text-align: right; }
 .error { color: #dc2626; font-weight: 600; }
 .note { font-size: 0.85rem; color: var(--muted); }
 
+/* 常見問題 */
+.faq h2 { font-size: 1.2rem; margin: 0 0 8px; }
+.faq details { border-bottom: 1px solid var(--border); padding: 10px 0; }
+.faq details:last-child { border-bottom: none; }
+.faq summary { cursor: pointer; font-weight: 600; }
+.faq details p { margin: 8px 0 0; color: var(--muted); }
+
 /* 首頁工具清單 */
 .tool {
   display: block;

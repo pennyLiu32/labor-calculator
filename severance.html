@@ -36,6 +36,46 @@
       margin-top: 10px;
     }
   </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "自請離職可以領資遣費嗎？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不行。資遣費只發給被公司資遣的人。但如果是公司違法（例如欠薪、不給加班費、沒保勞健保），勞工依勞基法第 14 條離職，公司也要給資遣費。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "公司多久內要付資遣費？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "依勞工退休金條例，公司應在終止勞動契約後 30 天內發給資遣費。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "資遣費要繳稅嗎？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "資遣費屬於退職所得，有一定的免稅額度，超過的部分才要課稅。免稅額度每年由財政部公告，金額不高的資遣費通常不用繳稅。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "2005 年以前的舊制年資怎麼算？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "適用勞基法舊制的年資，每滿 1 年給 1 個月平均工資，計算方式和新制不同。本工具只計算新制年資，有舊制年資的人建議向勞工局確認。"
+      }
+    }
+  ]
+}
+  </script>
 </head>
 <body>
   <main>
@@ -191,7 +231,27 @@
           <tr><td>平均工資（${monthLabel(firstMonth)}～${monthLabel(lastMonth)}，共 ${used.length} 個月）</td><td>${fmt(wage)} 元</td></tr>
           <tr><td>全部輸入期間平均（參考）</td><td>${fmt(allAvg)} 元</td></tr>
         </table>
-        <p class="note">資遣費依法用「離職前 6 個月」的平均工資計算，不是全年平均。</p>
+        <div class="card faq">
+      <h2>常見問題</h2>
+      <details>
+        <summary>自請離職可以領資遣費嗎？</summary>
+        <p>不行。資遣費只發給被公司資遣的人。但如果是公司違法（例如欠薪、不給加班費、沒保勞健保），勞工依勞基法第 14 條離職，公司也要給資遣費。</p>
+      </details>
+      <details>
+        <summary>公司多久內要付資遣費？</summary>
+        <p>依勞工退休金條例，公司應在終止勞動契約後 30 天內發給資遣費。</p>
+      </details>
+      <details>
+        <summary>資遣費要繳稅嗎？</summary>
+        <p>資遣費屬於退職所得，有一定的免稅額度，超過的部分才要課稅。免稅額度每年由財政部公告，金額不高的資遣費通常不用繳稅。</p>
+      </details>
+      <details>
+        <summary>2005 年以前的舊制年資怎麼算？</summary>
+        <p>適用勞基法舊制的年資，每滿 1 年給 1 個月平均工資，計算方式和新制不同。本工具只計算新制年資，有舊制年資的人建議向勞工局確認。</p>
+      </details>
+    </div>
+
+    <p class="note">資遣費依法用「離職前 6 個月」的平均工資計算，不是全年平均。</p>
         ${serviceYears * 0.5 > 6 ? '<p class="note">已達法定上限 6 個月。</p>' : ""}
         <p><a class="back" href="resources.html">→ 被資遣後還可以申請哪些補助與職訓？</a></p>
       `;

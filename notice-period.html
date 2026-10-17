@@ -6,6 +6,46 @@
   <title>離職預告期試算｜勞工權益計算機</title>
   <meta name="description" content="依勞基法第16條，輸入到職日與最後工作日，算出離職要提前幾天告知、最晚哪一天要提離職。">
   <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "沒有提前預告就離職會怎樣？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "勞工沒有依規定預告，如果造成公司損失，公司可以要求賠償，但必須舉證實際損失，而且不能直接扣你的薪水抵償。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "預告期間可以請特休嗎？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "可以。預告期間仍在職，可以排休特休；離職時還沒休完的特休，公司要折算工資發給。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "預告期從哪一天開始算？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "從你告知公司的隔天開始算。例如年資滿 3 個月未滿 1 年，要在最後工作日的 10 天前提出。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "提離職一定要寫書面嗎？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "法律沒有規定一定要書面，但建議用書面、Email 或通訊軟體留下紀錄，日後有爭議時才有證據證明你有依規定預告。"
+      }
+    }
+  ]
+}
+  </script>
 </head>
 <body>
   <main>
@@ -97,7 +137,27 @@
           <table>
             <tr><td>年資</td><td>${years} 年 ${restMonths} 個月</td></tr>
           </table>
-          <p class="note">年資未滿 3 個月，勞基法沒有規定預告期，但建議至少提早幾天告知，方便交接。</p>
+          <div class="card faq">
+      <h2>常見問題</h2>
+      <details>
+        <summary>沒有提前預告就離職會怎樣？</summary>
+        <p>勞工沒有依規定預告，如果造成公司損失，公司可以要求賠償，但必須舉證實際損失，而且不能直接扣你的薪水抵償。</p>
+      </details>
+      <details>
+        <summary>預告期間可以請特休嗎？</summary>
+        <p>可以。預告期間仍在職，可以排休特休；離職時還沒休完的特休，公司要折算工資發給。</p>
+      </details>
+      <details>
+        <summary>預告期從哪一天開始算？</summary>
+        <p>從你告知公司的隔天開始算。例如年資滿 3 個月未滿 1 年，要在最後工作日的 10 天前提出。</p>
+      </details>
+      <details>
+        <summary>提離職一定要寫書面嗎？</summary>
+        <p>法律沒有規定一定要書面，但建議用書面、Email 或通訊軟體留下紀錄，日後有爭議時才有證據證明你有依規定預告。</p>
+      </details>
+    </div>
+
+    <p class="note">年資未滿 3 個月，勞基法沒有規定預告期，但建議至少提早幾天告知，方便交接。</p>
         `;
         return;
       }
