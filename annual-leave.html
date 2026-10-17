@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>特休天數試算｜勞工權益計算機</title>
+  <meta name="description" content="依勞基法第38條，輸入到職日即可算出目前特休天數，以及下次特休增加的日期。">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <a class="back" href="index.html">← 回首頁</a>
+    <h1>特休天數試算</h1>
+    <p class="sub">依勞基法第 38 條（週年制），算出你目前的特休天數。</p>
+
+    <div class="card">
+      <label for="startDate">到職日</label>
+      <input id="startDate" type="date">
+
+      <label for="calcDate">計算日期</label>
+      <input id="calcDate" type="date">
+
+      <button id="calcBtn">開始計算</button>
+    </div>
+
+    <div class="card" id="result" hidden></div>
+
+    <div class="card">
+      <table>
+        <tr><td>滿 6 個月未滿 1 年</td><td>3 天</td></tr>
+        <tr><td>滿 1 年未滿 2 年</td><td>7 天</td></tr>
+        <tr><td>滿 2 年未滿 3 年</td><td>10 天</td></tr>
+        <tr><td>滿 3 年未滿 5 年</td><td>每年 14 天</td></tr>
+        <tr><td>滿 5 年未滿 10 年</td><td>每年 15 天</td></tr>
+        <tr><td>滿 10 年以上</td><td>每年加 1 天，最多 30 天</td></tr>
+      </table>
+    </div>
+
+    <p class="note">
+      以週年制計算。部分公司採曆年制或會計年度制，天數分配可能不同。本工具僅供參考，實際以公司制度及勞動部規定為準。
+    </p>
+  </main>
+
+  <script>
+    // 依服務月數計算特休天數（勞基法第 38 條）
+    function leaveDays(months) {
+      if (months < 6) return 0;
+      if (months < 12) return 3;
+      if (months < 24) return 7;
+      if (months < 36) return 10;
+      if (months < 60) return 14;
+      if (months < 120) return 15;
+      const years = Math.floor(months / 12);
+      return Math.min(15 + (years - 9), 30);
+    }
+
+    // 下一個天數會增加的服務月數
+    function nextMilestone(months) {
+      const steps = [6, 12, 24, 36, 60, 120];
+      for (const s of steps) {
+        if (months < s) return s;
+      }
+      if (leaveDays(months) >= 30) return null;
+      return (Math.floor(months / 12) + 1) * 12;
+    }
+
+    // 計算兩個日期之間滿幾個月
+    function fullMonths(start, end) {
+      let m = (end.getFullYear() - start.getFullYear()) * 12
+            + (end.getMonth() - start.getMonth());
+      if (end.getDate() < start.getDate()) m -= 1;
+      return m;
+    }
+
+    function addMonths(date, n) {
+      return new Date(date.getFullYear(), date.getMonth() + n, date.getDate());
+    }
+
+    function toInputValue(d) {
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${y}-${m}-${day}`;
+    }
+
+    function fmtDate(d) {
+      return `${d.getFullYear()} 年 ${d.getMonth() + 1} 月 ${d.getDate()} 日`;
+    }
+
+    // 計算日期預設為今天
+    document.getElementById("calcDate").value = toInputValue(new Date());
+
+    document.getElementById("calcBtn").addEventListener("click", () => {
+      const startVal = document.getElementById("startDate").value;
+      const calcVal = document.getElementById("calcDate").value;
+      const box = document.getElementById("result");
+      box.hidden = false;
+
+      if (!startVal || !calcVal) {
+        box.innerHTML = '<p class="error">請輸入到職日和計算日期。</p>';
+        return;
+      }
+
+      const start = new Date(startVal + "T00:00:00");
+      const calc = new Date(calcVal + "T00:00:00");
+
+      if (calc < start) {
+        box.innerHTML = '<p class="error">計算日期不能早於到職日。</p>';
+        return;
+      }
+
+      const months = fullMonths(start, calc);
+      const days = leaveDays(months);
+      const next = nextMilestone(months);
+      const years = Math.floor(months / 12);
+      const restMonths = months % 12;
+
+      let nextText = "已達法定上限 30 天";
+      if (next !== null) {
+        const nextDate = addMonths(start, next);
+        nextText = `${fmtDate(nextDate)} 起為 ${leaveDays(next)} 天`;
+      }
+
+      box.innerHTML = `
+        <div>目前特休天數</div>
+        <div class="total">${days} 天</div>
+        <table>
+          <tr><td>服務年資</td><td>${years} 年 ${restMonths} 個月</td></tr>
+          <tr><td>下次增加</td><td>${nextText}</td></tr>
+        </table>
+      `;
+    });
+  </script>
+</body>
+</html>
