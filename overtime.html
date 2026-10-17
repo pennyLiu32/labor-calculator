@@ -3,46 +3,58 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>加班費試算｜勞工權益計算機</title>
-  <meta name="description" content="依勞基法第24條試算平日與休息日加班費，輸入月薪和加班時數，立即算出應領金額。">
-  <link rel="stylesheet" href="style.css?v=3">
+  <title>薪資與加班費試算｜當月薪水、平日休息日國定假日加班費｜勞工權益計算機</title>
+  <meta name="description" content="試算當月薪水與加班費：輸入本薪，自由新增全勤獎金、職務加給等項目，平日、休息日、國定假日加班依勞基法第24條、第39條自動計算，並可扣除勞健保等項目算出實領金額。">
+  <link rel="stylesheet" href="style.css?v=4">
+  <style>
+    .rows { display: grid; gap: 8px; margin-top: 8px; }
+    .row {
+      display: grid;
+      gap: 8px;
+      align-items: end;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--card);
+    }
+    .row label { margin: 0 0 4px; font-size: 0.85rem; }
+    .row-allow { grid-template-columns: 1.4fr 1fr auto auto; }
+    .row-ot { grid-template-columns: 1.6fr 0.8fr 0.8fr auto; }
+    .row-ded { grid-template-columns: 1.4fr 1fr auto; }
+    .row .inc { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; white-space: nowrap; padding-bottom: 10px; }
+    .row .inc input { width: auto; }
+    .del {
+      width: auto; margin: 0; padding: 8px 10px; font-size: 0.85rem;
+      background: transparent; color: #dc2626; border: 1px solid #dc2626;
+    }
+    .add {
+      background: transparent; color: var(--primary);
+      border: 1px dashed var(--primary); margin-top: 8px; padding: 10px;
+    }
+    .section-title { font-size: 1.05rem; margin: 22px 0 2px; }
+    .section-title:first-child { margin-top: 0; }
+    .warn { color: #b45309; font-weight: 600; }
+    tr.sum td { font-weight: 700; border-bottom: 2px solid var(--border); }
+    @media (max-width: 560px) {
+      .row-allow, .row-ot, .row-ded { grid-template-columns: 1fr 1fr; }
+      .row .del { grid-column: span 2; }
+    }
+  </style>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "加班費的時薪要用哪個薪水算？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "以「經常性工資」計算，除了底薪，固定發放的津貼（例如職務加給、全勤以外的固定加給）也要算進去，再除以 240（30 天 × 8 小時）得出時薪。"
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "一天、一個月最多可以加班幾小時？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "正常工時加上加班，一天不能超過 12 小時；一個月加班不能超過 46 小時。經工會或勞資會議同意，可放寬到每月 54 小時，但每 3 個月合計不能超過 138 小時。"
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "休息日和例假日有什麼不同？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "休息日公司可以請你加班，但要依本頁倍率給加班費；例假日原則上不能叫你上班，只有天災、事變或突發事件才可以，而且要加倍給工資並事後補假休息。"
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "加班可以換補休嗎？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "可以，但必須是勞工自己同意，補休時數依加班時數 1 比 1 換算。補休期限屆滿或離職時還沒休完的時數，公司要依加班費標準折算成工資發給。"
-      }
-    }
+    {"@type": "Question", "name": "加班費的時薪要用哪個薪水算？",
+     "acceptedAnswer": {"@type": "Answer", "text": "以「經常性工資」計算，除了本薪，按月固定發放的加給、津貼、全勤獎金等也要算進去，再除以 240（30 天 × 8 小時）得出時薪。"}},
+    {"@type": "Question", "name": "平日加班的倍率怎麼算？",
+     "acceptedAnswer": {"@type": "Answer", "text": "平日加班前 2 小時按時薪加給 1/3（× 1⅓），第 3、4 小時加給 2/3（× 1⅔）。正常工時加上加班一天不能超過 12 小時，所以平日最多加班 4 小時。"}},
+    {"@type": "Question", "name": "國定假日出勤怎麼算？",
+     "acceptedAnswer": {"@type": "Answer", "text": "依勞基法第 39 條，國定假日出勤工資加倍發給：8 小時以內不論做幾小時，都加發一日工資；超過 8 小時的部分，再依平日加班的倍率計算。"}},
+    {"@type": "Question", "name": "一個月最多可以加班幾小時？",
+     "acceptedAnswer": {"@type": "Answer", "text": "一個月加班不能超過 46 小時。經工會或勞資會議同意，可放寬到每月 54 小時，但每 3 個月合計不能超過 138 小時。"}},
+    {"@type": "Question", "name": "加班可以換補休嗎？",
+     "acceptedAnswer": {"@type": "Answer", "text": "可以，但必須是勞工自己同意，補休時數依加班時數 1 比 1 換算。補休期限屆滿或離職時還沒休完的時數，公司要依加班費標準折算成工資發給。"}}
   ]
 }
   </script>
@@ -51,59 +63,117 @@
   <div class="layout">
     <aside class="sidebar">
       <a class="brand" href="index.html">勞工權益計算機</a>
-      <nav>
-        <a href="index.html"><span>首頁</span><small>所有工具一覽</small></a>
-        <p class="nav-group">一般勞工</p>
-        <a href="overtime.html" class="active" aria-current="page"><span>加班費試算</span><small>平日、休息日加班費</small></a>
-        <a href="annual-leave.html"><span>特休天數試算</span><small>依到職日算特休</small></a>
-        <a href="severance.html"><span>資遣費試算</span><small>勞退新制資遣費</small></a>
-        <a href="notice-period.html"><span>離職預告期試算</span><small>最晚哪天提離職</small></a>
-        <a href="resources.html"><span>被資遣後可以申請什麼？</span><small>失業給付與職訓</small></a>
-        <p class="nav-group">軍警消、公務員</p>
-        <a href="military.html"><span>退伍軍人轉職資源</span><small>退輔會補助與輔導期限</small></a>
-        <a href="veteran-benefits.html"><span>榮民權益與補助</span><small>就醫、子女教育、急難救助</small></a>
-        <a href="police-fire.html"><span>警消轉職資源</span><small>退撫權益與轉職方向</small></a>
-        <a href="civil-leave.html"><span>公務員休假天數試算</span><small>公務人員請假規則</small></a>
-        <p class="nav-group">其他</p>
-        <a href="about.html"><span>關於本站</span></a>
-        <a href="privacy.html"><span>隱私權政策</span></a>
-      </nav>
+      <details class="nav-wrap" open>
+        <summary class="nav-toggle">☰ 選單<span class="nav-current">薪資與加班費試算</span></summary>
+        <nav>
+          <a href="index.html" class="nav-home"><span>首頁</span></a>
+          <details class="nav-group" open>
+            <summary>一般勞工</summary>
+            <a href="overtime.html" class="active" aria-current="page"><span>薪資與加班費試算</span><small>當月薪水、加班費</small></a>
+            <a href="annual-leave.html"><span>特休天數試算</span><small>依到職日算特休</small></a>
+            <a href="severance.html"><span>資遣費試算</span><small>勞退新制資遣費</small></a>
+            <a href="notice-period.html"><span>離職預告期試算</span><small>最晚哪天提離職</small></a>
+            <a href="resources.html"><span>被資遣後可以申請什麼？</span><small>失業給付與職訓</small></a>
+          </details>
+          <details class="nav-group">
+            <summary>軍警消、公務員</summary>
+            <a href="military.html"><span>退伍軍人轉職資源</span><small>退輔會補助與輔導期限</small></a>
+            <a href="veteran-benefits.html"><span>榮民權益與補助</span><small>就醫、子女教育、急難救助</small></a>
+            <a href="police-fire.html"><span>警消轉職資源</span><small>退撫權益與轉職方向</small></a>
+            <a href="civil-leave.html"><span>公務員休假天數試算</span><small>公務人員請假規則</small></a>
+          </details>
+          <details class="nav-group">
+            <summary>其他</summary>
+            <a href="about.html"><span>關於本站</span></a>
+            <a href="privacy.html"><span>隱私權政策</span></a>
+          </details>
+        </nav>
+      </details>
     </aside>
   <main>
-    <h1>加班費試算</h1>
-    <p class="sub">依勞基法第 24 條，計算平日與休息日的加班費。</p>
+    <h1>薪資與加班費試算</h1>
+    <p class="sub">輸入本薪、自己新增各種加給和加班，算出這個月可以領多少。只想算加班費，填本薪和加班就好。</p>
 
     <div class="card">
-      <label for="salary">月薪（元）</label>
-      <input id="salary" type="number" min="0" placeholder="例如 40000">
+      <h2 class="section-title">本薪</h2>
+      <label for="base">每月本薪（底薪，元）</label>
+      <input id="base" type="number" min="0" placeholder="例如 32000">
 
-      <label for="dayType">加班類型</label>
-      <select id="dayType">
-        <option value="weekday">平日加班（正常工時後）</option>
-        <option value="restday">休息日加班</option>
-      </select>
+      <h2 class="section-title">加給、津貼、獎金</h2>
+      <p class="note" style="margin:0">勾選「算入時薪」的項目會一起用來計算加班費時薪（按月固定發放的，通常都要算入）。</p>
+      <div id="allowRows" class="rows"></div>
+      <button type="button" class="add" id="addAllow">＋ 新增加給項目</button>
 
-      <label for="hours">加班時數</label>
-      <input id="hours" type="number" min="0" step="0.5" placeholder="例如 2">
+      <h2 class="section-title">加班</h2>
+      <p class="note" style="margin:0">同一種加班、每次時數相同的可以合成一筆，例如「平日加班 2 小時 × 8 天」。</p>
+      <div id="otRows" class="rows"></div>
+      <button type="button" class="add" id="addOt">＋ 新增加班</button>
+
+      <h2 class="section-title">勞健保、勞退自提</h2>
+      <label class="check"><input type="checkbox" id="autoIns" checked> 自動計算勞保、就保、健保自付額</label>
+      <div id="insBox">
+        <div class="row2">
+          <div>
+            <label for="deps">健保眷屬人數</label>
+            <select id="deps">
+              <option value="0">0 人（只有自己）</option>
+              <option value="1">1 人</option>
+              <option value="2">2 人</option>
+              <option value="3">3 人以上（最多計 3 人）</option>
+            </select>
+          </div>
+          <div>
+            <label for="pension">勞退自提</label>
+            <select id="pension">
+              <option value="0">不自提</option>
+              <option value="1">1%</option><option value="2">2%</option><option value="3">3%</option>
+              <option value="4">4%</option><option value="5">5%</option><option value="6">6%</option>
+            </select>
+          </div>
+        </div>
+        <label for="insSalary">投保薪資（選填，知道的話填；不填會依本薪＋算入時薪的加給自動對應級距）</label>
+        <input id="insSalary" type="number" min="0" placeholder="例如 33300">
+      </div>
+
+      <h2 class="section-title">其他扣除項目（選填）</h2>
+      <p class="note" style="margin:0">例如請假扣薪、伙食費、福利金。</p>
+      <div id="dedRows" class="rows"></div>
+      <button type="button" class="add" id="addDed">＋ 新增扣除項目</button>
 
       <button id="calcBtn">開始計算</button>
     </div>
 
     <div class="card" id="result" hidden></div>
 
+    <div class="card">
+      <table>
+        <tr><td>平日加班 前 2 小時</td><td>時薪 × 1⅓</td></tr>
+        <tr><td>平日加班 第 3～4 小時</td><td>時薪 × 1⅔</td></tr>
+        <tr><td>休息日 前 2 小時</td><td>時薪 × 1⅓</td></tr>
+        <tr><td>休息日 第 3～8 小時</td><td>時薪 × 1⅔</td></tr>
+        <tr><td>休息日 第 9～12 小時</td><td>時薪 × 2⅔</td></tr>
+        <tr><td>國定假日、特休日出勤 8 小時內</td><td>加發 1 日工資</td></tr>
+        <tr><td>國定假日、特休日 超過 8 小時</td><td>依平日加班倍率</td></tr>
+      </table>
+    </div>
+
     <div class="card faq">
       <h2>常見問題</h2>
       <details>
         <summary>加班費的時薪要用哪個薪水算？</summary>
-        <p>以「經常性工資」計算，除了底薪，固定發放的津貼（例如職務加給、全勤以外的固定加給）也要算進去，再除以 240（30 天 × 8 小時）得出時薪。</p>
+        <p>以「經常性工資」計算，除了本薪，按月固定發放的加給、津貼、全勤獎金等也要算進去，再除以 240（30 天 × 8 小時）得出時薪。</p>
       </details>
       <details>
-        <summary>一天、一個月最多可以加班幾小時？</summary>
-        <p>正常工時加上加班，一天不能超過 12 小時；一個月加班不能超過 46 小時。經工會或勞資會議同意，可放寬到每月 54 小時，但每 3 個月合計不能超過 138 小時。</p>
+        <summary>平日加班的倍率怎麼算？</summary>
+        <p>平日加班前 2 小時按時薪加給 1/3（× 1⅓），第 3、4 小時加給 2/3（× 1⅔）。正常工時加上加班一天不能超過 12 小時，所以平日最多加班 4 小時。</p>
       </details>
       <details>
-        <summary>休息日和例假日有什麼不同？</summary>
-        <p>休息日公司可以請你加班，但要依本頁倍率給加班費；例假日原則上不能叫你上班，只有天災、事變或突發事件才可以，而且要加倍給工資並事後補假休息。</p>
+        <summary>國定假日出勤怎麼算？</summary>
+        <p>依勞基法第 39 條，國定假日出勤工資加倍發給：8 小時以內不論做幾小時，都加發一日工資；超過 8 小時的部分，再依平日加班的倍率計算。</p>
+      </details>
+      <details>
+        <summary>一個月最多可以加班幾小時？</summary>
+        <p>一個月加班不能超過 46 小時。經工會或勞資會議同意，可放寬到每月 54 小時，但每 3 個月合計不能超過 138 小時。</p>
       </details>
       <details>
         <summary>加班可以換補休嗎？</summary>
@@ -112,7 +182,10 @@
     </div>
 
     <p class="note">
-      時薪以「月薪 ÷ 30 ÷ 8」計算。本工具僅供參考，實際金額以勞動部規定及公司薪資制度為準。
+      時薪以「（本薪＋算入時薪的加給）÷ 30 ÷ 8」計算，日薪以「÷ 30」計算。例假日原則上不得出勤，本工具不計算。
+      勞健保依 2026 年（115 年）費率與分級表計算：勞保普通事故 11.5%＋就業保險 1%，勞工負擔 20%；健保 5.17%，勞工負擔 30%，眷屬最多計 3 人。
+      以全月投保的全職勞工計算，65 歲以上、部分工時或當月中途加退保者金額不同。
+      本工具僅供參考，實際金額以勞動部規定及公司薪資制度為準。
     </p>
     <footer class="site-footer">
       <p class="footer-links"><a href="about.html">關於本站</a>｜<a href="privacy.html">隱私權政策</a></p>
@@ -121,69 +194,212 @@
   </main>
   </div>
   <script src="counter.js"></script>
-  <script src="nav.js?v=3"></script>
+  <script src="nav.js?v=4"></script>
 
   <script>
-    // 各段時數的加成倍率（勞基法第 24 條）
-    const RULES = {
-      weekday: { max: 4, tiers: [
-        { hours: 2, rate: 4 / 3, label: "前 2 小時（× 1⅓）" },
-        { hours: 2, rate: 5 / 3, label: "第 3–4 小時（× 1⅔）" }
-      ]},
-      restday: { max: 12, tiers: [
-        { hours: 2, rate: 4 / 3, label: "前 2 小時（× 1⅓）" },
-        { hours: 6, rate: 5 / 3, label: "第 3–8 小時（× 1⅔）" },
-        { hours: 4, rate: 8 / 3, label: "第 9–12 小時（× 2⅔）" }
-      ]}
+    // ── 加班倍率（勞基法第 24 條）──
+    const TIERS = {
+      weekday: [{ h: 2, r: 4 / 3 }, { h: 2, r: 5 / 3 }],                 // 最多 4 小時
+      restday: [{ h: 2, r: 4 / 3 }, { h: 6, r: 5 / 3 }, { h: 4, r: 8 / 3 }] // 最多 12 小時
+    };
+    const OT_TYPES = {
+      weekday: { label: "平日加班", max: 4 },
+      restday: { label: "休息日加班", max: 12 },
+      holiday: { label: "國定假日、特休日出勤", max: 12 }
     };
 
-    function calculate(salary, hours, dayType) {
-      const hourly = salary / 30 / 8;
-      let remaining = hours;
-      let total = 0;
-      const rows = [];
-
-      for (const tier of RULES[dayType].tiers) {
-        const h = Math.min(remaining, tier.hours);
+    // 依級距計算加班費（回傳每段明細）
+    function tierPay(hours, tiers, hourly) {
+      let left = hours, pay = 0;
+      for (const t of tiers) {
+        const h = Math.min(left, t.h);
         if (h <= 0) break;
-        const pay = hourly * h * tier.rate;
-        rows.push({ label: tier.label, hours: h, pay });
-        total += pay;
-        remaining -= h;
+        pay += hourly * h * t.r;
+        left -= h;
       }
-      return { hourly, total, rows };
+      return pay;
     }
 
+    // 單日加班費
+    function dayPay(type, hours, hourly) {
+      if (type === "weekday") return tierPay(hours, TIERS.weekday, hourly);
+      if (type === "restday") return tierPay(hours, TIERS.restday, hourly);
+      // 國定假日：8 小時內加發 1 日工資，超過 8 小時依平日加班倍率（勞基法第 39 條）
+      const extraDay = hours > 0 ? hourly * 8 : 0;
+      return extraDay + tierPay(Math.max(0, hours - 8), TIERS.weekday, hourly);
+    }
+
+    // ── 2026 年勞健保（115 年 1 月 1 日起）──
+    // 勞保投保薪資分級（全職，第 1～11 級）
+    const LABOR_GRADES = [29500, 30300, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800];
+    // 健保投保金額分級（第 1～58 級）
+    const HEALTH_GRADES = [29500, 30300, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800,
+      48200, 50600, 53000, 55400, 57800, 60800, 63800, 66800, 69800, 72800, 76500, 80200, 83900, 87600,
+      92100, 96600, 101100, 105600, 110100, 115500, 120900, 126300, 131700, 137100, 142500, 147900, 150000,
+      156400, 162800, 169200, 175600, 182000, 189500, 197000, 204500, 212000, 219500, 228200, 236900,
+      245600, 254300, 263000, 273000, 283000, 293000, 303000, 313000];
+    const LABOR_RATE = 0.115 + 0.01;   // 普通事故 11.5% ＋ 就業保險 1%
+    const LABOR_SHARE = 0.2;           // 勞工負擔 20%
+    const HEALTH_RATE = 0.0517;        // 健保費率 5.17%
+    const HEALTH_SHARE = 0.3;          // 勞工負擔 30%
+    const PENSION_MAX = 150000;        // 勞退月提繳工資上限
+
+    // 找出 >= 薪資的最低級距，超過最高級就用最高級
+    function gradeOf(salary, grades) {
+      for (const g of grades) if (salary <= g) return g;
+      return grades[grades.length - 1];
+    }
+
+    function insurance(salary, deps, pensionPct) {
+      const labor = gradeOf(salary, LABOR_GRADES);
+      const health = gradeOf(salary, HEALTH_GRADES);
+      const pensionBase = gradeOf(Math.min(salary, PENSION_MAX), HEALTH_GRADES.filter(g => g <= PENSION_MAX));
+      const healthOne = Math.round(health * HEALTH_RATE * HEALTH_SHARE);
+      return {
+        labor, health, pensionBase,
+        laborFee: Math.round(labor * LABOR_RATE * LABOR_SHARE),
+        healthFee: healthOne * (1 + Math.min(deps, 3)),
+        pensionFee: Math.round(pensionBase * pensionPct / 100)
+      };
+    }
+
+    document.getElementById("autoIns").addEventListener("change", e => {
+      document.getElementById("insBox").hidden = !e.target.checked;
+    });
+
+    // ── 動態列 ──
+    function makeRow(container, cls, html) {
+      const div = document.createElement("div");
+      div.className = "row " + cls;
+      div.innerHTML = html + '<button type="button" class="del">刪除</button>';
+      div.querySelector(".del").addEventListener("click", () => div.remove());
+      container.appendChild(div);
+      return div;
+    }
+
+    const allowRows = document.getElementById("allowRows");
+    const otRows = document.getElementById("otRows");
+    const dedRows = document.getElementById("dedRows");
+
+    function addAllow(name = "", amount = "", include = true) {
+      makeRow(allowRows, "row-allow", `
+        <div><label>項目名稱</label><input class="a-name" type="text" placeholder="例如 職務加給" value="${name}"></div>
+        <div><label>每月金額</label><input class="a-amt" type="number" min="0" placeholder="例如 1800" value="${amount}"></div>
+        <label class="inc"><input class="a-inc" type="checkbox" ${include ? "checked" : ""}> 算入時薪</label>`);
+    }
+
+    function addOt(type = "weekday", hours = "", days = "") {
+      const opts = Object.entries(OT_TYPES)
+        .map(([k, v]) => `<option value="${k}" ${k === type ? "selected" : ""}>${v.label}</option>`).join("");
+      makeRow(otRows, "row-ot", `
+        <div><label>類型</label><select class="o-type">${opts}</select></div>
+        <div><label>每次幾小時</label><input class="o-hrs" type="number" min="0" step="0.5" placeholder="2" value="${hours}"></div>
+        <div><label>幾天</label><input class="o-days" type="number" min="0" placeholder="1" value="${days}"></div>`);
+    }
+
+    function addDed(name = "", amount = "") {
+      makeRow(dedRows, "row-ded", `
+        <div><label>項目名稱</label><input class="d-name" type="text" placeholder="例如 勞保自付" value="${name}"></div>
+        <div><label>金額</label><input class="d-amt" type="number" min="0" placeholder="例如 800" value="${amount}"></div>`);
+    }
+
+    document.getElementById("addAllow").addEventListener("click", () => addAllow());
+    document.getElementById("addOt").addEventListener("click", () => addOt());
+    document.getElementById("addDed").addEventListener("click", () => addDed());
+
+    // 預設範例列，方便使用者直接改
+    addAllow("全勤獎金", "", true);
+    addAllow("職務加給", "", true);
+    addOt("weekday");
+
+    // ── 計算 ──
+    const fmt = n => Math.round(n).toLocaleString("zh-TW");
+
     document.getElementById("calcBtn").addEventListener("click", () => {
-      const salary = Number(document.getElementById("salary").value);
-      const hours = Number(document.getElementById("hours").value);
-      const dayType = document.getElementById("dayType").value;
       const box = document.getElementById("result");
-      const max = RULES[dayType].max;
-
       box.hidden = false;
-
-      if (!salary || salary <= 0 || !hours || hours <= 0) {
-        box.innerHTML = '<p class="error">請輸入大於 0 的月薪和加班時數。</p>';
-        return;
-      }
-      if (hours > max) {
-        box.innerHTML = `<p class="error">此類型加班依法最多 ${max} 小時，請重新輸入。</p>`;
+      const base = Number(document.getElementById("base").value);
+      if (!base || base <= 0) {
+        box.innerHTML = '<p class="error">請輸入每月本薪。</p>';
         return;
       }
 
-      const r = calculate(salary, hours, dayType);
-      const fmt = n => Math.round(n).toLocaleString("zh-TW");
+      // 加給
+      const allows = [...allowRows.children].map(r => ({
+        name: r.querySelector(".a-name").value.trim() || "加給",
+        amt: Number(r.querySelector(".a-amt").value || 0),
+        inc: r.querySelector(".a-inc").checked
+      })).filter(a => a.amt > 0);
+
+      const hourlyBase = base + allows.filter(a => a.inc).reduce((s, a) => s + a.amt, 0);
+      const hourly = hourlyBase / 240;
+
+      // 加班
+      const ots = [];
+      for (const r of otRows.children) {
+        const type = r.querySelector(".o-type").value;
+        const hrs = Number(r.querySelector(".o-hrs").value || 0);
+        const days = Number(r.querySelector(".o-days").value || 0);
+        if (hrs <= 0 || days <= 0) continue;
+        if (hrs > OT_TYPES[type].max) {
+          box.innerHTML = `<p class="error">${OT_TYPES[type].label}每天最多 ${OT_TYPES[type].max} 小時，請重新輸入。</p>`;
+          return;
+        }
+        ots.push({ type, hrs, days, pay: dayPay(type, hrs, hourly) * days });
+      }
+
+      // 扣除
+      const deds = [...dedRows.children].map(r => ({
+        name: r.querySelector(".d-name").value.trim() || "扣除",
+        amt: Number(r.querySelector(".d-amt").value || 0)
+      })).filter(d => d.amt > 0);
+
+      // 勞健保、勞退自提
+      let ins = null;
+      if (document.getElementById("autoIns").checked) {
+        const given = Number(document.getElementById("insSalary").value || 0);
+        const insSalary = given > 0 ? given : hourlyBase;
+        ins = insurance(insSalary,
+          Number(document.getElementById("deps").value),
+          Number(document.getElementById("pension").value));
+        const depsN = Math.min(3, Number(document.getElementById("deps").value));
+        deds.unshift(
+          { name: `勞保＋就保自付（投保 ${fmt(ins.labor)}）`, amt: ins.laborFee },
+          { name: `健保自付（本人${depsN ? `＋眷屬 ${depsN} 人` : ""}，投保 ${fmt(ins.health)}）`, amt: ins.healthFee }
+        );
+        if (ins.pensionFee > 0) {
+          deds.splice(2, 0, { name: `勞退自提 ${document.getElementById("pension").value}%（提繳工資 ${fmt(ins.pensionBase)}）`, amt: ins.pensionFee });
+        }
+      }
+
+      const allowTotal = allows.reduce((s, a) => s + a.amt, 0);
+      const otTotal = ots.reduce((s, o) => s + o.pay, 0);
+      const gross = base + allowTotal + otTotal;
+      const dedTotal = deds.reduce((s, d) => s + d.amt, 0);
+      const net = gross - dedTotal;
+
+      // 每月加班上限（國定假日 8 小時內不計入）
+      const otHours = ots.reduce((s, o) => {
+        const counted = o.type === "holiday" ? Math.max(0, o.hrs - 8) : o.hrs;
+        return s + counted * o.days;
+      }, 0);
+
+      const rows = [];
+      rows.push(`<tr><td>本薪</td><td>${fmt(base)} 元</td></tr>`);
+      allows.forEach(a => rows.push(`<tr><td>${a.name}</td><td>${fmt(a.amt)} 元</td></tr>`));
+      ots.forEach(o => rows.push(
+        `<tr><td>${OT_TYPES[o.type].label} ${o.hrs} 小時 × ${o.days} 天</td><td>${fmt(o.pay)} 元</td></tr>`));
+      rows.push(`<tr class="sum"><td>應發合計</td><td>${fmt(gross)} 元</td></tr>`);
+      deds.forEach(d => rows.push(`<tr><td>${d.name}</td><td>－${fmt(d.amt)} 元</td></tr>`));
 
       box.innerHTML = `
-        <div>應領加班費約</div>
-        <div class="total">${fmt(r.total)} 元</div>
-        <table>
-          <tr><td>換算時薪</td><td>${r.hourly.toFixed(1)} 元</td></tr>
-          ${r.rows.map(row =>
-            `<tr><td>${row.label}　${row.hours} 小時</td><td>${fmt(row.pay)} 元</td></tr>`
-          ).join("")}
-        </table>
+        <div>${deds.length ? "本月實領約" : "本月應發約"}</div>
+        <div class="total">${fmt(net)} 元</div>
+        ${ots.length ? `<p>其中加班費約 <strong>${fmt(otTotal)} 元</strong>。</p>` : ""}
+        <table>${rows.join("")}</table>
+        <p class="note">加班費時薪：（${fmt(hourlyBase)} 元）÷ 240 ＝ ${hourly.toFixed(1)} 元。</p>
+        ${ins && ins.pensionFee > 0 ? `<p class="note">勞退自提的金額會存進你的勞退個人專戶，退休後領回，而且可以從當年度個人綜合所得中扣除。</p>` : ""}
+        ${otHours > 46 ? `<p class="warn">本月加班 ${otHours} 小時，超過法定每月 46 小時上限（經勞資會議同意最多 54 小時）。</p>` : ""}
       `;
     });
   </script>

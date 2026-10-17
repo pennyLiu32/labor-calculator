@@ -60,26 +60,53 @@ main { min-width: 0; }
   text-decoration: none;
   margin-bottom: 12px;
 }
-.nav-group {
-  margin: 16px 0 6px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--muted);
-  letter-spacing: 0.05em;
-}
+/* 選單：大分類可收合 */
+.nav-toggle { display: none; }
 .sidebar nav a {
   display: block;
-  padding: 8px 10px;
+  padding: 7px 10px;
   border-radius: 8px;
   color: var(--text);
   text-decoration: none;
 }
-.sidebar nav a span { display: block; font-weight: 600; }
-.sidebar nav a small { display: block; color: var(--muted); font-size: 0.8rem; }
+.sidebar nav a span { display: block; font-size: 0.95rem; font-weight: 500; }
+.sidebar nav a small { display: block; color: var(--muted); font-size: 0.78rem; }
 .sidebar nav a:hover { background: var(--soft); }
 .sidebar nav a.active { background: var(--primary); }
 .sidebar nav a.active span,
 .sidebar nav a.active small { color: var(--on-primary); }
+.sidebar nav a.nav-home span { font-size: 1.05rem; font-weight: 700; }
+
+.nav-group { margin-top: 6px; }
+.nav-group summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 10px;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+  user-select: none;
+}
+.nav-group summary::-webkit-details-marker { display: none; }
+.nav-group summary::after {
+  content: "▸";
+  color: var(--muted);
+  font-size: 0.9rem;
+  transition: transform 0.15s;
+}
+.nav-group[open] summary::after { transform: rotate(90deg); }
+.nav-group summary:hover { background: var(--soft); }
+.nav-group > a {
+  margin-left: 14px;
+  border-left: 2px solid var(--border);
+  border-radius: 0 8px 8px 0;
+  padding-left: 12px;
+}
+.nav-group > a.active { border-left-color: var(--primary); }
 
 /* 表單小元件 */
 .check { display: flex; align-items: center; gap: 8px; font-weight: 600; margin-top: 12px; }
@@ -90,30 +117,29 @@ main { min-width: 0; }
 .hint summary { cursor: pointer; font-weight: 600; }
 .hint p { margin: 8px 0 0; }
 
-/* 手機：選單改成上方可左右滑動的按鈕列 */
+/* 手機：選單收成一個「☰ 選單」按鈕 */
 @media (max-width: 768px) {
   .layout { grid-template-columns: 1fr; gap: 16px; }
   .sidebar {
     position: static;
     max-height: none;
-    padding: 12px;
+    padding: 12px 14px;
   }
   .brand { margin-bottom: 8px; }
-  .sidebar nav {
+  .nav-toggle {
     display: flex;
-    gap: 6px;
-    overflow-x: auto;
-    padding-bottom: 4px;
-  }
-  .nav-group, .sidebar nav a small { display: none; }
-  .sidebar nav a {
-    flex: 0 0 auto;
-    padding: 6px 12px;
+    align-items: center;
+    gap: 10px;
+    list-style: none;
+    padding: 8px 12px;
     border: 1px solid var(--border);
-    border-radius: 999px;
-    white-space: nowrap;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
   }
-  .sidebar nav a span { font-weight: 500; font-size: 0.9rem; }
+  .nav-toggle::-webkit-details-marker { display: none; }
+  .nav-current { font-weight: 400; color: var(--muted); font-size: 0.9rem; }
+  .nav-wrap[open] .nav-toggle { margin-bottom: 8px; }
 }
 h1 { font-size: 1.6rem; margin: 0 0 4px; }
 .sub { color: var(--muted); margin: 0 0 20px; }
