@@ -1,7 +1,7 @@
 // 全站瀏覽人次（GoatCounter）
 // 申請帳號後，把下面的 YOUR_CODE 換成你的代碼（例如 laborcalc）
 (function () {
-  var CODE = "YOUR_CODE";
+  var CODE = "laborcalc";
 
   var box = document.getElementById("stats");
   if (!box || CODE === "YOUR_CODE") return;
