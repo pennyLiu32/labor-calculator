@@ -24,7 +24,82 @@ body {
   font-family: system-ui, -apple-system, "Noto Sans TC", sans-serif;
   line-height: 1.6;
 }
-main { max-width: 560px; margin: 0 auto; padding: 24px 16px; }
+/* 版面：左側選單 1/3、右側內容 2/3 */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  align-items: start;
+}
+main { min-width: 0; }
+
+.sidebar {
+  position: sticky;
+  top: 24px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+.brand {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text);
+  text-decoration: none;
+  margin-bottom: 12px;
+}
+.nav-group {
+  margin: 16px 0 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+.sidebar nav a {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: var(--text);
+  text-decoration: none;
+}
+.sidebar nav a span { display: block; font-weight: 600; }
+.sidebar nav a small { display: block; color: var(--muted); font-size: 0.8rem; }
+.sidebar nav a:hover { background: var(--bg); }
+.sidebar nav a.active { background: var(--primary); }
+.sidebar nav a.active span,
+.sidebar nav a.active small { color: #fff; }
+
+/* 手機：選單改成上方可左右滑動的按鈕列 */
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; gap: 16px; }
+  .sidebar {
+    position: static;
+    max-height: none;
+    padding: 12px;
+  }
+  .brand { margin-bottom: 8px; }
+  .sidebar nav {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .nav-group, .sidebar nav a small { display: none; }
+  .sidebar nav a {
+    flex: 0 0 auto;
+    padding: 6px 12px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .sidebar nav a span { font-weight: 500; font-size: 0.9rem; }
+}
 h1 { font-size: 1.6rem; margin: 0 0 4px; }
 .sub { color: var(--muted); margin: 0 0 20px; }
 .back { display: inline-block; margin-bottom: 12px; color: var(--primary); text-decoration: none; }
@@ -74,6 +149,8 @@ td:last-child { text-align: right; }
 /* 頁尾瀏覽人次 */
 .site-footer { margin-top: 24px; text-align: center; }
 #stats iframe { border: none; max-width: 100%; }
+.footer-links { font-size: 0.85rem; margin: 0 0 10px; }
+.footer-links a { color: var(--muted); margin: 0 8px; }
 
 /* 首頁工具清單 */
 .tool {
