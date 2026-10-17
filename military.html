@@ -23,7 +23,7 @@
   <main>
     <a class="back" href="index.html">← 回首頁</a>
     <h1>退伍軍人轉職資源</h1>
-    <p class="sub">輸入服役年資和軍中專長，查看你可以申請的退輔會資源與適合的轉職方向。</p>
+    <p class="sub">輸入入伍、退伍日期和軍中專長，查看你可以申請的退輔會資源與適合的轉職方向。</p>
 
     <div class="card">
       <label for="type">役別</label>
@@ -32,11 +32,12 @@
         <option value="conscript">義務役</option>
       </select>
 
-      <label for="years">累計服役年資（年）</label>
-      <input id="years" type="number" min="0" step="0.5" placeholder="例如 11">
+      <label for="enlistDate">入伍日期</label>
+      <input id="enlistDate" type="date">
 
       <label for="dischargeDate">退伍日期</label>
       <input id="dischargeDate" type="date">
+      <p class="note" style="margin:6px 0 0">若中間曾退伍再入伍，請以實際服役期間合計為準。</p>
 
       <label for="specialty">軍中主要專長</label>
       <select id="specialty">
@@ -100,19 +101,33 @@
 
     document.getElementById("calcBtn").addEventListener("click", () => {
       const type = document.getElementById("type").value;
-      const years = Number(document.getElementById("years").value);
+      const enlistVal = document.getElementById("enlistDate").value;
       const dischargeVal = document.getElementById("dischargeDate").value;
       const specialty = document.getElementById("specialty").value;
       const disabled = document.getElementById("disabled").checked;
       const box = document.getElementById("result");
       box.hidden = false;
 
-      if (!document.getElementById("years").value || years < 0 || !dischargeVal) {
-        box.innerHTML = '<div class="card"><p class="error">請輸入服役年資和退伍日期。</p></div>';
+      if (!enlistVal || !dischargeVal) {
+        box.innerHTML = '<div class="card"><p class="error">請輸入入伍日期和退伍日期。</p></div>';
         return;
       }
 
+      const enlist = new Date(enlistVal + "T00:00:00");
       const discharge = new Date(dischargeVal + "T00:00:00");
+      if (discharge < enlist) {
+        box.innerHTML = '<div class="card"><p class="error">退伍日期不能早於入伍日期。</p></div>';
+        return;
+      }
+
+      // 服役年資：入伍日到退伍日（退伍當天也算在內）
+      const dayAfter = new Date(discharge);
+      dayAfter.setDate(dayAfter.getDate() + 1);
+      let months = (dayAfter.getFullYear() - enlist.getFullYear()) * 12
+                 + (dayAfter.getMonth() - enlist.getMonth());
+      if (dayAfter.getDate() < enlist.getDate()) months -= 1;
+      const years = months / 12;
+      const serviceText = `${Math.floor(months / 12)} 年 ${months % 12} 個月`;
       const today = new Date();
       const volunteer = type === "volunteer";
 
@@ -121,7 +136,8 @@
       if ((volunteer && years >= 10) || disabled) category = "first";
       else if (volunteer && years >= 4) category = "second";
 
-      let html = '<div class="card"><h2 class="sec">你的身分</h2>';
+      let html = `<div class="card"><h2 class="sec">你的身分</h2>
+        <p>服役年資：<strong>${serviceText}</strong></p>`;
       let inPeriod = false;
       let trainingCap = 0;
 

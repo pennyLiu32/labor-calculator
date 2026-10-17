@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>警消轉職資源試算｜離職退撫基金、年資保留、轉職方向｜勞工權益計算機</title>
+  <meta name="description" content="警察、消防人員離職轉職前必看：輸入到職與離職日期，查看退撫基金發還或年資保留資格、可參加的職訓，並依專長找出適合的轉職方向。">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .item { margin: 0 0 14px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+    .item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .item h3 { margin: 0 0 4px; font-size: 1.05rem; }
+    .item p { margin: 0; }
+    .tag { display: inline-block; font-size: 0.8rem; padding: 2px 8px; border-radius: 999px; margin-left: 6px; vertical-align: middle; }
+    .ok { background: #dcfce7; color: #166534; }
+    .no { background: #fee2e2; color: #991b1b; }
+    a { color: var(--primary); }
+    ul { margin: 6px 0 0; padding-left: 20px; }
+    h2.sec { margin-top: 0; font-size: 1.2rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <a class="back" href="index.html">← 回首頁</a>
+    <h1>警消轉職資源</h1>
+    <p class="sub">警察、消防人員離職前，先確認退撫權益，再找適合的轉職方向。</p>
+
+    <div class="card">
+      <label for="role">職別</label>
+      <select id="role">
+        <option value="police">警察</option>
+        <option value="fire">消防</option>
+      </select>
+
+      <label for="startDate">初任到職日期</label>
+      <input id="startDate" type="date">
+
+      <label for="endDate">離職日期（預計）</label>
+      <input id="endDate" type="date">
+
+      <label for="age">離職時年齡</label>
+      <input id="age" type="number" min="18" max="70" placeholder="例如 35">
+
+      <label for="specialty">主要專長或業務</label>
+      <select id="specialty">
+        <optgroup label="警察">
+          <option value="patrol">外勤巡邏、派出所勤務</option>
+          <option value="criminal">刑事偵查</option>
+          <option value="traffic">交通事故處理、交通執法</option>
+          <option value="admin">行政、內勤業務</option>
+        </optgroup>
+        <optgroup label="消防">
+          <option value="rescue">火災搶救、災害救助</option>
+          <option value="ems">緊急救護（EMT）</option>
+          <option value="prevention">火災預防、消防安檢、火災調查</option>
+          <option value="hazmat">化學災害、特種搜救</option>
+        </optgroup>
+      </select>
+
+      <button id="calcBtn">查看我的資源</button>
+    </div>
+
+    <div id="result" hidden></div>
+
+    <p class="note">
+      依公務人員退休資遣撫卹法第 73、85 條，以及公務人員個人專戶制退休資遣撫卹法整理。
+      本工具只處理「未達退休條件而辭職」的情況；已符合退休條件者，請洽服務機關人事單位。
+      實際權益以銓敘部、服務機關及臺灣銀行公教保險部審定為準，本工具僅供參考。
+    </p>
+  </main>
+
+  <script>
+    // 專長 → 民間轉職方向
+    const DIRECTIONS = {
+      patrol: ["保全公司幹部、駐衛警", "物業管理、社區總幹事", "企業安全管理、門禁與監控主管"],
+      criminal: ["保險理賠調查", "企業內部稽核、法遵", "數位鑑識、資訊安全（需進修）"],
+      traffic: ["車隊安全管理、運輸公司", "駕訓班教練", "交通工程或交通安全顧問"],
+      admin: ["企業行政、人力資源", "政府機關約聘僱人員", "法務助理、文書管理"],
+      rescue: ["科技廠緊急應變小組（ERT）", "職業安全衛生管理", "消防設備士（師）、消防工程公司"],
+      ems: ["醫療院所、救護車公司", "職場急救訓練講師", "照顧服務、長照產業"],
+      prevention: ["消防安全設備檢修、消防設備士（師）", "防火管理、建築物公共安全檢查", "保險公估、火災理賠"],
+      hazmat: ["科技廠化學品管理、緊急應變", "職業安全衛生管理（甲種、特定化學物質作業主管）", "環保、毒化物運作管理"]
+    };
+
+    const CERTS = {
+      police: ["職業安全衛生業務主管（甲、乙、丙種）", "保全相關訓練、防火管理人"],
+      fire: ["消防設備士、消防設備師（國家考試）", "職業安全衛生業務主管、職業安全衛生管理員", "防火管理人"]
+    };
+
+    function item(title, eligible, body) {
+      const tag = eligible === null ? "" :
+        eligible ? '<span class="tag ok">符合</span>' : '<span class="tag no">不符合</span>';
+      return `<div class="item"><h3>${title}${tag}</h3>${body}</div>`;
+    }
+
+    function fmtDate(d) {
+      return `${d.getFullYear()} 年 ${d.getMonth() + 1} 月 ${d.getDate()} 日`;
+    }
+
+    document.getElementById("calcBtn").addEventListener("click", () => {
+      const role = document.getElementById("role").value;
+      const startVal = document.getElementById("startDate").value;
+      const endVal = document.getElementById("endDate").value;
+      const age = Number(document.getElementById("age").value);
+      const specialty = document.getElementById("specialty").value;
+      const box = document.getElementById("result");
+      box.hidden = false;
+
+      if (!startVal || !endVal || !age) {
+        box.innerHTML = '<div class="card"><p class="error">請輸入到職日期、離職日期和年齡。</p></div>';
+        return;
+      }
+
+      const start = new Date(startVal + "T00:00:00");
+      const end = new Date(endVal + "T00:00:00");
+      if (end < start) {
+        box.innerHTML = '<div class="card"><p class="error">離職日期不能早於到職日期。</p></div>';
+        return;
+      }
+
+      // 任職年資（離職當天也算在內）
+      const dayAfter = new Date(end);
+      dayAfter.setDate(dayAfter.getDate() + 1);
+      let months = (dayAfter.getFullYear() - start.getFullYear()) * 12
+                 + (dayAfter.getMonth() - start.getMonth());
+      if (dayAfter.getDate() < start.getDate()) months -= 1;
+      const years = months / 12;
+      const serviceText = `${Math.floor(months / 12)} 年 ${months % 12} 個月`;
+
+      // 2023/7/1 後初任者適用個人專戶制
+      const newSystem = start >= new Date("2023-07-01T00:00:00");
+      const fiveYears = years >= 5;
+
+      let html = `<div class="card"><h2 class="sec">你的年資</h2>
+        <div class="total">${serviceText}</div>
+        <p>適用制度：<strong>${newSystem ? "個人專戶制（2023 年 7 月 1 日後初任）" : "退撫基金確定給付制"}</strong></p>
+      </div>`;
+
+      html += '<div class="card"><h2 class="sec">離職時的退撫權益</h2>';
+
+      if (newSystem) {
+        html += item("一次領回個人專戶", true, `
+          <p>辭職後可申請一次領回個人專戶內的退撫儲金。</p>
+        `);
+        html += item("暫不領取，60 歲前發還", !fiveYears, !fiveYears ? `
+          <p>任職未滿 5 年，可以選擇先不領，由退撫基金管理機關在你年滿 60 歲前一次發還。</p>
+        ` : "<p>限任職未滿 5 年者。</p>");
+      } else {
+        const refundDeadline = new Date(end);
+        refundDeadline.setFullYear(refundDeadline.getFullYear() + 10);
+        html += item("發還本人繳付的退撫基金本息", true, `
+          <p>辭職後 10 年內（約到 <strong>${fmtDate(refundDeadline)}</strong>），可以申請一次發還自己繳的退撫基金費用和利息。</p>
+          <p class="note">注意：領回後若再當公務員，這段年資不能再算退休金。</p>
+        `);
+      }
+
+      html += item("年資保留（65 歲再請領）", fiveYears, fiveYears ? `
+        <p>退撫年資已滿 5 年，可以選擇<strong>不領回、保留年資</strong>。轉到其他職域工作，退休時可併計這段公職年資，滿 65 歲起 6 個月內向原服務機關申請。</p>
+        <p class="note">發還和保留只能擇一，年資越長，保留通常越有利，決定前建議先請人事單位試算。</p>
+      ` : "<p>需退撫年資滿 5 年才能保留，未滿 5 年只能申請發還。</p>");
+
+      html += item("公教人員保險（公保）", null, `
+        <p>公保沒有失業給付。離職後的保險年資與養老給付條件，請洽臺灣銀行公教保險部確認。</p>
+      `);
+
+      html += "</div>";
+
+      html += '<div class="card"><h2 class="sec">可以使用的就業資源</h2>';
+
+      html += item("失業給付", false, `
+        <p>警消屬於公務人員，參加的是公保，不是就業保險，所以辭職後<strong>不能領失業給付</strong>，也不能領職訓生活津貼。</p>
+      `);
+
+      html += item("失業者職前訓練", true, `
+        <p>離職後可報名勞動部各分署的職前訓練，訓練費用多為全額或大部分補助。</p>
+      `);
+
+      const youth = age <= 29;
+      html += item("產業新尖兵計畫", youth, youth ? `
+        <p>15～29 歲可參加，訓練費最高補助 10 萬元，每月另有 8,000 元學習獎勵金。</p>
+      ` : "<p>限 15～29 歲青年。</p>");
+
+      html += item("產業人才投資方案（到新公司後）", null, `
+        <p>進入民間公司後，在職進修可補助 80%～100% 訓練費，每 3 年最高 10 萬元。</p>
+      `);
+
+      html += "</div>";
+
+      html += `<div class="card"><h2 class="sec">適合你的轉職方向</h2>
+        <ul>${DIRECTIONS[specialty].map(d => `<li>${d}</li>`).join("")}</ul>
+        <p style="margin-top:10px"><strong>建議考取的證照</strong></p>
+        <ul>${CERTS[role].map(c => `<li>${c}</li>`).join("")}</ul>
+        <p class="note">寫履歷時，把勤務經驗轉成民間用語，例如「火災搶救」寫成「緊急應變與現場指揮」，「消防安檢」寫成「消防安全設備查核」。</p>
+      </div>`;
+
+      html += `<div class="card"><h2 class="sec">申請與諮詢管道</h2>
+        <ul>
+          <li>服務機關人事單位：退撫基金發還、年資保留試算</li>
+          <li><a href="https://www.taiwanjobs.gov.tw" target="_blank" rel="noopener">台灣就業通</a>：職訓課程、求職</li>
+          <li><a href="https://www.mocs.gov.tw" target="_blank" rel="noopener">銓敘部</a>：退撫法規查詢</li>
+        </ul>
+      </div>`;
+
+      box.innerHTML = html;
+    });
+  </script>
+</body>
+</html>
