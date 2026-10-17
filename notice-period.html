@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>離職預告期試算｜勞工權益計算機</title>
+  <meta name="description" content="依勞基法第16條，輸入到職日與最後工作日，算出離職要提前幾天告知、最晚哪一天要提離職。">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <a class="back" href="index.html">← 回首頁</a>
+    <h1>離職預告期試算</h1>
+    <p class="sub">依勞基法第 16 條，算出你要提前幾天提離職、最晚哪一天要說。</p>
+
+    <div class="card">
+      <label for="startDate">到職日</label>
+      <input id="startDate" type="date">
+
+      <label for="endDate">預計最後工作日</label>
+      <input id="endDate" type="date">
+
+      <button id="calcBtn">開始計算</button>
+    </div>
+
+    <div class="card" id="result" hidden></div>
+
+    <div class="card">
+      <table>
+        <tr><td>未滿 3 個月</td><td>法律未規定，建議提早告知</td></tr>
+        <tr><td>滿 3 個月未滿 1 年</td><td>10 天前</td></tr>
+        <tr><td>滿 1 年未滿 3 年</td><td>20 天前</td></tr>
+        <tr><td>滿 3 年以上</td><td>30 天前</td></tr>
+      </table>
+    </div>
+
+    <p class="note">
+      勞工自請離職與公司資遣，預告期天數相同。公司資遣時，勞工在預告期間每週可請 2 天有薪的謀職假。
+      若勞動契約或工作規則另有約定，請一併確認。本工具僅供參考，實際以勞動部規定為準。
+    </p>
+  </main>
+
+  <script>
+    // 計算兩個日期之間滿幾個月
+    function fullMonths(start, end) {
+      let m = (end.getFullYear() - start.getFullYear()) * 12
+            + (end.getMonth() - start.getMonth());
+      if (end.getDate() < start.getDate()) m -= 1;
+      return m;
+    }
+
+    // 依年資決定預告天數（勞基法第 16 條）
+    function noticeDays(months) {
+      if (months < 3) return 0;
+      if (months < 12) return 10;
+      if (months < 36) return 20;
+      return 30;
+    }
+
+    function fmtDate(d) {
+      const week = ["日", "一", "二", "三", "四", "五", "六"][d.getDay()];
+      return `${d.getFullYear()} 年 ${d.getMonth() + 1} 月 ${d.getDate()} 日（${week}）`;
+    }
+
+    document.getElementById("calcBtn").addEventListener("click", () => {
+      const startVal = document.getElementById("startDate").value;
+      const endVal = document.getElementById("endDate").value;
+      const box = document.getElementById("result");
+      box.hidden = false;
+
+      if (!startVal || !endVal) {
+        box.innerHTML = '<p class="error">請輸入到職日和預計最後工作日。</p>';
+        return;
+      }
+
+      const start = new Date(startVal + "T00:00:00");
+      const last = new Date(endVal + "T00:00:00");
+
+      if (last < start) {
+        box.innerHTML = '<p class="error">最後工作日不能早於到職日。</p>';
+        return;
+      }
+
+      // 最後工作日當天也算在職，所以年資算到隔天
+      const dayAfter = new Date(last);
+      dayAfter.setDate(dayAfter.getDate() + 1);
+      const months = fullMonths(start, dayAfter);
+      const days = noticeDays(months);
+
+      const years = Math.floor(months / 12);
+      const restMonths = months % 12;
+
+      if (days === 0) {
+        box.innerHTML = `
+          <div>預告期</div>
+          <div class="total">法律未規定</div>
+          <table>
+            <tr><td>年資</td><td>${years} 年 ${restMonths} 個月</td></tr>
+          </table>
+          <p class="note">年資未滿 3 個月，勞基法沒有規定預告期，但建議至少提早幾天告知，方便交接。</p>
+        `;
+        return;
+      }
+
+      const deadline = new Date(last);
+      deadline.setDate(deadline.getDate() - days);
+
+      box.innerHTML = `
+        <div>最晚要在這天提離職</div>
+        <div class="total">${fmtDate(deadline)}</div>
+        <table>
+          <tr><td>年資</td><td>${years} 年 ${restMonths} 個月</td></tr>
+          <tr><td>預告期</td><td>${days} 天</td></tr>
+          <tr><td>最後工作日</td><td>${fmtDate(last)}</td></tr>
+        </table>
+      `;
+    });
+  </script>
+</body>
+</html>
