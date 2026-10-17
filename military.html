@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>退伍軍人轉職資源試算｜退輔會補助、職訓、輔導期限｜勞工權益計算機</title>
+  <meta name="description" content="志願役退伍可以申請哪些退輔會資源？輸入服役年資與軍中專長，算出輔導類別、輔導期限，並列出職訓補助、就業津貼、考試進修補助與適合的轉職方向。">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .item { margin: 0 0 14px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+    .item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .item h3 { margin: 0 0 4px; font-size: 1.05rem; }
+    .item p { margin: 0; }
+    .tag { display: inline-block; font-size: 0.8rem; padding: 2px 8px; border-radius: 999px; margin-left: 6px; vertical-align: middle; }
+    .ok { background: #dcfce7; color: #166534; }
+    .no { background: #fee2e2; color: #991b1b; }
+    a { color: var(--primary); }
+    ul { margin: 6px 0 0; padding-left: 20px; }
+    h2.sec { margin-top: 0; font-size: 1.2rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <a class="back" href="index.html">← 回首頁</a>
+    <h1>退伍軍人轉職資源</h1>
+    <p class="sub">輸入服役年資和軍中專長，查看你可以申請的退輔會資源與適合的轉職方向。</p>
+
+    <div class="card">
+      <label for="type">役別</label>
+      <select id="type">
+        <option value="volunteer">志願役</option>
+        <option value="conscript">義務役</option>
+      </select>
+
+      <label for="years">累計服役年資（年）</label>
+      <input id="years" type="number" min="0" step="0.5" placeholder="例如 11">
+
+      <label for="dischargeDate">退伍日期</label>
+      <input id="dischargeDate" type="date">
+
+      <label for="specialty">軍中主要專長</label>
+      <select id="specialty">
+        <option value="vehicle">車輛、機械修護</option>
+        <option value="logistics">補給、後勤、運輸</option>
+        <option value="engineer">工兵、營建、水電</option>
+        <option value="signal">通信、資訊、電子</option>
+        <option value="medical">醫護、衛勤</option>
+        <option value="admin">行政、人事、財務</option>
+        <option value="aviation">航空、船艦維修</option>
+        <option value="combat">步兵、裝甲、砲兵等戰鬥兵科</option>
+      </select>
+
+      <label class="check" style="display:flex;align-items:center;gap:8px;font-weight:600;margin-top:14px">
+        <input id="disabled" type="checkbox" style="width:auto"> 因戰、因公致病傷或身心障礙
+      </label>
+
+      <button id="calcBtn">查看我的資源</button>
+    </div>
+
+    <div id="result" hidden></div>
+
+    <p class="note">
+      依國軍退除役官兵輔導條例、退輔會「分類分級退輔措施」及「國軍退除役官兵參加職業訓練補助辦法」（2026 年 2 月修正）整理。
+      各項補助有申請期限與條件，實際資格以退輔會及各地榮民服務處審核為準，本工具僅供參考。
+    </p>
+  </main>
+
+  <script>
+    // 第二類退除役官兵：服役年資 → 輔導期限（年）
+    function guidanceYears(years) {
+      if (years >= 9) return 16;
+      if (years >= 8) return 14;
+      if (years >= 7) return 12;
+      if (years >= 6) return 10;
+      if (years >= 5) return 8;
+      return 6; // 4 年以上未滿 5 年
+    }
+
+    // 軍中專長 → 建議轉職方向與訓練
+    const DIRECTIONS = {
+      vehicle: ["汽車修護、重機械修護（考取丙、乙級技術士）", "半導體廠、科技廠設備維修技術員", "車隊管理、保養廠服務專員"],
+      logistics: ["倉儲物流管理、ERP 系統操作", "堆高機、物流相關證照", "採購、物料管理、生產管理"],
+      engineer: ["室內配線、冷凍空調、水電技術士", "營造工地主任、職業安全衛生管理", "重機械操作（挖土機、吊車）"],
+      signal: ["網路管理、資訊安全", "Python、資料庫、雲端技術", "弱電、監控系統工程"],
+      medical: ["照顧服務員、長照相關", "緊急救護技術員（EMT）", "醫療院所行政"],
+      admin: ["人力資源、行政管理", "會計、記帳實務", "政府機關或國營事業行政職（可考特考）"],
+      aviation: ["航空器維修", "機電整合、設備維護", "船舶、港務相關技術職"],
+      combat: ["職業安全衛生管理（甲、乙、丙種主管）", "保全、物業管理", "職業駕駛、物流配送"]
+    };
+
+    function item(title, eligible, body) {
+      const tag = eligible === null ? "" :
+        eligible ? '<span class="tag ok">符合</span>' : '<span class="tag no">不符合</span>';
+      return `<div class="item"><h3>${title}${tag}</h3>${body}</div>`;
+    }
+
+    function fmtDate(d) {
+      return `${d.getFullYear()} 年 ${d.getMonth() + 1} 月 ${d.getDate()} 日`;
+    }
+
+    document.getElementById("calcBtn").addEventListener("click", () => {
+      const type = document.getElementById("type").value;
+      const years = Number(document.getElementById("years").value);
+      const dischargeVal = document.getElementById("dischargeDate").value;
+      const specialty = document.getElementById("specialty").value;
+      const disabled = document.getElementById("disabled").checked;
+      const box = document.getElementById("result");
+      box.hidden = false;
+
+      if (!document.getElementById("years").value || years < 0 || !dischargeVal) {
+        box.innerHTML = '<div class="card"><p class="error">請輸入服役年資和退伍日期。</p></div>';
+        return;
+      }
+
+      const discharge = new Date(dischargeVal + "T00:00:00");
+      const today = new Date();
+      const volunteer = type === "volunteer";
+
+      // 判斷輔導類別
+      let category = "none";
+      if ((volunteer && years >= 10) || disabled) category = "first";
+      else if (volunteer && years >= 4) category = "second";
+
+      let html = '<div class="card"><h2 class="sec">你的身分</h2>';
+      let inPeriod = false;
+      let trainingCap = 0;
+
+      if (category === "first") {
+        inPeriod = true;
+        trainingCap = 120000;
+        html += `<div class="total">第一類退除役官兵（榮民）</div>
+          <p>輔導不設期限，可享就學、就業、就醫、就養及服務照顧。</p>
+          <p class="note">退伍後請帶身分證和退伍令到榮民服務處辦理身分認定。</p>`;
+      } else if (category === "second") {
+        const period = guidanceYears(years);
+        const deadline = new Date(discharge);
+        deadline.setFullYear(deadline.getFullYear() + period);
+        inPeriod = today <= deadline;
+        trainingCap = 80000;
+        html += `<div class="total">第二類退除役官兵</div>
+          <p>輔導期限 <strong>${period} 年</strong>，到 <strong>${fmtDate(deadline)}</strong> 為止。
+          ${inPeriod ? "目前在輔導期限內，可以申請以下資源。" : "已超過輔導期限，多數退輔會補助無法申請，可改用一般勞工資源。"}</p>
+          <p class="note">需到榮民服務處申請權益卡，才能使用各項服務。</p>`;
+      } else {
+        html += `<div class="total">不屬於退輔會輔導對象</div>
+          <p>${volunteer ? "志願役服役未滿 4 年" : "義務役"}原則上不適用退輔會的就業、職訓補助，可以使用勞動部的一般勞工資源。</p>
+          <p><a href="resources.html">→ 查看一般勞工的職訓與補助資源</a></p>`;
+      }
+      html += "</div>";
+
+      if (category !== "none") {
+        html += '<div class="card"><h2 class="sec">可以申請的補助</h2>';
+
+        html += item("職業訓練補助", inPeriod, `
+          <p>參加退輔會公告的訓練班，訓練費用累計最高補助 <strong>${trainingCap.toLocaleString("zh-TW")} 元</strong>，每年最多申請 2 次。</p>
+          <p class="note">要在開課 7 個工作天前提出，結訓後 6 個月內就業才能請領。第一次申請且訓後從事相關工作滿 3 個月，可超過上限全額補助。</p>
+        `);
+
+        html += item("訓後就業津貼", inPeriod, `
+          <p>完成全日制職訓、6 個月內就業並在同一家公司做滿 3 個月：前 6 個月每月 <strong>6,000 元</strong>，之後 6 個月每月 <strong>4,000 元</strong>。</p>
+        `);
+
+        html += item("推介就業津貼", inPeriod, `
+          <p>經榮民服務處或職訓中心推介就業，在同一家公司做滿 3 個月，每月 <strong>4,000 元</strong>。</p>
+          <p class="note">訓後就業津貼和推介就業津貼合計最多領 12 個月。</p>
+        `);
+
+        html += item("就業考試進修補助", inPeriod, `
+          <p>準備國家考試或國營事業考試的補習費、書籍費，累計最高 <strong>50,000 元</strong>，每年 1 次、最多 4 次。</p>
+          <p class="note">限上校以下，考試後 3 個月內申請；已具公務人員任用資格者不適用。</p>
+        `);
+
+        const examOk = category === "first";
+        html += item("退除役軍人轉任公務人員特考", examOk, examOk ? `
+          <p>服役滿 10 年（或因戰、因公致傷病）的榮民可以報考，退伍前 2 個月就能應考。約每 2 年舉辦一次，考上可轉任公務員。</p>
+        ` : "<p>限服役滿 10 年或因戰、因公致傷病的榮民報考。可改考一般公務人員考試，並用就業考試進修補助準備。</p>");
+
+        html += "</div>";
+      }
+
+      html += `<div class="card"><h2 class="sec">適合你的轉職方向</h2>
+        <ul>${DIRECTIONS[specialty].map(d => `<li>${d}</li>`).join("")}</ul>
+        <p class="note">軍中經歷寫進履歷時，用民間用語描述，例如「補給士」寫成「物料管理、採購驗收」，「車輛修護」寫成「設備保養與故障排除」。</p>
+      </div>`;
+
+      html += `<div class="card"><h2 class="sec">申請管道</h2>
+        <ul>
+          <li><a href="https://www.vac.gov.tw" target="_blank" rel="noopener">國軍退除役官兵輔導委員會</a>：各項補助說明與表單</li>
+          <li><a href="https://www.vtc.gov.tw" target="_blank" rel="noopener">退輔會職業訓練中心</a>：職訓班報名</li>
+          <li>各縣市榮民服務處：身分認定、權益卡、補助申請</li>
+        </ul>
+      </div>`;
+
+      box.innerHTML = html;
+    });
+  </script>
+</body>
+</html>
