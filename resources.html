@@ -53,7 +53,15 @@
         <option value="other">其他</option>
       </select>
 
-      <label class="check"><input id="involuntary" type="checkbox" checked> 非自願離職（資遣、公司歇業、裁員等）</label>
+      <label for="reason">離職原因</label>
+      <select id="reason">
+        <option value="layoff">公司資遣、裁員、歇業或關廠</option>
+        <option value="art14">公司違法，我依勞基法第 14 條自行離職（欠薪、不給加班費、沒保勞健保、遭不當對待等）</option>
+        <option value="contract">定期契約到期離職</option>
+        <option value="voluntary">自請離職（個人因素）</option>
+        <option value="dismissed">因違反工作規則被解僱</option>
+      </select>
+
       <label class="check"><input id="insured" type="checkbox" checked> 離職前 3 年內，就業保險年資合計滿 1 年</label>
       <label class="check"><input id="disabled" type="checkbox"> 領有身心障礙證明</label>
 
@@ -96,7 +104,9 @@
       const salaryInput = Number(document.getElementById("salary").value);
       const dependents = Number(document.getElementById("dependents").value);
       const industry = document.getElementById("industry").value;
-      const involuntary = document.getElementById("involuntary").checked;
+      const reason = document.getElementById("reason").value;
+      // 依就業保險法第 11 條，這三種情況都算非自願離職
+      const involuntary = ["layoff", "art14", "contract"].includes(reason);
       const insured = document.getElementById("insured").checked;
       const disabled = document.getElementById("disabled").checked;
       const box = document.getElementById("result");
@@ -122,11 +132,15 @@
           <p>最多領 ${months} 個月，合計約 ${fmt(monthly * months)} 元。
           ${salaryInput > INSURED_MAX ? `（投保薪資以上限 ${fmt(INSURED_MAX)} 元計算）` : ""}</p>
           <p class="note">離職後 2 年內，帶離職證明和身分證到就業服務站辦理求職登記，14 天內沒有推介到工作或職訓，就能開始請領。</p>
+          ${reason === "art14" ? '<p class="note">依第 14 條離職，離職證明上要寫明「依勞基法第 14 條終止契約」，建議保留欠薪、未給加班費等證據，必要時可向地方政府勞工局申請勞資爭議調解。</p>' : ""}
+          ${reason === "contract" ? '<p class="note">定期契約到期需符合：離職前 1 年內契約期間合計滿 6 個月，且離職後超過 1 個月仍未就業。</p>' : ""}
         `);
       } else {
         html += item("失業給付", false, `
           <p>需同時符合「非自願離職」及「離職前 3 年內就保年資滿 1 年」。
-          ${!involuntary ? "自願離職原則上不能領失業給付，但仍可參加職前訓練。" : ""}</p>
+          ${reason === "voluntary" ? "自請離職不能領失業給付，但仍可參加職前訓練。" : ""}
+          ${reason === "dismissed" ? "因違反工作規則被解僱，不屬於非自願離職，但仍可參加職前訓練。" : ""}</p>
+          ${reason === "voluntary" ? '<p class="note">注意：如果是公司要你走、卻要求你簽「自願離職」，請先不要簽，實際上可能屬於資遣，可向地方政府勞工局諮詢。</p>' : ""}
         `);
       }
 
