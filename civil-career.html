@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>公務員、警消退休後轉職資源與補助｜再任限制、中高齡職訓｜勞工權益計算機</title>
+  <meta name="description" content="公務員、警消退休後還能工作嗎？哪些工作會停發月退休金？依退休方式、年齡和想做的工作，列出再任限制、中高齡職訓補助、銀髮就業資源與轉職方向。">
+  <link rel="stylesheet" href="style.css?v=5">
+  <style>
+    .item { margin: 0 0 14px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+    .item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .item h3 { margin: 0 0 4px; font-size: 1.05rem; }
+    .item p { margin: 0; }
+    .tag { display: inline-block; font-size: 0.8rem; padding: 2px 8px; border-radius: 999px; margin-left: 6px; vertical-align: middle; }
+    .ok { background: #dcfce7; color: #166534; }
+    .no { background: #fee2e2; color: #991b1b; }
+    .warn-tag { background: #fef3c7; color: #92400e; }
+    h2.sec { margin-top: 0; font-size: 1.2rem; }
+    ul { margin: 6px 0 0; padding-left: 20px; }
+    a { color: var(--primary); }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <a class="brand" href="index.html">勞工權益計算機</a>
+      <details class="nav-wrap" open>
+        <summary class="nav-toggle">☰ 選單<span class="nav-current">退休後轉職資源與補助</span></summary>
+        <nav>
+          <a href="index.html" class="nav-home"><span>首頁</span></a>
+          <details class="nav-group">
+            <summary>一般勞工</summary>
+            <a href="overtime.html"><span>薪資與加班費試算</span><small>當月薪水、加班費</small></a>
+            <a href="annual-leave.html"><span>特休天數試算</span><small>依到職日算特休</small></a>
+            <a href="severance.html"><span>資遣費試算</span><small>勞退新制資遣費</small></a>
+            <a href="notice-period.html"><span>離職預告期試算</span><small>最晚哪天提離職</small></a>
+            <a href="resources.html"><span>被資遣後可以申請什麼？</span><small>失業給付與職訓</small></a>
+          </details>
+          <details class="nav-group">
+            <summary>軍人</summary>
+            <a href="military.html"><span>退伍軍人轉職資源</span><small>退輔會補助與輔導期限</small></a>
+            <a href="veteran-benefits.html"><span>榮民權益與補助</span><small>就醫、子女教育、急難救助</small></a>
+          </details>
+          <details class="nav-group">
+            <summary>警消</summary>
+            <a href="police-fire.html"><span>警消轉職資源</span><small>離職前的退撫權益、轉職方向</small></a>
+            <a href="police-retire.html"><span>警消退休權益</span><small>危勞 55 歲退休條件、年改現況</small></a>
+          </details>
+          <details class="nav-group" open>
+            <summary>公務員</summary>
+            <a href="civil-salary.html"><span>公務員薪資試算</span><small>依職等俸級算本俸與扣款</small></a>
+            <a href="civil-leave.html"><span>公務員休假天數試算</span><small>公務人員請假規則</small></a>
+            <a href="civil-retire.html"><span>公務員退休權益</span><small>退休條件檢核、年改現況</small></a>
+            <a href="civil-career.html" class="active" aria-current="page"><span>退休後轉職資源與補助</span><small>再任限制、中高齡職訓</small></a>
+          </details>
+          <details class="nav-group">
+            <summary>其他</summary>
+            <a href="about.html"><span>關於本站</span></a>
+            <a href="privacy.html"><span>隱私權政策</span></a>
+          </details>
+        </nav>
+      </details>
+    </aside>
+  <main>
+    <h1>退休後轉職資源與補助</h1>
+    <p class="sub">公務員、警消退休後想繼續工作，先看哪些工作會影響月退休金，再找適合的訓練與資源。</p>
+
+    <div class="card">
+      <label for="role">退休前身分</label>
+      <select id="role">
+        <option value="civil">一般公務人員</option>
+        <option value="police">警察</option>
+        <option value="fire">消防</option>
+      </select>
+
+      <label for="plan">退休金領取方式</label>
+      <select id="plan">
+        <option value="monthly">月退休金（含兼領）</option>
+        <option value="lump">一次退休金</option>
+        <option value="account">個人專戶制</option>
+      </select>
+
+      <label for="age">退休時年齡</label>
+      <input id="age" type="number" min="40" max="80" placeholder="例如 58">
+
+      <label for="target">退休後想做的工作</label>
+      <select id="target">
+        <option value="private">民間企業</option>
+        <option value="public">政府機關、公營事業的約聘僱或其他職務</option>
+        <option value="school">私立學校</option>
+        <option value="startup">自己創業</option>
+        <option value="volunteer">志工、兼職為主</option>
+      </select>
+
+      <button id="calcBtn">查看我的資源</button>
+    </div>
+
+    <div id="result" hidden></div>
+
+    <p class="note">
+      再任限制依公務人員退休資遣撫卹法第 77 條整理，實際是否停發以銓敘部認定為準。各項訓練與補助的資格、名額以勞動部及各地就業服務站公告為準，本工具僅供參考。
+    </p>
+    <footer class="site-footer">
+      <p class="footer-links"><a href="about.html">關於本站</a>｜<a href="privacy.html">隱私權政策</a></p>
+      <div id="stats"></div>
+    </footer>
+  </main>
+  </div>
+  <script src="counter.js"></script>
+  <script src="nav.js?v=5"></script>
+
+  <script>
+    const DIRECTIONS = {
+      civil: ["企業行政、人資、法務助理", "政府標案、採購相關顧問", "社會福利、長照機構行政"],
+      police: ["企業安全管理、保全公司幹部", "保險理賠調查、企業稽核", "社區總幹事、物業管理"],
+      fire: ["科技廠緊急應變（ERT）、職業安全衛生", "消防設備士（師）、消防安全設備檢修", "防火管理、公共安全檢查"]
+    };
+
+    function item(title, tag, body) {
+      const t = tag === "ok" ? '<span class="tag ok">不影響</span>'
+        : tag === "stop" ? '<span class="tag no">可能停發月退</span>'
+        : tag === "check" ? '<span class="tag warn-tag">需注意</span>' : "";
+      return `<div class="item"><h3>${title}${t}</h3>${body}</div>`;
+    }
+    const card = (title, inner) => `<div class="card"><h2 class="sec">${title}</h2>${inner}</div>`;
+
+    document.getElementById("calcBtn").addEventListener("click", () => {
+      const role = document.getElementById("role").value;
+      const plan = document.getElementById("plan").value;
+      const age = Number(document.getElementById("age").value);
+      const target = document.getElementById("target").value;
+      const box = document.getElementById("result");
+      box.hidden = false;
+
+      if (!age) {
+        box.innerHTML = '<div class="card"><p class="error">請輸入退休時年齡。</p></div>';
+        return;
+      }
+
+      // ── 再任限制 ──
+      let limit;
+      if (plan !== "monthly") {
+        limit = item("對退休金的影響", "ok",
+          `<p>${plan === "lump" ? "領一次退休金" : "個人專戶制"}的人，退休後再就業不會有停發月退的問題。</p>`);
+      } else if (target === "public" || target === "school") {
+        limit = item("對月退休金的影響", "stop", `
+          <p>領月退休金的人，如果再任<strong>${target === "school" ? "私立學校職務" : "政府機關、公營事業、行政法人或政府捐助的財團法人等職務"}</strong>，每月薪酬總額超過法定基本工資，就會<strong>停發月退休金</strong>，離職後才恢復。</p>
+          <p class="note">接受職務前，建議先向原服務機關人事單位或銓敘部確認。</p>`);
+      } else {
+        limit = item("對月退休金的影響", "ok",
+          `<p>到${target === "private" ? "民間企業工作" : target === "startup" ? "自己創業" : "從事志工或兼職"}，原則上不會停發月退休金。</p>
+           <p class="note">如果兼職的單位是政府機關或政府出資的機構，仍可能受再任限制。</p>`);
+      }
+      let html = card("再任限制", limit);
+
+      // ── 訓練與補助 ──
+      let res = "";
+      res += item("失業者職前訓練", null,
+        "<p>勞動部各分署和委託單位開設的職前訓練，退休後沒有工作的人都可以報名，訓練費用多為全額或大部分補助。</p>");
+      if (age >= 45) {
+        res += item("中高齡就業資源（45 歲以上）", null, `
+          <p>依中高齡者及高齡者就業促進法，45 歲以上屬於就業服務的特定對象，可以到就業服務站登記求職，參加職訓期間可洽詢是否符合職業訓練生活津貼；雇主僱用中高齡者也有僱用獎助，對求職有加分。</p>`);
+      }
+      if (age >= 55) {
+        res += item("銀髮人才服務", null,
+          "<p>勞動部在各地設有銀髮人才服務據點，提供 55 歲以上的求職者媒合短期、部分工時或專業顧問性質的工作。</p>");
+      }
+      if (target === "startup") {
+        res += item("創業貸款與諮詢", null,
+          "<p>勞動部「微型創業鳳凰」提供 45～65 歲的國民（女性為 20～65 歲）創業諮詢、課程與貸款利息補貼，可到微型創業鳳凰網站查詢資格。</p>");
+      }
+      res += item("產業人才投資方案（找到新工作後）", null,
+        "<p>在民間公司投保勞保後，參加在職進修課程可補助 80%～100% 訓練費，每 3 年最高 10 萬元。</p>");
+      html += card("可以使用的訓練與補助", res);
+
+      // ── 轉職方向 ──
+      html += card("適合你的轉職方向", `
+        <ul>${DIRECTIONS[role].map(d => `<li>${d}</li>`).join("")}</ul>
+        <p class="note">公職經驗寫進履歷時，強調能帶到民間的能力，例如法規熟悉度、公文與專案管理、跨單位協調。</p>`);
+
+      html += card("申請與諮詢管道", `
+        <ul>
+          <li><a href="https://www.taiwanjobs.gov.tw" target="_blank" rel="noopener">台灣就業通</a>：求職登記、職訓課程、中高齡就業資源</li>
+          <li>就業服務專線：0800-777-888</li>
+          <li><a href="https://www.mocs.gov.tw" target="_blank" rel="noopener">銓敘部</a>：再任限制、月退休金停發與恢復</li>
+          <li>原服務機關人事單位</li>
+        </ul>`);
+
+      box.innerHTML = html;
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>公務員退休權益｜退休條件檢核、月退起支年齡、年改最新現況｜勞工權益計算機</title>
+  <meta name="description" content="公務人員什麼時候可以退休？輸入年齡與任職年資，檢核自願退休、屆齡退休條件，並說明月退休金、減額月退、所得替代率與 2025 年底修法後的最新現況。">
+  <link rel="stylesheet" href="style.css?v=5">
+  <style>
+    .item { margin: 0 0 14px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+    .item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .item h3 { margin: 0 0 4px; font-size: 1.05rem; }
+    .item p { margin: 0; }
+    .tag { display: inline-block; font-size: 0.8rem; padding: 2px 8px; border-radius: 999px; margin-left: 6px; vertical-align: middle; }
+    .ok { background: #dcfce7; color: #166534; }
+    .no { background: #fee2e2; color: #991b1b; }
+    .doc h2 { font-size: 1.15rem; margin: 20px 0 6px; }
+    .doc h2:first-child { margin-top: 0; }
+    .doc p, .doc li { margin: 0 0 8px; }
+    .doc ul { padding-left: 20px; margin: 0 0 8px; }
+    .callout { padding: 12px 14px; border-left: 4px solid var(--primary); background: var(--soft); border-radius: 0 8px 8px 0; }
+    a { color: var(--primary); }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <a class="brand" href="index.html">勞工權益計算機</a>
+      <details class="nav-wrap" open>
+        <summary class="nav-toggle">☰ 選單<span class="nav-current">公務員退休權益</span></summary>
+        <nav>
+          <a href="index.html" class="nav-home"><span>首頁</span></a>
+          <details class="nav-group">
+            <summary>一般勞工</summary>
+            <a href="overtime.html"><span>薪資與加班費試算</span><small>當月薪水、加班費</small></a>
+            <a href="annual-leave.html"><span>特休天數試算</span><small>依到職日算特休</small></a>
+            <a href="severance.html"><span>資遣費試算</span><small>勞退新制資遣費</small></a>
+            <a href="notice-period.html"><span>離職預告期試算</span><small>最晚哪天提離職</small></a>
+            <a href="resources.html"><span>被資遣後可以申請什麼？</span><small>失業給付與職訓</small></a>
+          </details>
+          <details class="nav-group">
+            <summary>軍人</summary>
+            <a href="military.html"><span>退伍軍人轉職資源</span><small>退輔會補助與輔導期限</small></a>
+            <a href="veteran-benefits.html"><span>榮民權益與補助</span><small>就醫、子女教育、急難救助</small></a>
+          </details>
+          <details class="nav-group">
+            <summary>警消</summary>
+            <a href="police-fire.html"><span>警消轉職資源</span><small>離職前的退撫權益、轉職方向</small></a>
+            <a href="police-retire.html"><span>警消退休權益</span><small>危勞 55 歲退休條件、年改現況</small></a>
+          </details>
+          <details class="nav-group" open>
+            <summary>公務員</summary>
+            <a href="civil-salary.html"><span>公務員薪資試算</span><small>依職等俸級算本俸與扣款</small></a>
+            <a href="civil-leave.html"><span>公務員休假天數試算</span><small>公務人員請假規則</small></a>
+            <a href="civil-retire.html" class="active" aria-current="page"><span>公務員退休權益</span><small>退休條件檢核、年改現況</small></a>
+            <a href="civil-career.html"><span>退休後轉職資源與補助</span><small>再任限制、中高齡職訓</small></a>
+          </details>
+          <details class="nav-group">
+            <summary>其他</summary>
+            <a href="about.html"><span>關於本站</span></a>
+            <a href="privacy.html"><span>隱私權政策</span></a>
+          </details>
+        </nav>
+      </details>
+    </aside>
+  <main>
+    <h1 id="pageTitle">公務員退休權益</h1>
+    <p class="sub">先檢核自己能不能退休，再看月退休金的規則與最新修法現況。</p>
+
+    <div class="card">
+      <h2 style="margin-top:0;font-size:1.15rem">退休條件檢核</h2>
+      <div class="row2">
+        <div><label for="age">目前年齡</label><input id="age" type="number" min="18" max="70" placeholder="例如 50"></div>
+        <div><label for="years">任職年資（年）</label><input id="years" type="number" min="0" max="45" step="0.5" placeholder="例如 26"></div>
+      </div>
+      <label class="check"><input type="checkbox" id="hazard"> 擔任危險及勞力等特殊性質職務（例如外勤警察、消防人員）</label>
+      <label class="check"><input type="checkbox" id="newSystem"> 2023 年 7 月 1 日以後初任（個人專戶制）</label>
+      <button id="calcBtn">檢核退休條件</button>
+    </div>
+
+    <div class="card" id="result" hidden></div>
+
+    <div class="card doc">
+      <h2>退休種類</h2>
+      <ul>
+        <li><strong>自願退休</strong>：任職滿 5 年且年滿 60 歲，或任職滿 25 年。</li>
+        <li><strong>危險及勞力等特殊性質職務</strong>：自願退休年齡可以酌減，但不得低於 55 歲，適用的職務依銓敘部核定。</li>
+        <li><strong>屆齡退休</strong>：年滿 65 歲。</li>
+        <li><strong>命令退休</strong>：因身心障礙或傷病無法勝任職務等情形。</li>
+      </ul>
+
+      <h2>退休金怎麼領（2023 年 6 月 30 日以前初任，退撫基金制）</h2>
+      <ul>
+        <li>可以選擇<strong>一次退休金</strong>、<strong>月退休金</strong>，或兩者兼領。</li>
+        <li><strong>計算基準</strong>：用「平均俸額」計算，逐年延長為退休前最後 15 年的平均本（年功）俸。</li>
+        <li><strong>起支年齡</strong>：月退休金的起支年齡逐年提高，最終為 65 歲。還沒到起支年齡的人，可以選擇<strong>展期月退</strong>（等到年齡再領）或<strong>減額月退</strong>（提前領，每提前 1 年減 4%，最多提前 5 年減 20%）。</li>
+        <li><strong>所得替代率上限</strong>：每月退休所得不能超過「最後在職同職等本俸 × 2」的一定比例，比例依年資而定。</li>
+      </ul>
+
+      <h2>2023 年 7 月 1 日以後初任（個人專戶制）</h2>
+      <p>政府和個人每月提撥到你自己的退休金專戶，退休時依專戶累積的本金和收益領取，沒有固定的月退休金公式。離職轉任其他工作時，專戶可以帶著走。</p>
+
+      <h2>2025 年底修法現況</h2>
+      <div class="callout">
+        <p>立法院 2025 年 12 月修正公務人員退休資遣撫卹法第 37、38 條：退休所得替代率<strong>凍結在 2023 年的標準，不再逐年調降</strong>，並溯及 2024 年起適用。</p>
+        <p>由於政府系統仍在調整，已退休者目前暫時依原規定發放，之後再重新審定補發差額。新退休者的實際金額，請以銓敘部審定為準。</p>
+      </div>
+
+      <h2>官方試算與查詢</h2>
+      <ul>
+        <li><a href="https://www.mocs.gov.tw" target="_blank" rel="noopener">銓敘部</a>：退休法規、退休所得試算與審定</li>
+        <li><a href="https://www.fund.gov.tw" target="_blank" rel="noopener">公務人員退休撫卹基金管理局</a>：退撫基金、個人專戶查詢</li>
+        <li><a href="https://www.bot.com.tw" target="_blank" rel="noopener">臺灣銀行公教保險部</a>：公保養老給付</li>
+        <li>服務機關人事單位：最準確的個人年資與退休金試算</li>
+      </ul>
+      <p style="margin-top:10px"><a href="civil-career.html">→ 退休後想繼續工作？看退休後轉職資源與補助</a></p>
+    </div>
+
+    <p class="note">
+      依公務人員退休資遣撫卹法整理（含 2025 年 12 月修正），本頁不計算退休金金額。退休年金制度仍在調整中，實際權益以銓敘部及服務機關審定為準。
+    </p>
+    <footer class="site-footer">
+      <p class="footer-links"><a href="about.html">關於本站</a>｜<a href="privacy.html">隱私權政策</a></p>
+      <div id="stats"></div>
+    </footer>
+  </main>
+  </div>
+  <script src="counter.js"></script>
+  <script src="nav.js?v=5"></script>
+
+  <script>
+    // 警消版本（police-retire.html）：預設勾選危勞職務
+    if (location.pathname.endsWith("police-retire.html")) {
+      document.getElementById("hazard").checked = true;
+    }
+
+    function item(title, ok, body) {
+      const tag = ok === null ? "" : ok ? '<span class="tag ok">符合</span>' : '<span class="tag no">尚未符合</span>';
+      return `<div class="item"><h3>${title}${tag}</h3>${body}</div>`;
+    }
+
+    document.getElementById("calcBtn").addEventListener("click", () => {
+      const age = Number(document.getElementById("age").value);
+      const years = Number(document.getElementById("years").value);
+      const hazard = document.getElementById("hazard").checked;
+      const newSystem = document.getElementById("newSystem").checked;
+      const box = document.getElementById("result");
+      box.hidden = false;
+
+      if (!age || document.getElementById("years").value === "") {
+        box.innerHTML = '<p class="error">請輸入年齡和任職年資。</p>';
+        return;
+      }
+
+      const byAge = years >= 5 && age >= 60;
+      const by25 = years >= 25;
+      const hazardOk = hazard && age >= 55 && years >= 5;
+      const voluntary = byAge || by25 || hazardOk;
+
+      let html = `<div class="total">${voluntary ? "已符合自願退休條件" : "尚未符合自願退休條件"}</div>`;
+
+      html += item("任職滿 25 年", by25, by25
+        ? "<p>不論年齡，都可以申請自願退休。</p>"
+        : `<p>還差 <strong>${(25 - years).toFixed(1).replace(/\.0$/, "")} 年</strong>。</p>`);
+
+      html += item("年滿 60 歲且任職滿 5 年", byAge, byAge
+        ? "<p>可以申請自願退休。</p>"
+        : `<p>${age < 60 ? `還差 ${60 - age} 歲` : ""}${age < 60 && years < 5 ? "，" : ""}${years < 5 ? `年資還差 ${(5 - years).toFixed(1).replace(/\.0$/, "")} 年` : ""}。</p>`);
+
+      if (hazard) {
+        html += item("危勞職務：年滿 55 歲", hazardOk, hazardOk
+          ? "<p>擔任危勞職務者，自願退休年齡可酌減至 55 歲，實際適用年齡依銓敘部核定。</p>"
+          : `<p>危勞職務的自願退休年齡最低 55 歲${age < 55 ? `，還差 ${55 - age} 歲` : ""}，實際適用年齡依銓敘部核定。</p>`);
+      }
+
+      html += item("屆齡退休", age >= 65, age >= 65
+        ? "<p>已達 65 歲屆齡退休年齡。</p>"
+        : `<p>年滿 65 歲屆齡退休，還有 ${65 - age} 年。</p>`);
+
+      if (voluntary) {
+        html += newSystem
+          ? item("退休金怎麼領", null, "<p>你適用個人專戶制，退休時依專戶累積的本金和收益領取，可向退撫基金管理局查詢專戶餘額。</p>")
+          : item("退休金怎麼領", null, `<p>可選擇一次退休金、月退休金或兼領。${age < 65 ? "月退休金的起支年齡逐年提高到 65 歲，未達起支年齡可以選擇展期，或減額提前領（每提前 1 年減 4%，最多減 20%）。" : ""}實際金額請向人事單位或銓敘部試算。</p>`);
+      }
+
+      box.innerHTML = html;
+    });
+  </script>
+</body>
+</html>

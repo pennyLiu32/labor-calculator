@@ -194,6 +194,7 @@ td:last-child { text-align: right; }
 .footer-links a { color: var(--muted); margin: 0 8px; }
 
 /* 首頁工具清單 */
+.home-sec { font-size: 1.25rem; margin: 28px 0 12px; padding-left: 10px; border-left: 4px solid var(--primary); }
 .tool {
   display: block;
   text-decoration: none;
