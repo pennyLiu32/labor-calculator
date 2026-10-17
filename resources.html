@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>被資遣後可以申請什麼？失業給付與職訓資源試算｜勞工權益計算機</title>
+  <meta name="description" content="被資遣或非自願離職後，可以申請哪些政府資源？輸入年齡、投保薪資、扶養人數與過去產業，試算失業給付並找出適合的職業訓練方向。">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .item { margin: 0 0 14px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+    .item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .item h3 { margin: 0 0 4px; font-size: 1.05rem; }
+    .item p { margin: 0; }
+    .tag { display: inline-block; font-size: 0.8rem; padding: 2px 8px; border-radius: 999px; margin-left: 6px; vertical-align: middle; }
+    .ok { background: #dcfce7; color: #166534; }
+    .no { background: #fee2e2; color: #991b1b; }
+    .check { display: flex; align-items: center; gap: 8px; font-weight: 600; margin-top: 14px; }
+    .check input { width: auto; }
+    a { color: var(--primary); }
+    ul { margin: 6px 0 0; padding-left: 20px; }
+  </style>
+</head>
+<body>
+  <main>
+    <a class="back" href="index.html">← 回首頁</a>
+    <h1>被資遣後可以申請什麼？</h1>
+    <p class="sub">輸入你的狀況，試算失業給付，並找出適合你的職業訓練方向。</p>
+
+    <div class="card">
+      <label for="age">年齡</label>
+      <input id="age" type="number" min="15" max="80" placeholder="例如 32">
+
+      <label for="salary">離職前 6 個月平均月投保薪資（元）</label>
+      <input id="salary" type="number" min="0" placeholder="可查勞保局 e 化服務，或先填月薪">
+
+      <label for="dependents">無工作收入的扶養眷屬人數</label>
+      <select id="dependents">
+        <option value="0">0 人</option>
+        <option value="1">1 人</option>
+        <option value="2">2 人以上</option>
+      </select>
+
+      <label for="industry">過去主要從事的產業或職務</label>
+      <select id="industry">
+        <option value="manufacturing">製造業／技術員／設備維修</option>
+        <option value="logistics">倉儲／物流／運輸</option>
+        <option value="construction">營建／水電／機電</option>
+        <option value="food">餐飲／零售／服務業</option>
+        <option value="office">行政／文書／會計</option>
+        <option value="it">資訊／軟體</option>
+        <option value="care">照顧服務／醫療相關</option>
+        <option value="military">軍警消退役</option>
+        <option value="other">其他</option>
+      </select>
+
+      <label class="check"><input id="involuntary" type="checkbox" checked> 非自願離職（資遣、公司歇業、裁員等）</label>
+      <label class="check"><input id="insured" type="checkbox" checked> 離職前 3 年內，就業保險年資合計滿 1 年</label>
+      <label class="check"><input id="disabled" type="checkbox"> 領有身心障礙證明</label>
+
+      <button id="calcBtn">查看我的資源</button>
+    </div>
+
+    <div id="result" hidden></div>
+
+    <p class="note">
+      金額依就業保險法計算：月投保薪資 × 60%，每位無收入扶養眷屬加 10%，最多加 20%。
+      月投保薪資上限為 45,800 元（2026 年），超過以上限計算。
+      實際資格與金額以勞動部、勞保局及各地就業服務站審核為準，本工具僅供參考。
+    </p>
+  </main>
+
+  <script>
+    const INSURED_MAX = 45800;
+
+    // 各產業建議的訓練方向
+    const TRAINING = {
+      manufacturing: ["機電整合、PLC 可程式控制", "CNC 數控加工", "半導體設備維護", "職業安全衛生管理"],
+      logistics: ["堆高機操作（取得證照）", "物流與倉儲管理、ERP 系統", "冷鏈物流管理", "職業安全衛生管理"],
+      construction: ["室內配線、工業配線", "冷凍空調裝修", "營造業職業安全衛生", "太陽光電、綠能設備安裝"],
+      food: ["中餐、烘焙丙級證照", "門市經營與管理", "電商與社群行銷", "咖啡、飲調實務"],
+      office: ["電腦文書與 Excel 數據分析", "會計與記帳實務", "人力資源管理", "AI 工具辦公應用"],
+      it: ["Python 資料分析", "雲端與資料庫", "AI 應用開發", "資訊安全"],
+      care: ["照顧服務員（政府專班）", "長照相關訓練", "醫療行政"],
+      military: ["職業安全衛生管理（甲、乙、丙種主管）", "物流與倉儲管理", "保全、駕駛相關證照", "機電、設備維護"],
+      other: ["到台灣就業通搜尋各分署開設的職前訓練課程"]
+    };
+
+    function item(title, eligible, body) {
+      const tag = eligible === null ? "" :
+        eligible ? '<span class="tag ok">符合</span>' : '<span class="tag no">不符合</span>';
+      return `<div class="item"><h3>${title}${tag}</h3>${body}</div>`;
+    }
+
+    document.getElementById("calcBtn").addEventListener("click", () => {
+      const age = Number(document.getElementById("age").value);
+      const salaryInput = Number(document.getElementById("salary").value);
+      const dependents = Number(document.getElementById("dependents").value);
+      const industry = document.getElementById("industry").value;
+      const involuntary = document.getElementById("involuntary").checked;
+      const insured = document.getElementById("insured").checked;
+      const disabled = document.getElementById("disabled").checked;
+      const box = document.getElementById("result");
+      box.hidden = false;
+
+      if (!age || age < 15 || !salaryInput || salaryInput <= 0) {
+        box.innerHTML = '<div class="card"><p class="error">請輸入年齡（15 歲以上）和平均月投保薪資。</p></div>';
+        return;
+      }
+
+      const fmt = n => Math.round(n).toLocaleString("zh-TW");
+      const salary = Math.min(salaryInput, INSURED_MAX);
+      const monthly = salary * (0.6 + 0.1 * dependents);
+      const months = (age >= 45 || disabled) ? 9 : 6;
+      const eligible = involuntary && insured;
+
+      let html = '<div class="card"><h2 style="margin-top:0;font-size:1.2rem">可以領的津貼</h2>';
+
+      // 失業給付
+      if (eligible) {
+        html += item("失業給付", true, `
+          <div class="total">每月約 ${fmt(monthly)} 元</div>
+          <p>最多領 ${months} 個月，合計約 ${fmt(monthly * months)} 元。
+          ${salaryInput > INSURED_MAX ? `（投保薪資以上限 ${fmt(INSURED_MAX)} 元計算）` : ""}</p>
+          <p class="note">離職後 2 年內，帶離職證明和身分證到就業服務站辦理求職登記，14 天內沒有推介到工作或職訓，就能開始請領。</p>
+        `);
+      } else {
+        html += item("失業給付", false, `
+          <p>需同時符合「非自願離職」及「離職前 3 年內就保年資滿 1 年」。
+          ${!involuntary ? "自願離職原則上不能領失業給付，但仍可參加職前訓練。" : ""}</p>
+        `);
+      }
+
+      // 職業訓練生活津貼
+      html += item("職業訓練生活津貼", eligible, eligible ? `
+        <p>由就業服務站安排參加全日制職訓（每月 100 小時以上），參訓期間每月約 <strong>${fmt(monthly)} 元</strong>，最多 6 個月。</p>
+        <p class="note">與失業給付擇一領取。自己報名的補習班課程不算。</p>
+      ` : "<p>資格與失業給付相同，需非自願離職並由就業服務站安排全日制職訓。</p>");
+
+      // 提早就業獎助津貼
+      if (eligible) {
+        const example = monthly * (months - 2) * 0.5;
+        html += item("提早就業獎助津貼", true, `
+          <p>失業給付還沒領完就找到工作，並在新公司投保滿 3 個月，可以一次領「剩餘未領金額的 50%」。</p>
+          <p class="note">例如領 2 個月就找到工作，約可再領 ${fmt(example)} 元。</p>
+        `);
+      }
+
+      // 健保
+      if (eligible) {
+        html += item("健保費補助", true, `<p>領失業給付或職訓生活津貼期間，本人及眷屬的健保自付保費由政府補助，不用另外申請。</p>`);
+      }
+
+      html += '</div><div class="card"><h2 style="margin-top:0;font-size:1.2rem">可以參加的訓練</h2>';
+
+      html += item("失業者職前訓練", true, `
+        <p>勞動部各分署和委託的訓練單位開設，訓練費用多為全額或大部分補助，15 歲以上失業者都能報名。</p>
+      `);
+
+      const youth = age <= 29;
+      html += item("產業新尖兵計畫", youth, youth ? `
+        <p>15～29 歲青年，訓練費最高補助 10 萬元，參訓期間每月另有 8,000 元學習獎勵金。</p>
+      ` : "<p>限 15～29 歲青年。</p>");
+
+      html += item("產業人才投資方案（找到新工作後）", null, `
+        <p>在職勞工上課可補助 80%～100% 訓練費，每 3 年最高 10 萬元，適合找到工作後繼續進修。</p>
+      `);
+
+      html += item("建議的訓練方向", null, `
+        <p>依你過去的產業，可以考慮：</p>
+        <ul>${TRAINING[industry].map(t => `<li>${t}</li>`).join("")}</ul>
+      `);
+
+      html += `</div><div class="card"><h2 style="margin-top:0;font-size:1.2rem">申請管道</h2>
+        <ul>
+          <li><a href="https://www.taiwanjobs.gov.tw" target="_blank" rel="noopener">台灣就業通</a>：求職登記、查詢職訓課程</li>
+          <li><a href="https://www.bli.gov.tw" target="_blank" rel="noopener">勞動部勞工保險局</a>：查投保薪資、申請提早就業獎助津貼</li>
+          <li>就業服務專線：0800-777-888</li>
+        </ul>
+      </div>`;
+
+      box.innerHTML = html;
+    });
+  </script>
+</body>
+</html>
