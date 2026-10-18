@@ -203,3 +203,32 @@ td:last-child { text-align: right; }
 .tool:hover { border-color: var(--primary); }
 .tool h2 { font-size: 1.15rem; margin: 0 0 4px; color: var(--primary); }
 .tool p { margin: 0; color: var(--muted); }
+
+/* 複製／分享按鈕 */
+.share-bar { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0 4px; }
+.btn-ghost {
+  width: auto;
+  margin: 0;
+  padding: 8px 14px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--primary);
+  background: transparent;
+  border: 1px solid var(--primary);
+  border-radius: 999px;
+}
+.btn-ghost:hover { background: var(--soft); }
+
+/* 工具說明文章 */
+.article h2 { font-size: 1.25rem; margin: 0 0 10px; }
+.article h3 { font-size: 1.05rem; margin: 20px 0 6px; }
+.article p, .article li { color: var(--text); }
+.article ul, .article ol { padding-left: 1.3em; margin: 6px 0; }
+.article .example { background: var(--soft); border-radius: 8px; padding: 10px 14px; margin: 10px 0; }
+.article .updated { font-size: 0.8rem; color: var(--muted); margin-top: 16px; }
+
+/* 分頁切換（身分選擇） */
+.seg { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 4px; }
+.seg label { display: inline-flex; align-items: center; gap: 6px; margin: 0; padding: 8px 14px; border: 1px solid var(--border); border-radius: 999px; font-weight: 600; cursor: pointer; background: var(--bg); }
+.seg input { width: auto; margin: 0; }
+.seg label:has(input:checked) { border-color: var(--primary); background: var(--soft); color: var(--primary); }

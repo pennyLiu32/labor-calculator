@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>資遣費試算｜勞工權益計算機</title>
   <meta name="description" content="依勞工退休金條例第12條（勞退新制），輸入到職日、離職日與各期間薪資，自動算出平均工資與資遣費。">
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="style.css?v=6">
+  <script src="data.js?v=1"></script>
   <style>
     .period {
       display: grid;
@@ -85,6 +86,11 @@
         <summary class="nav-toggle">☰ 選單<span class="nav-current">資遣費試算</span></summary>
         <nav>
           <a href="index.html" class="nav-home"><span>首頁</span></a>
+          <details class="nav-group">
+            <summary>年終與報稅</summary>
+            <a href="year-end.html"><span>年終獎金試算</span><small>勞工、公務員、警消、軍人</small></a>
+            <a href="income-tax.html"><span>綜所稅試算</span><small>報稅要繳多少、會不會退稅</small></a>
+          </details>
           <details class="nav-group" open>
             <summary>一般勞工</summary>
             <a href="overtime.html"><span>薪資與加班費試算</span><small>當月薪水、加班費</small></a>
@@ -92,6 +98,7 @@
             <a href="severance.html" class="active" aria-current="page"><span>資遣費試算</span><small>勞退新制資遣費</small></a>
             <a href="notice-period.html"><span>離職預告期試算</span><small>最晚哪天提離職</small></a>
             <a href="resources.html"><span>被資遣後可以申請什麼？</span><small>失業給付與職訓</small></a>
+            <a href="labor-pension.html"><span>勞保年金＋勞退試算</span><small>退休後每月可以領多少</small></a>
           </details>
           <details class="nav-group">
             <summary>軍人</summary>
@@ -101,7 +108,7 @@
           <details class="nav-group">
             <summary>警消</summary>
             <a href="police-fire.html"><span>警消轉職資源</span><small>離職前的退撫權益、轉職方向</small></a>
-            <a href="police-retire.html"><span>警消退休權益</span><small>危勞 55 歲退休條件、年改現況</small></a>
+            <a href="police-retire.html"><span>警消退休權益</span><small>危勞降齡退休條件、年改現況</small></a>
           </details>
           <details class="nav-group">
             <summary>公務員</summary>
@@ -153,6 +160,30 @@
       只計算 2005 年 7 月 1 日後適用勞退新制的年資；若有舊制年資，計算方式不同。
       公司資遣時另需依年資給予預告期間或預告工資。本工具僅供參考，實際以勞動部規定為準。
     </p>
+    <div class="card article" id="article"><h2>資遣費怎麼算？被資遣前要知道的事</h2>
+<p>被公司資遣時，除了資遣費，還有預告期、謀職假、失業給付等權益。先搞懂怎麼算，才不會被少給。</p>
+
+<h3>勞退新制資遣費公式</h3>
+<p>2005 年 7 月 1 日以後的年資適用勞退新制：<strong>每滿 1 年發給 0.5 個月平均工資</strong>，未滿 1 年的部分按比例計算，最多發 6 個月。</p>
+<div class="example">例：工作 3 年 4 個月，平均工資 40,000 元<br>資遣費 ＝（3 ＋ 4/12）× 0.5 × 40,000 ≈ 66,667 元</div>
+
+<h3>平均工資是什麼？</h3>
+<p>平均工資是「離職前 6 個月的工資總額 ÷ 6」。工資包含本薪、固定津貼、加班費等經常性給與，所以加班多的人，平均工資會比底薪高。這也是為什麼本工具讓你分段輸入每段期間的月薪。</p>
+
+<h3>哪些情況公司可以資遣？</h3>
+<p>勞基法第 11 條列出歇業或轉讓、虧損或業務緊縮、不可抗力暫停工作一個月以上、業務性質變更必須減少勞工、勞工確實不能勝任工作等情形。公司不能隨便找理由資遣，也不能用「自願離職」名義規避資遣費。</p>
+
+<h3>被資遣時的檢查清單</h3>
+<ol>
+  <li>確認離職證明寫的是「資遣」（勞基法第 11 條），而不是「自願離職」。</li>
+  <li>確認預告期或預告工資：年資 3 個月以上 10 天、1 年以上 20 天、3 年以上 30 天。</li>
+  <li>預告期間每週可以請 2 天有薪的謀職假。</li>
+  <li>資遣費要在離職後 30 天內發給。</li>
+  <li>拿離職證明到就業服務站辦理求職登記，申請失業給付。</li>
+</ol>
+<p class="updated">資料更新：<span data-v="UPDATED">2026-10-18</span>｜本文僅供參考，實際以主管機關規定為準。</p>
+    </div>
+
     <footer class="site-footer">
       <p class="footer-links"><a href="about.html">關於本站</a>｜<a href="privacy.html">隱私權政策</a></p>
       <div id="stats"></div>
@@ -160,7 +191,8 @@
   </main>
   </div>
   <script src="counter.js"></script>
-  <script src="nav.js?v=5"></script>
+  <script src="nav.js?v=6"></script>
+  <script src="share.js?v=1"></script>
 
   <script>
     const periodsBox = document.getElementById("periods");

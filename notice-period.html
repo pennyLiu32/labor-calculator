@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>離職預告期試算｜勞工權益計算機</title>
   <meta name="description" content="依勞基法第16條，輸入到職日與最後工作日，算出離職要提前幾天告知、最晚哪一天要提離職。">
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="style.css?v=6">
+  <script src="data.js?v=1"></script>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -55,6 +56,11 @@
         <summary class="nav-toggle">☰ 選單<span class="nav-current">離職預告期試算</span></summary>
         <nav>
           <a href="index.html" class="nav-home"><span>首頁</span></a>
+          <details class="nav-group">
+            <summary>年終與報稅</summary>
+            <a href="year-end.html"><span>年終獎金試算</span><small>勞工、公務員、警消、軍人</small></a>
+            <a href="income-tax.html"><span>綜所稅試算</span><small>報稅要繳多少、會不會退稅</small></a>
+          </details>
           <details class="nav-group" open>
             <summary>一般勞工</summary>
             <a href="overtime.html"><span>薪資與加班費試算</span><small>當月薪水、加班費</small></a>
@@ -62,6 +68,7 @@
             <a href="severance.html"><span>資遣費試算</span><small>勞退新制資遣費</small></a>
             <a href="notice-period.html" class="active" aria-current="page"><span>離職預告期試算</span><small>最晚哪天提離職</small></a>
             <a href="resources.html"><span>被資遣後可以申請什麼？</span><small>失業給付與職訓</small></a>
+            <a href="labor-pension.html"><span>勞保年金＋勞退試算</span><small>退休後每月可以領多少</small></a>
           </details>
           <details class="nav-group">
             <summary>軍人</summary>
@@ -71,7 +78,7 @@
           <details class="nav-group">
             <summary>警消</summary>
             <a href="police-fire.html"><span>警消轉職資源</span><small>離職前的退撫權益、轉職方向</small></a>
-            <a href="police-retire.html"><span>警消退休權益</span><small>危勞 55 歲退休條件、年改現況</small></a>
+            <a href="police-retire.html"><span>警消退休權益</span><small>危勞降齡退休條件、年改現況</small></a>
           </details>
           <details class="nav-group">
             <summary>公務員</summary>
@@ -117,6 +124,30 @@
       勞工自請離職與公司資遣，預告期天數相同。公司資遣時，勞工在預告期間每週可請 2 天有薪的謀職假。
       若勞動契約或工作規則另有約定，請一併確認。本工具僅供參考，實際以勞動部規定為準。
     </p>
+    <div class="card article" id="article"><h2>離職要提前多久說？預告期的規定與常見誤解</h2>
+<p>不管是自己要離職，還是公司要資遣你，勞基法都規定要提前通知。天數依年資決定，雙方適用一樣的標準。</p>
+
+<h3>預告期天數</h3>
+<ul>
+  <li>工作 3 個月以上、未滿 1 年：10 天前</li>
+  <li>工作 1 年以上、未滿 3 年：20 天前</li>
+  <li>工作 3 年以上：30 天前</li>
+</ul>
+<div class="example">例：2024 年 6 月 1 日到職，打算 2026 年 1 月 31 日最後上班（年資 1 年 8 個月）<br>→ 最晚 2026 年 1 月 11 日要提出離職。</div>
+
+<h3>沒有照預告期離職會怎樣？</h3>
+<p>勞工沒有依預告期就離職，公司<strong>不能因此扣薪水</strong>，但如果真的造成公司損失，公司可以另外請求損害賠償（要舉證）。反過來說，公司資遣勞工卻沒有預告，就要發給「預告期間的工資」。</p>
+
+<h3>提離職的實用建議</h3>
+<ol>
+  <li>用書面（Email 或公司的離職單）提出，留下日期紀錄。</li>
+  <li>提出前先算好特休：沒休完的特休要折算工資，也可以在預告期內排休。</li>
+  <li>合約如果約定比法定更長的預告期（例如 1 個月），法律效力有爭議，可以先和公司協商。</li>
+  <li>記得索取離職證明（服務證明），公司不能拒絕開立。</li>
+</ol>
+<p class="updated">資料更新：<span data-v="UPDATED">2026-10-18</span>｜本文僅供參考，實際以主管機關規定為準。</p>
+    </div>
+
     <footer class="site-footer">
       <p class="footer-links"><a href="about.html">關於本站</a>｜<a href="privacy.html">隱私權政策</a></p>
       <div id="stats"></div>
@@ -124,7 +155,8 @@
   </main>
   </div>
   <script src="counter.js"></script>
-  <script src="nav.js?v=5"></script>
+  <script src="nav.js?v=6"></script>
+  <script src="share.js?v=1"></script>
 
   <script>
     // 計算兩個日期之間滿幾個月

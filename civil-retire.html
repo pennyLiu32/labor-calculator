@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>公務員退休權益｜退休條件檢核、月退起支年齡、年改最新現況｜勞工權益計算機</title>
   <meta name="description" content="公務人員什麼時候可以退休？輸入年齡與任職年資，檢核自願退休、屆齡退休條件，並說明月退休金、減額月退、所得替代率與 2025 年底修法後的最新現況。">
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="style.css?v=6">
+  <script src="data.js?v=1"></script>
   <style>
     .item { margin: 0 0 14px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
     .item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
@@ -31,12 +32,18 @@
         <nav>
           <a href="index.html" class="nav-home"><span>首頁</span></a>
           <details class="nav-group">
+            <summary>年終與報稅</summary>
+            <a href="year-end.html"><span>年終獎金試算</span><small>勞工、公務員、警消、軍人</small></a>
+            <a href="income-tax.html"><span>綜所稅試算</span><small>報稅要繳多少、會不會退稅</small></a>
+          </details>
+          <details class="nav-group">
             <summary>一般勞工</summary>
             <a href="overtime.html"><span>薪資與加班費試算</span><small>當月薪水、加班費</small></a>
             <a href="annual-leave.html"><span>特休天數試算</span><small>依到職日算特休</small></a>
             <a href="severance.html"><span>資遣費試算</span><small>勞退新制資遣費</small></a>
             <a href="notice-period.html"><span>離職預告期試算</span><small>最晚哪天提離職</small></a>
             <a href="resources.html"><span>被資遣後可以申請什麼？</span><small>失業給付與職訓</small></a>
+            <a href="labor-pension.html"><span>勞保年金＋勞退試算</span><small>退休後每月可以領多少</small></a>
           </details>
           <details class="nav-group">
             <summary>軍人</summary>
@@ -46,7 +53,7 @@
           <details class="nav-group">
             <summary>警消</summary>
             <a href="police-fire.html"><span>警消轉職資源</span><small>離職前的退撫權益、轉職方向</small></a>
-            <a href="police-retire.html"><span>警消退休權益</span><small>危勞 55 歲退休條件、年改現況</small></a>
+            <a href="police-retire.html"><span>警消退休權益</span><small>危勞降齡退休條件、年改現況</small></a>
           </details>
           <details class="nav-group" open>
             <summary>公務員</summary>
@@ -84,7 +91,7 @@
       <h2>退休種類</h2>
       <ul>
         <li><strong>自願退休</strong>：任職滿 5 年且年滿 60 歲，或任職滿 25 年。</li>
-        <li><strong>危險及勞力等特殊性質職務</strong>：自願退休年齡可以酌減，但不得低於 55 歲，適用的職務依銓敘部核定。</li>
+        <li><strong>危險及勞力等特殊性質職務</strong>：自願退休年齡由主管機關依職務酌減，最低可到 50 歲，實際年齡以銓敘部核備的危勞職務表為準。危勞自願退休者，<strong>年資滿 15 年且年滿 55 歲</strong>才能領全額月退休金；年資滿 15 年但未滿 55 歲，可選展期或減額月退；未滿 15 年只能領一次退休金。</li>
         <li><strong>屆齡退休</strong>：年滿 65 歲。</li>
         <li><strong>命令退休</strong>：因身心障礙或傷病無法勝任職務等情形。</li>
       </ul>
@@ -93,7 +100,7 @@
       <ul>
         <li>可以選擇<strong>一次退休金</strong>、<strong>月退休金</strong>，或兩者兼領。</li>
         <li><strong>計算基準</strong>：用「平均俸額」計算，逐年延長為退休前最後 15 年的平均本（年功）俸。</li>
-        <li><strong>起支年齡</strong>：月退休金的起支年齡逐年提高，最終為 65 歲。還沒到起支年齡的人，可以選擇<strong>展期月退</strong>（等到年齡再領）或<strong>減額月退</strong>（提前領，每提前 1 年減 4%，最多提前 5 年減 20%）。</li>
+        <li><strong>起支年齡</strong>：一般自願退休者，2026 年起退休的月退休金起支年齡為 65 歲（危勞職務為 55 歲）。還沒到起支年齡的人，可以選擇<strong>展期月退</strong>（等到年齡再領）或<strong>減額月退</strong>（提前領，每提前 1 年減 4%，最多提前 5 年減 20%）。</li>
         <li><strong>所得替代率上限</strong>：每月退休所得不能超過「最後在職同職等本俸 × 2」的一定比例，比例依年資而定。</li>
       </ul>
 
@@ -102,8 +109,9 @@
 
       <h2>2025 年底修法現況</h2>
       <div class="callout">
-        <p>立法院 2025 年 12 月修正公務人員退休資遣撫卹法第 37、38 條：退休所得替代率<strong>凍結在 2023 年的標準，不再逐年調降</strong>，並溯及 2024 年起適用。</p>
-        <p>由於政府系統仍在調整，已退休者目前暫時依原規定發放，之後再重新審定補發差額。新退休者的實際金額，請以銓敘部審定為準。</p>
+        <p>立法院 2025 年 12 月修正公務人員退休資遣撫卹法第 37、38、67 條，2025 年 12 月 28 日生效：退休所得替代率上限<strong>固定在 2023 年的標準，不再逐年調降</strong>。</p>
+        <p>銓敘部已重新審定已退休人員的月退休金，2025 年 12 月 28 日起的差額已在 2026 年 7～8 月陸續補發，並從 2026 年 8 月起依新審定金額發放（少數人員稍晚）。生效日以前的差額沒有補發。</p>
+        <p>修法也規定物價累計上漲 5% 時要調整月退休金，且至少每 4 年檢討一次。此修法另有釋憲聲請，結果可能影響後續，請留意銓敘部公告。</p>
       </div>
 
       <h2>官方試算與查詢</h2>
@@ -119,6 +127,29 @@
     <p class="note">
       依公務人員退休資遣撫卹法整理（含 2025 年 12 月修正），本頁不計算退休金金額。退休年金制度仍在調整中，實際權益以銓敘部及服務機關審定為準。
     </p>
+    <div class="card article" id="article"><h2>公務員什麼時候可以退休？退休條件與月退休金規則</h2>
+<p>2018 年年金改革後，公務員的退休條件、月退休金起支年齡和所得替代率都有很大改變，2025 年底又再修法。以下整理目前的規則。</p>
+
+<h3>退休的種類</h3>
+<ul>
+  <li><strong>自願退休</strong>：任職滿 5 年且年滿 60 歲，或任職滿 25 年。</li>
+  <li><strong>危勞職務</strong>：例如監所、海巡、移民、關務等，自願退休年齡可依職務降低，最低 50 歲。</li>
+  <li><strong>屆齡退休</strong>：任職滿 5 年且年滿 65 歲，一定要退休。</li>
+  <li><strong>命令退休</strong>：因身心障礙或傷病無法勝任職務等情形，由機關主動辦理。</li>
+</ul>
+
+<h3>月退休金幾歲可以領？</h3>
+<p>一般自願退休的人，2026 年起月退休金起支年齡為 65 歲。還沒到 65 歲就退休的人，可以選擇一次退休金、展期月退（到 65 歲再領）或減額月退（每提前 1 年減 4%，最多減 20%）。</p>
+<div class="example">例：58 歲、年資 30 年自願退休<br>→ 可選一次退休金；或展期到 65 歲領全額月退；或從 60 歲起領減額月退（提前 5 年，減 20%）。</div>
+
+<h3>所得替代率：月退上限</h3>
+<p>每月退休所得不能超過「最後在職同職等本俸 × 2」的一定比例：年資 15 年 45%，之後每年加 1.5%，35 年 75%。2025 年 12 月修法後，這個上限固定在 2023 年的標準，不再逐年調降。</p>
+
+<h3>2023 年 7 月以後初任的人</h3>
+<p>適用個人專戶制，政府和個人每月提撥到你自己的退休金帳戶，退休時依帳戶累積金額領取，沒有所得替代率的問題，換工作時帳戶也能帶著走。</p>
+<p class="updated">資料更新：<span data-v="UPDATED">2026-10-18</span>｜本文僅供參考，實際以主管機關規定為準。</p>
+    </div>
+
     <footer class="site-footer">
       <p class="footer-links"><a href="about.html">關於本站</a>｜<a href="privacy.html">隱私權政策</a></p>
       <div id="stats"></div>
@@ -126,7 +157,8 @@
   </main>
   </div>
   <script src="counter.js"></script>
-  <script src="nav.js?v=5"></script>
+  <script src="nav.js?v=6"></script>
+  <script src="share.js?v=1"></script>
 
   <script>
     // 警消版本（police-retire.html）：預設勾選危勞職務
@@ -154,10 +186,11 @@
 
       const byAge = years >= 5 && age >= 60;
       const by25 = years >= 25;
-      const hazardOk = hazard && age >= 55 && years >= 5;
+      const hazardOk = hazard && age >= 50 && years >= 5;
       const voluntary = byAge || by25 || hazardOk;
+      const POLICE_NOTE = "最低 50 歲，各職務不同";
 
-      let html = `<div class="total">${voluntary ? "已符合自願退休條件" : "尚未符合自願退休條件"}</div>`;
+      let html = `<div class="total">${(byAge || by25) ? "已符合自願退休條件" : hazardOk ? "可能符合（依職務核定年齡）" : "尚未符合自願退休條件"}</div>`;
 
       html += item("任職滿 25 年", by25, by25
         ? "<p>不論年齡，都可以申請自願退休。</p>"
@@ -168,19 +201,26 @@
         : `<p>${age < 60 ? `還差 ${60 - age} 歲` : ""}${age < 60 && years < 5 ? "，" : ""}${years < 5 ? `年資還差 ${(5 - years).toFixed(1).replace(/\.0$/, "")} 年` : ""}。</p>`);
 
       if (hazard) {
-        html += item("危勞職務：年滿 55 歲", hazardOk, hazardOk
-          ? "<p>擔任危勞職務者，自願退休年齡可酌減至 55 歲，實際適用年齡依銓敘部核定。</p>"
-          : `<p>危勞職務的自願退休年齡最低 55 歲${age < 55 ? `，還差 ${55 - age} 歲` : ""}，實際適用年齡依銓敘部核定。</p>`);
+        html += item("危勞職務降齡自願退休", hazardOk ? null : false, hazardOk
+          ? `<p>你的年齡已達法定最低的 50 歲。危勞職務的自願退休年齡依職務核定（${POLICE_NOTE}），<strong>請向人事單位確認你的職務核定年齡</strong>。</p>`
+          : `<p>危勞職務的自願退休年齡最低 50 歲${age < 50 ? `，還差 ${50 - age} 歲` : ""}${years < 5 ? "，且任職需滿 5 年" : ""}，實際年齡依職務核定。</p>`);
+        if (hazardOk && !byAge && !by25) {
+          const full = years >= 15 && age >= 55;
+          html += item("危勞退休的月退休金", null, years < 15
+            ? "<p>危勞自願退休、年資未滿 15 年，只能領<strong>一次退休金</strong>。</p>"
+            : full ? "<p>年資滿 15 年且年滿 55 歲，可以選擇全額月退休金。</p>"
+            : `<p>年資已滿 15 年，但未滿 55 歲：可選一次退休金，或展期月退（到 55 歲再領）、減額月退（每提前 1 年減 4%）。</p>`);
+        }
       }
 
       html += item("屆齡退休", age >= 65, age >= 65
         ? "<p>已達 65 歲屆齡退休年齡。</p>"
         : `<p>年滿 65 歲屆齡退休，還有 ${65 - age} 年。</p>`);
 
-      if (voluntary) {
+      if (byAge || by25 || (hazardOk && newSystem)) {
         html += newSystem
           ? item("退休金怎麼領", null, "<p>你適用個人專戶制，退休時依專戶累積的本金和收益領取，可向退撫基金管理局查詢專戶餘額。</p>")
-          : item("退休金怎麼領", null, `<p>可選擇一次退休金、月退休金或兼領。${age < 65 ? "月退休金的起支年齡逐年提高到 65 歲，未達起支年齡可以選擇展期，或減額提前領（每提前 1 年減 4%，最多減 20%）。" : ""}實際金額請向人事單位或銓敘部試算。</p>`);
+          : item("退休金怎麼領", null, `<p>可選擇一次退休金、月退休金或兼領。${age < 65 ? "一般自願退休的月退起支年齡為 65 歲，未達起支年齡可以選擇展期，或減額提前領（每提前 1 年減 4%，最多減 20%）。" : ""}實際金額請向人事單位或銓敘部試算。</p>`);
       }
 
       box.innerHTML = html;

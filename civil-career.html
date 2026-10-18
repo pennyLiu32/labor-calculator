@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>公務員退休後轉職資源與補助｜再任限制、中高齡職訓｜勞工權益計算機</title>
   <meta name="description" content="公務員退休後還能工作嗎？哪些工作會停發月退休金？依退休方式、年齡和想做的工作，列出再任限制、中高齡職訓補助、銀髮就業資源與轉職方向。">
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="style.css?v=6">
+  <script src="data.js?v=1"></script>
   <style>
     .item { margin: 0 0 14px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
     .item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
@@ -29,12 +30,18 @@
         <nav>
           <a href="index.html" class="nav-home"><span>首頁</span></a>
           <details class="nav-group">
+            <summary>年終與報稅</summary>
+            <a href="year-end.html"><span>年終獎金試算</span><small>勞工、公務員、警消、軍人</small></a>
+            <a href="income-tax.html"><span>綜所稅試算</span><small>報稅要繳多少、會不會退稅</small></a>
+          </details>
+          <details class="nav-group">
             <summary>一般勞工</summary>
             <a href="overtime.html"><span>薪資與加班費試算</span><small>當月薪水、加班費</small></a>
             <a href="annual-leave.html"><span>特休天數試算</span><small>依到職日算特休</small></a>
             <a href="severance.html"><span>資遣費試算</span><small>勞退新制資遣費</small></a>
             <a href="notice-period.html"><span>離職預告期試算</span><small>最晚哪天提離職</small></a>
             <a href="resources.html"><span>被資遣後可以申請什麼？</span><small>失業給付與職訓</small></a>
+            <a href="labor-pension.html"><span>勞保年金＋勞退試算</span><small>退休後每月可以領多少</small></a>
           </details>
           <details class="nav-group">
             <summary>軍人</summary>
@@ -44,7 +51,7 @@
           <details class="nav-group">
             <summary>警消</summary>
             <a href="police-fire.html"><span>警消轉職資源</span><small>離職前的退撫權益、轉職方向</small></a>
-            <a href="police-retire.html"><span>警消退休權益</span><small>危勞 55 歲退休條件、年改現況</small></a>
+            <a href="police-retire.html"><span>警消退休權益</span><small>危勞降齡退休條件、年改現況</small></a>
           </details>
           <details class="nav-group" open>
             <summary>公務員</summary>
@@ -100,6 +107,31 @@
     <p class="note">
       再任限制依公務人員退休資遣撫卹法第 77 條整理，實際是否停發以銓敘部認定為準。各項訓練與補助的資格、名額以勞動部及各地就業服務站公告為準，本工具僅供參考。
     </p>
+    <div class="card article" id="article"><h2>公務員退休後還能工作嗎？再任限制與轉職資源</h2>
+<p>很多公務員 50、60 歲退休後身體還很好，想繼續工作。可以，但要注意「再任限制」，不然月退休金可能會被停發。</p>
+
+<h3>哪些工作會停發月退？</h3>
+<p>依《公務人員退休資遣撫卹法》第 77 條，領月退休金的人再任下列職務，而且每月薪酬超過法定基本工資（<span data-v="YEAR">2026</span> 年為 <span data-v="minWage.monthly">29,500</span> 元），就會停發月退休金：</p>
+<ul>
+  <li>政府機關、公立學校的職務。</li>
+  <li>公營事業、行政法人、政府捐助（出資）達一定比例的財團法人。</li>
+  <li>私立學校的職務。</li>
+</ul>
+<p>到一般民間企業工作、自己創業，或薪酬沒超過基本工資的兼職，都不受影響。</p>
+
+<h3>領一次退休金的人</h3>
+<p>領一次退休金的人沒有停發月退的問題，但再任公職時，年資和退休金的計算會有其他規定，接受職務前建議先問清楚。</p>
+
+<h3>可以使用的資源</h3>
+<ul>
+  <li><strong>中高齡就業服務</strong>：45 歲以上屬於就業服務的特定對象，到就業服務站登記有專人協助。</li>
+  <li><strong>銀髮人才服務據點</strong>：55 歲以上可以媒合短期、部分工時或顧問性質的工作。</li>
+  <li><strong>微型創業鳳凰</strong>：45～65 歲（女性 20～65 歲）可以申請創業課程、諮詢和貸款利息補貼。</li>
+  <li><strong>產業人才投資方案</strong>：到民間公司投保勞保後，進修課程補助 80%～100%。</li>
+</ul>
+<p class="updated">資料更新：<span data-v="UPDATED">2026-10-18</span>｜本文僅供參考，實際以主管機關規定為準。</p>
+    </div>
+
     <footer class="site-footer">
       <p class="footer-links"><a href="about.html">關於本站</a>｜<a href="privacy.html">隱私權政策</a></p>
       <div id="stats"></div>
@@ -107,7 +139,8 @@
   </main>
   </div>
   <script src="counter.js"></script>
-  <script src="nav.js?v=5"></script>
+  <script src="nav.js?v=6"></script>
+  <script src="share.js?v=1"></script>
 
   <script>
     const DIRECTIONS = {
@@ -170,7 +203,7 @@
           "<p>勞動部「微型創業鳳凰」提供 45～65 歲的國民（女性為 20～65 歲）創業諮詢、課程與貸款利息補貼，可到微型創業鳳凰網站查詢資格。</p>");
       }
       res += item("產業人才投資方案（找到新工作後）", null,
-        "<p>在民間公司投保勞保後，參加在職進修課程可補助 80%～100% 訓練費，每 3 年最高 10 萬元。</p>");
+        "<p>在民間公司投保勞保後，參加在職進修課程可補助 80%～100% 訓練費，每 3 年最高 ${TW.fmt(TW.training.investMax)} 元。</p>");
       html += card("可以使用的訓練與補助", res);
 
       // ── 轉職方向 ──

@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>被資遣後可以申請什麼？失業給付與職訓資源試算｜勞工權益計算機</title>
   <meta name="description" content="被資遣或非自願離職後，可以申請哪些政府資源？輸入年齡、投保薪資、扶養人數與過去產業，試算失業給付並找出適合的職業訓練方向。">
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="style.css?v=6">
+  <script src="data.js?v=1"></script>
   <style>
     .item { margin: 0 0 14px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
     .item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
@@ -28,6 +29,11 @@
         <summary class="nav-toggle">☰ 選單<span class="nav-current">被資遣後可以申請什麼？</span></summary>
         <nav>
           <a href="index.html" class="nav-home"><span>首頁</span></a>
+          <details class="nav-group">
+            <summary>年終與報稅</summary>
+            <a href="year-end.html"><span>年終獎金試算</span><small>勞工、公務員、警消、軍人</small></a>
+            <a href="income-tax.html"><span>綜所稅試算</span><small>報稅要繳多少、會不會退稅</small></a>
+          </details>
           <details class="nav-group" open>
             <summary>一般勞工</summary>
             <a href="overtime.html"><span>薪資與加班費試算</span><small>當月薪水、加班費</small></a>
@@ -35,6 +41,7 @@
             <a href="severance.html"><span>資遣費試算</span><small>勞退新制資遣費</small></a>
             <a href="notice-period.html"><span>離職預告期試算</span><small>最晚哪天提離職</small></a>
             <a href="resources.html" class="active" aria-current="page"><span>被資遣後可以申請什麼？</span><small>失業給付與職訓</small></a>
+            <a href="labor-pension.html"><span>勞保年金＋勞退試算</span><small>退休後每月可以領多少</small></a>
           </details>
           <details class="nav-group">
             <summary>軍人</summary>
@@ -44,7 +51,7 @@
           <details class="nav-group">
             <summary>警消</summary>
             <a href="police-fire.html"><span>警消轉職資源</span><small>離職前的退撫權益、轉職方向</small></a>
-            <a href="police-retire.html"><span>警消退休權益</span><small>危勞 55 歲退休條件、年改現況</small></a>
+            <a href="police-retire.html"><span>警消退休權益</span><small>危勞降齡退休條件、年改現況</small></a>
           </details>
           <details class="nav-group">
             <summary>公務員</summary>
@@ -111,9 +118,41 @@
 
     <p class="note">
       金額依就業保險法計算：月投保薪資 × 60%，每位無收入扶養眷屬加 10%，最多加 20%。
-      月投保薪資上限為 45,800 元（2026 年），超過以上限計算。
+      月投保薪資上限為 <span data-v="laborIns.max">45,800</span> 元（<span data-v="YEAR">2026</span> 年），超過以上限計算。
       實際資格與金額以勞動部、勞保局及各地就業服務站審核為準，本工具僅供參考。
     </p>
+    <div class="card article" id="article"><h2>失業了怎麼辦？失業給付、職訓與補助申請指南</h2>
+<p>被資遣或非自願離職時，就業保險提供好幾種補助。很多人只知道失業給付，其實參加職訓、提早找到工作也都有錢可以領。</p>
+
+<h3>失業給付：每月領投保薪資的 6 成</h3>
+<p>條件是「非自願離職」且「離職前 3 年內就業保險年資滿 1 年」。每月領平均月投保薪資的 60%，有無收入的扶養眷屬，每人再加 10%，最多加 20%。一般最多領 6 個月，45 歲以上或身心障礙者最多 9 個月。</p>
+<div class="example">例：平均月投保薪資 36,300 元，扶養 1 位無收入眷屬<br>每月 ＝ 36,300 × 70% ＝ 25,410 元，最多 6 個月共 152,460 元</div>
+
+<h3>什麼算非自願離職？</h3>
+<ul>
+  <li>公司關廠、歇業、資遣、裁員。</li>
+  <li>公司違法，你依勞基法第 14 條終止契約（例如欠薪、不給加班費、沒幫你保勞健保）。</li>
+  <li>定期契約到期，離職前 1 年內契約期間合計滿 6 個月，且離職後超過 1 個月還沒找到工作。</li>
+</ul>
+<p>自己辭職或因為違反工作規則被開除，不能領失業給付，但仍然可以參加職前訓練。</p>
+
+<h3>申請步驟</h3>
+<ol>
+  <li>離職後 2 年內，帶離職證明、身分證、存摺到就業服務站辦理求職登記。</li>
+  <li>就業服務站 14 天內沒辦法推介工作或安排職訓，就會受理失業認定。</li>
+  <li>之後每個月要回去做失業再認定，並提出找工作的紀錄。</li>
+</ol>
+
+<h3>其他可以搭配的資源</h3>
+<ul>
+  <li><strong>職業訓練生活津貼</strong>：參加全日制職訓期間領，金額和失業給付一樣，兩者擇一。</li>
+  <li><strong>提早就業獎助津貼</strong>：失業給付還沒領完就找到工作，投保滿 3 個月後可以一次領剩餘金額的 50%。</li>
+  <li><strong>健保費補助</strong>：領失業給付期間，本人和眷屬的健保費由政府補助。</li>
+  <li><strong>產業新尖兵</strong>：15～29 歲青年，訓練費最高補助 <span data-v="training.newTalentMax">100,000</span> 元，另有每月 <span data-v="training.newTalentMonthly">8,000</span> 元學習獎勵金。</li>
+</ul>
+<p class="updated">資料更新：<span data-v="UPDATED">2026-10-18</span>｜本文僅供參考，實際以主管機關規定為準。</p>
+    </div>
+
     <footer class="site-footer">
       <p class="footer-links"><a href="about.html">關於本站</a>｜<a href="privacy.html">隱私權政策</a></p>
       <div id="stats"></div>
@@ -121,10 +160,11 @@
   </main>
   </div>
   <script src="counter.js"></script>
-  <script src="nav.js?v=5"></script>
+  <script src="nav.js?v=6"></script>
+  <script src="share.js?v=1"></script>
 
   <script>
-    const INSURED_MAX = 45800;
+    const INSURED_MAX = TW.laborIns.max;
 
     // 各產業建議的訓練方向
     const TRAINING = {
@@ -165,8 +205,9 @@
 
       const fmt = n => Math.round(n).toLocaleString("zh-TW");
       const salary = Math.min(salaryInput, INSURED_MAX);
-      const monthly = salary * (0.6 + 0.1 * dependents);
-      const months = (age >= 45 || disabled) ? 9 : 6;
+      const E = TW.employmentIns;
+      const monthly = salary * (E.benefitRate + E.depAdd * Math.min(dependents, E.depMax));
+      const months = (age >= 45 || disabled) ? E.monthsOlder : E.months;
       const eligible = involuntary && insured;
 
       let html = '<div class="card"><h2 style="margin-top:0;font-size:1.2rem">可以領的津貼</h2>';
@@ -218,11 +259,11 @@
 
       const youth = age <= 29;
       html += item("產業新尖兵計畫", youth, youth ? `
-        <p>15～29 歲青年，訓練費最高補助 10 萬元，參訓期間每月另有 8,000 元學習獎勵金。</p>
+        <p>15～29 歲青年，訓練費最高補助 ${TW.fmt(TW.training.newTalentMax)} 元，參訓期間每月另有 ${TW.fmt(TW.training.newTalentMonthly)} 元學習獎勵金。</p>
       ` : "<p>限 15～29 歲青年。</p>");
 
       html += item("產業人才投資方案（找到新工作後）", null, `
-        <p>在職勞工上課可補助 80%～100% 訓練費，每 3 年最高 10 萬元，適合找到工作後繼續進修。</p>
+        <p>在職勞工上課可補助 80%～100% 訓練費，每 3 年最高 ${TW.fmt(TW.training.investMax)} 元，適合找到工作後繼續進修。</p>
       `);
 
       html += item("建議的訓練方向", null, `

@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>關於本站｜勞工權益計算機</title>
   <meta name="description" content="勞工權益計算機是免費的試算工具網站，依勞基法、勞退條例、退輔會及公務人員相關法規，幫你快速算出加班費、特休、資遣費等權益。">
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="style.css?v=6">
+  <script src="data.js?v=1"></script>
   <style>
     .doc h2 { font-size: 1.15rem; margin: 20px 0 6px; }
     .doc h2:first-child { margin-top: 0; }
@@ -23,12 +24,18 @@
         <nav>
           <a href="index.html" class="nav-home"><span>首頁</span></a>
           <details class="nav-group">
+            <summary>年終與報稅</summary>
+            <a href="year-end.html"><span>年終獎金試算</span><small>勞工、公務員、警消、軍人</small></a>
+            <a href="income-tax.html"><span>綜所稅試算</span><small>報稅要繳多少、會不會退稅</small></a>
+          </details>
+          <details class="nav-group">
             <summary>一般勞工</summary>
             <a href="overtime.html"><span>薪資與加班費試算</span><small>當月薪水、加班費</small></a>
             <a href="annual-leave.html"><span>特休天數試算</span><small>依到職日算特休</small></a>
             <a href="severance.html"><span>資遣費試算</span><small>勞退新制資遣費</small></a>
             <a href="notice-period.html"><span>離職預告期試算</span><small>最晚哪天提離職</small></a>
             <a href="resources.html"><span>被資遣後可以申請什麼？</span><small>失業給付與職訓</small></a>
+            <a href="labor-pension.html"><span>勞保年金＋勞退試算</span><small>退休後每月可以領多少</small></a>
           </details>
           <details class="nav-group">
             <summary>軍人</summary>
@@ -38,7 +45,7 @@
           <details class="nav-group">
             <summary>警消</summary>
             <a href="police-fire.html"><span>警消轉職資源</span><small>離職前的退撫權益、轉職方向</small></a>
-            <a href="police-retire.html"><span>警消退休權益</span><small>危勞 55 歲退休條件、年改現況</small></a>
+            <a href="police-retire.html"><span>警消退休權益</span><small>危勞降齡退休條件、年改現況</small></a>
           </details>
           <details class="nav-group">
             <summary>公務員</summary>
@@ -92,6 +99,6 @@
   </main>
   </div>
   <script src="counter.js"></script>
-  <script src="nav.js?v=5"></script>
+  <script src="nav.js?v=6"></script>
 </body>
 </html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>綜所稅試算｜免稅額、扣除額、課稅級距，算報稅要繳多少或退多少｜勞工權益計算機</title>
+  <meta name="description" content="輸入全年薪資、扶養人數與扣除項目，依最新免稅額、標準扣除額、薪資所得特別扣除額、基本生活費與課稅級距，試算綜合所得稅，並自動比較夫妻薪資分開計稅，算出要補稅還是退稅。">
+  <link rel="stylesheet" href="style.css?v=6">
+  <script src="data.js?v=1"></script>
+  <style>
+    .section-title { font-size: 1.05rem; margin: 22px 0 2px; }
+    .section-title:first-child { margin-top: 0; }
+    tr.sum td { font-weight: 700; border-bottom: 2px solid var(--border); }
+    .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    @media (max-width: 560px) { .row3 { grid-template-columns: 1fr; } }
+    .bracket td:first-child { white-space: nowrap; }
+  </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "年收入多少以下不用繳所得稅？",
+     "acceptedAnswer": {"@type": "Answer", "text": "以 2026 年（115 年度）所得、2027 年 5 月申報為例，單身、只有薪資收入的人，免稅額 101,000 元＋標準扣除額 136,000 元＋薪資所得特別扣除額 227,000 元，合計 464,000 元以下不用繳稅。"}},
+    {"@type": "Question", "name": "115 年度綜所稅課稅級距是多少？",
+     "acceptedAnswer": {"@type": "Answer", "text": "綜合所得淨額 61 萬元以下 5%、61 萬～138 萬元 12%、138 萬～277 萬元 20%、277 萬～519 萬元 30%、超過 519 萬元 40%。"}},
+    {"@type": "Question", "name": "夫妻一定要合併報稅嗎？",
+     "acceptedAnswer": {"@type": "Answer", "text": "夫妻要合併申報，但計稅時可以選擇「薪資所得分開計稅」或「各類所得分開計稅」，財政部報稅系統會自動幫你選稅額最低的方式。本工具比較全部合併與薪資分開計稅兩種。"}}
+  ]
+}
+  </script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <a class="brand" href="index.html">勞工權益計算機</a>
+      <details class="nav-wrap" open>
+        <summary class="nav-toggle">☰ 選單<span class="nav-current">綜所稅試算</span></summary>
+        <nav>
+          <a href="index.html" class="nav-home"><span>首頁</span></a>
+          <details class="nav-group" open>
+            <summary>年終與報稅</summary>
+            <a href="year-end.html"><span>年終獎金試算</span><small>勞工、公務員、警消、軍人</small></a>
+            <a href="income-tax.html" class="active" aria-current="page"><span>綜所稅試算</span><small>報稅要繳多少、會不會退稅</small></a>
+          </details>
+          <details class="nav-group">
+            <summary>一般勞工</summary>
+            <a href="overtime.html"><span>薪資與加班費試算</span><small>當月薪水、加班費</small></a>
+            <a href="annual-leave.html"><span>特休天數試算</span><small>依到職日算特休</small></a>
+            <a href="severance.html"><span>資遣費試算</span><small>勞退新制資遣費</small></a>
+            <a href="notice-period.html"><span>離職預告期試算</span><small>最晚哪天提離職</small></a>
+            <a href="resources.html"><span>被資遣後可以申請什麼？</span><small>失業給付與職訓</small></a>
+            <a href="labor-pension.html"><span>勞保年金＋勞退試算</span><small>退休後每月可以領多少</small></a>
+          </details>
+          <details class="nav-group">
+            <summary>軍人</summary>
+            <a href="military.html"><span>退伍軍人轉職資源</span><small>退輔會補助與輔導期限</small></a>
+            <a href="veteran-benefits.html"><span>榮民權益與補助</span><small>就醫、子女教育、急難救助</small></a>
+          </details>
+          <details class="nav-group">
+            <summary>警消</summary>
+            <a href="police-fire.html"><span>警消轉職資源</span><small>離職前的退撫權益、轉職方向</small></a>
+            <a href="police-retire.html"><span>警消退休權益</span><small>危勞降齡退休條件、年改現況</small></a>
+          </details>
+          <details class="nav-group">
+            <summary>公務員</summary>
+            <a href="civil-salary.html"><span>公務員薪資試算</span><small>依職等俸級算本俸與扣款</small></a>
+            <a href="civil-leave.html"><span>公務員休假天數試算</span><small>公務人員請假規則</small></a>
+            <a href="civil-retire.html"><span>公務員退休權益</span><small>退休條件檢核、年改現況</small></a>
+            <a href="civil-career.html"><span>退休後轉職資源與補助</span><small>再任限制、中高齡職訓</small></a>
+          </details>
+          <details class="nav-group">
+            <summary>其他</summary>
+            <a href="about.html"><span>關於本站</span></a>
+            <a href="privacy.html"><span>隱私權政策</span></a>
+          </details>
+        </nav>
+      </details>
+    </aside>
+  <main>
+    <h1>綜所稅試算</h1>
+    <p class="sub">輸入全年收入和家裡的狀況，算出報稅時大概要繳多少、會不會退稅。適用 <span data-v="tax.incomeYear">115</span> 年度所得（<span data-v="YEAR">2026</span> 年 1～12 月的收入，隔年 5 月申報）。</p>
+
+    <div class="card">
+      <h2 class="section-title">申報方式</h2>
+      <div class="seg">
+        <label><input type="radio" name="married" value="0" checked> 單身</label>
+        <label><input type="radio" name="married" value="1"> 已婚（夫妻合併申報）</label>
+      </div>
+
+      <h2 class="section-title">全年收入</h2>
+      <div class="row2">
+        <div><label for="salary1">本人全年薪資（含年終、加班費）</label><input id="salary1" type="number" min="0" placeholder="例如 600000"></div>
+        <div><label for="other1">本人其他所得（利息、租金等，選填）</label><input id="other1" type="number" min="0" placeholder="例如 5000"></div>
+      </div>
+      <div class="row2" id="spouseRow" hidden>
+        <div><label for="salary2">配偶全年薪資</label><input id="salary2" type="number" min="0" placeholder="例如 500000"></div>
+        <div><label for="other2">配偶其他所得（選填）</label><input id="other2" type="number" min="0" placeholder="例如 0"></div>
+      </div>
+      <p class="note" style="margin:6px 0 0">薪資以扣繳憑單上的「給付總額」為準。勞保、健保、勞退自提的錢不用扣掉（勞退自提本來就不算在給付總額內）。股利所得因可選擇分開計稅，本工具沒有計入。</p>
+
+      <h2 class="section-title">扶養與免稅額</h2>
+      <div class="row3">
+        <div><label for="dep">扶養親屬（未滿 70 歲）</label><input id="dep" type="number" min="0" value="0"></div>
+        <div><label for="dep70">扶養親屬（70 歲以上）</label><input id="dep70" type="number" min="0" value="0"></div>
+        <div><label for="self70">本人或配偶 70 歲以上的人數</label><input id="self70" type="number" min="0" max="2" value="0"></div>
+      </div>
+
+      <h2 class="section-title">扣除額</h2>
+      <label for="itemized">列舉扣除額合計（選填，例如捐款、保險費、醫藥費、房貸利息）</label>
+      <input id="itemized" type="number" min="0" placeholder="不填就用標準扣除額">
+      <div class="row3">
+        <div><label for="rent">全年房租支出</label><input id="rent" type="number" min="0" placeholder="沒有就不填"></div>
+        <div><label for="interest">銀行存款利息（已含在其他所得）</label><input id="interest" type="number" min="0" placeholder="沒有就不填"></div>
+        <div><label for="disabled">領有身障證明的人數</label><input id="disabled" type="number" min="0" value="0"></div>
+      </div>
+      <div class="row3">
+        <div><label for="kids">6 歲以下子女人數</label><input id="kids" type="number" min="0" value="0"></div>
+        <div><label for="ltc">符合長照需要的人數</label><input id="ltc" type="number" min="0" value="0"></div>
+        <div><label for="college">讀大專院校的子女人數</label><input id="college" type="number" min="0" value="0"></div>
+      </div>
+
+      <h2 class="section-title">已經被扣的稅（選填）</h2>
+      <label for="withheld">全家扣繳憑單上的「扣繳稅額」合計</label>
+      <input id="withheld" type="number" min="0" placeholder="例如 6000">
+
+      <button id="calcBtn">開始計算</button>
+    </div>
+
+    <div class="card" id="result" hidden></div>
+
+    <div class="card">
+      <h2 style="margin-top:0;font-size:1.15rem"><span data-v="tax.incomeYear">115</span> 年度課稅級距</h2>
+      <table id="bracketTable" class="bracket"></table>
+      <p class="note" style="margin-top:10px">應納稅額 ＝ 綜合所得淨額 × 稅率 － 累進差額</p>
+    </div>
+
+    <p class="note">
+      依財政部公告的 <span data-v="tax.incomeYear">115</span> 年度免稅額、扣除額與課稅級距計算。基本生活費 115 年度尚未公告，暫用 <span data-v="tax.basicLiving">213,000</span> 元。
+      幼兒學前、長期照顧、房屋租金特別扣除額有排富規定（適用稅率 20% 以上等情形不能扣），本工具已自動判斷。
+      房屋租金特別扣除額與列舉的購屋借款利息只能擇一。本工具僅供參考，實際稅額以財政部報稅系統計算為準。
+    </p>
+
+    <div class="card article" id="article"><h2>綜所稅怎麼算？免稅額、扣除額、級距一次搞懂</h2>
+<p>綜合所得稅的計算其實只有一條公式：<strong>（全年所得 － 免稅額 － 扣除額）× 稅率 － 累進差額</strong>。看懂每一項，就知道自己為什麼要繳或可以退。</p>
+
+<h3>單身上班族，年薪多少以下免稅？</h3>
+<p>以 <span data-v="tax.incomeYear">115</span> 年度為例：免稅額 <span data-v="tax.exemption">101,000</span> 元＋標準扣除額 <span data-v="tax.standard">136,000</span> 元＋薪資所得特別扣除額 <span data-v="tax.salaryDeduction">227,000</span> 元，合計 <strong>464,000 元</strong>。單身、只有薪資收入的人，全年薪資在這個金額以下不用繳稅。</p>
+<div class="example">例：單身，全年薪資 800,000 元<br>淨額 ＝ 800,000 － 101,000 － 136,000 － 227,000 ＝ 336,000 元<br>稅額 ＝ 336,000 × 5% ＝ 16,800 元</div>
+
+<h3>可以省稅的扣除項目</h3>
+<ul>
+  <li><strong>扶養親屬</strong>：每扶養 1 人多 1 個免稅額，70 歲以上的直系尊親屬免稅額多 5 成。</li>
+  <li><strong>房屋租金特別扣除額</strong>：租屋自住每年最多扣 <span data-v="tax.rent">180,000</span> 元，可以和標準扣除額一起用。</li>
+  <li><strong>幼兒學前特別扣除額</strong>：6 歲以下子女，第 1 名 15 萬元，第 2 名起每人 22.5 萬元。</li>
+  <li><strong>長期照顧特別扣除額</strong>：符合長照需要的家人，每人 <span data-v="tax.longTermCare">180,000</span> 元。</li>
+  <li><strong>勞退自提</strong>：自提的金額直接從薪資所得扣除，不算在給付總額裡。</li>
+</ul>
+<p>幼兒學前、長照、房租這三項有排富規定，適用稅率 20% 以上的人不能扣。</p>
+
+<h3>夫妻合併申報一定比較貴嗎？</h3>
+<p>不一定。夫妻要合併申報，但可以選擇「薪資分開計稅」：把其中一人的薪資拿出來單獨算，避免合併後跳到較高的稅率級距。財政部報稅系統會自動選最低的方式，本工具也會幫你比較。</p>
+
+<h3>報稅時間與退稅</h3>
+<p>每年 5 月申報前一年度的所得。平常薪資和年終被預扣的稅，報稅時會抵減；扣太多就退稅，退稅款通常在 7、8 月入帳。</p>
+<p class="updated">資料更新：<span data-v="UPDATED">2026-10-18</span>｜本文僅供參考，實際以主管機關規定為準。</p>
+    </div>
+
+    <footer class="site-footer">
+      <p class="footer-links"><a href="about.html">關於本站</a>｜<a href="privacy.html">隱私權政策</a></p>
+      <div id="stats"></div>
+    </footer>
+  </main>
+  </div>
+  <script src="counter.js"></script>
+  <script src="nav.js?v=6"></script>
+  <script src="share.js?v=1"></script>
+
+  <script>
+    const $ = id => document.getElementById(id);
+    const num = id => Math.max(0, Number($(id).value) || 0);
+    const fmt = TW.fmt;
+    const T = TW.tax;
+
+    const married = () => document.querySelector('input[name="married"]:checked').value === "1";
+    document.querySelectorAll('input[name="married"]').forEach(el => el.addEventListener("change", () => {
+      $("spouseRow").hidden = !married();
+      $("self70").max = married() ? 2 : 1;
+    }));
+
+    // 級距表
+    let lo = 0;
+    $("bracketTable").innerHTML = T.brackets.map(([hi, rate, diff]) => {
+      const range = hi === Infinity ? `${fmt(lo + 1)} 元以上` : `${lo ? fmt(lo + 1) : 0}～${fmt(hi)} 元`;
+      lo = hi;
+      return `<tr><td>${range}</td><td>${rate * 100}%（累進差額 ${fmt(diff)}）</td></tr>`;
+    }).join("");
+
+    function taxOf(net) {
+      if (net <= 0) return { tax: 0, rate: 0 };
+      const [, rate, diff] = T.brackets.find(([hi]) => net <= hi);
+      return { tax: Math.max(0, Math.round(net * rate - diff)), rate };
+    }
+
+    // 計算一個「申報單位」（全部合併，或扣掉分開計稅者後的其餘部分）
+    function compute(p) {
+      const exemptions = p.persons * T.exemption + p.persons70 * (T.exemption70 - T.exemption);
+      const standard = p.married ? T.standardMarried : T.standard;
+      const general = Math.max(standard, p.itemized);
+      const usedItemized = p.itemized > standard;
+      const salaryDed = p.salaries.reduce((s, x) => s + Math.min(x, T.salaryDeduction), 0);
+      const savings = Math.min(p.interest, T.savingsDeduction);
+      const disability = p.disabled * T.disabilityDeduction;
+      const education = p.college * T.educationDeduction;
+      const preschool = p.kids > 0 ? T.preschool[0] + (p.kids - 1) * T.preschool[1] : 0;
+      const ltc = p.ltc * T.longTermCare;
+      const rent = Math.min(p.rent, T.rent);
+
+      const run = withRich => {
+        const pre = withRich ? preschool : 0, l = withRich ? ltc : 0, r = withRich ? rent : 0;
+        const compare = exemptions + general + savings + disability + education + pre + l + r;
+        const basicGap = Math.max(0, T.basicLiving * p.persons - compare);
+        const net = Math.max(0, p.income - exemptions - general - salaryDed - savings - disability - education - pre - l - r - basicGap);
+        return { net, basicGap, pre, l, r };
+      };
+      // 排富：扣除後適用稅率 20% 以上，不能扣幼兒學前、長照、房租
+      let res = run(true);
+      let excluded = false;
+      if ((res.pre || res.l || res.r) && taxOf(res.net).rate >= 0.2) { res = run(false); excluded = true; }
+      const t = taxOf(res.net);
+      return { ...res, ...t, exemptions, general, usedItemized, salaryDed, savings, disability, education, excluded };
+    }
+
+    $("calcBtn").addEventListener("click", () => {
+      const box = $("result");
+      box.hidden = false;
+      const m = married();
+      const s1 = num("salary1"), o1 = num("other1");
+      const s2 = m ? num("salary2") : 0, o2 = m ? num("other2") : 0;
+      if (!s1 && !o1 && !s2 && !o2) { box.innerHTML = '<p class="error">請輸入全年收入。</p>'; return; }
+
+      const self70 = Math.min(num("self70"), m ? 2 : 1);
+      const base = {
+        married: m,
+        persons: (m ? 2 : 1) + num("dep") + num("dep70"),
+        persons70: self70 + num("dep70"),
+        itemized: num("itemized"), rent: num("rent"), interest: Math.min(num("interest"), o1 + o2),
+        disabled: num("disabled"), kids: num("kids"), ltc: num("ltc"), college: num("college")
+      };
+
+      // 方式一：全部合併
+      const all = compute({ ...base, income: s1 + o1 + s2 + o2, salaries: [s1, s2] });
+      const options = [{ name: "全部合併計稅", tax: all.tax, detail: all }];
+
+      // 方式二：薪資分開計稅（本人或配偶的薪資單獨計算）
+      if (m) {
+        for (const [who, sal, otherSal, otherInc] of [["配偶", s2, s1, o1 + o2], ["本人", s1, s2, o1 + o2]]) {
+          if (!sal) continue;
+          const sepNet = Math.max(0, sal - T.exemption - Math.min(sal, T.salaryDeduction));
+          const sep = taxOf(sepNet);
+          const rest = compute({ ...base, persons: base.persons - 1, persons70: base.persons70,
+            income: otherSal + otherInc, salaries: [otherSal] });
+          options.push({ name: `${who}薪資分開計稅`, tax: sep.tax + rest.tax, detail: rest, sepNet, sepTax: sep.tax, sepRate: sep.rate });
+        }
+      }
+      const best = options.reduce((a, b) => (b.tax < a.tax ? b : a));
+      const withheld = num("withheld");
+      const diff = best.tax - withheld;
+      const d = all;
+
+      box.innerHTML = `
+        <div>應納稅額約</div>
+        <div class="total">${fmt(best.tax)} 元</div>
+        ${withheld ? `<p><strong>${diff > 0 ? `報稅時要補繳約 ${fmt(diff)} 元` : diff < 0 ? `報稅後可退稅約 ${fmt(-diff)} 元` : "已扣的稅剛好等於應納稅額"}</strong>（已扣繳 ${fmt(withheld)} 元）</p>` : ""}
+        ${options.length > 1 ? `<p>最划算的方式：<strong>${best.name}</strong>（報稅系統會自動幫你選）</p>
+          <table>${options.map(o => `<tr><td>${o.name}</td><td>${fmt(o.tax)} 元</td></tr>`).join("")}</table>` : ""}
+        <h3 style="font-size:1rem;margin:18px 0 6px">全部合併的計算明細</h3>
+        <table>
+          <tr><td>綜合所得總額</td><td>${fmt(s1 + o1 + s2 + o2)} 元</td></tr>
+          <tr><td>免稅額（${base.persons} 人${base.persons70 ? `，其中 70 歲以上 ${base.persons70} 人` : ""}）</td><td>－${fmt(d.exemptions)} 元</td></tr>
+          <tr><td>${d.usedItemized ? "列舉扣除額" : "標準扣除額"}</td><td>－${fmt(d.general)} 元</td></tr>
+          <tr><td>薪資所得特別扣除額</td><td>－${fmt(d.salaryDed)} 元</td></tr>
+          ${d.savings ? `<tr><td>儲蓄投資特別扣除額</td><td>－${fmt(d.savings)} 元</td></tr>` : ""}
+          ${d.disability ? `<tr><td>身心障礙特別扣除額</td><td>－${fmt(d.disability)} 元</td></tr>` : ""}
+          ${d.education ? `<tr><td>教育學費特別扣除額（每人上限 ${fmt(T.educationDeduction)}）</td><td>－${fmt(d.education)} 元</td></tr>` : ""}
+          ${d.pre ? `<tr><td>幼兒學前特別扣除額</td><td>－${fmt(d.pre)} 元</td></tr>` : ""}
+          ${d.l ? `<tr><td>長期照顧特別扣除額</td><td>－${fmt(d.l)} 元</td></tr>` : ""}
+          ${d.r ? `<tr><td>房屋租金特別扣除額</td><td>－${fmt(d.r)} 元</td></tr>` : ""}
+          ${d.basicGap ? `<tr><td>基本生活費差額</td><td>－${fmt(d.basicGap)} 元</td></tr>` : ""}
+          <tr class="sum"><td>綜合所得淨額</td><td>${fmt(d.net)} 元</td></tr>
+          <tr><td>適用稅率</td><td>${d.rate * 100}%</td></tr>
+          <tr><td>應納稅額</td><td>${fmt(d.tax)} 元</td></tr>
+        </table>
+        ${d.excluded ? '<p class="note">適用稅率達 20%，依排富規定不能扣幼兒學前、長期照顧、房屋租金特別扣除額。</p>' : ""}
+        ${d.usedItemized && base.rent ? '<p class="note">如果列舉扣除額裡有購屋借款利息，就不能再扣房屋租金特別扣除額，兩者只能擇一。</p>' : ""}
+        ${T.basicLivingPending ? `<p class="note">基本生活費暫用 ${fmt(T.basicLiving)} 元，財政部公告 115 年度金額後會更新。</p>` : ""}
+      `;
+    });
+  </script>
+</body>
+</html>

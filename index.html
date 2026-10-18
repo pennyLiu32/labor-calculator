@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>勞工權益計算機｜薪資、加班費、特休、資遣費、離職預告期試算</title>
   <meta name="description" content="免費的勞工權益試算工具：加班費、特休天數、資遣費、離職預告期等，依勞基法規定快速計算。">
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="style.css?v=6">
+  <script src="data.js?v=1"></script>
 </head>
 <body>
   <div class="layout">
@@ -16,12 +17,18 @@
         <nav>
           <a href="index.html" class="nav-home active" aria-current="page"><span>首頁</span></a>
           <details class="nav-group" open>
+            <summary>年終與報稅</summary>
+            <a href="year-end.html"><span>年終獎金試算</span><small>勞工、公務員、警消、軍人</small></a>
+            <a href="income-tax.html"><span>綜所稅試算</span><small>報稅要繳多少、會不會退稅</small></a>
+          </details>
+          <details class="nav-group" open>
             <summary>一般勞工</summary>
             <a href="overtime.html"><span>薪資與加班費試算</span><small>當月薪水、加班費</small></a>
             <a href="annual-leave.html"><span>特休天數試算</span><small>依到職日算特休</small></a>
             <a href="severance.html"><span>資遣費試算</span><small>勞退新制資遣費</small></a>
             <a href="notice-period.html"><span>離職預告期試算</span><small>最晚哪天提離職</small></a>
             <a href="resources.html"><span>被資遣後可以申請什麼？</span><small>失業給付與職訓</small></a>
+            <a href="labor-pension.html"><span>勞保年金＋勞退試算</span><small>退休後每月可以領多少</small></a>
           </details>
           <details class="nav-group" open>
             <summary>軍人</summary>
@@ -31,7 +38,7 @@
           <details class="nav-group" open>
             <summary>警消</summary>
             <a href="police-fire.html"><span>警消轉職資源</span><small>離職前的退撫權益、轉職方向</small></a>
-            <a href="police-retire.html"><span>警消退休權益</span><small>危勞 55 歲退休條件、年改現況</small></a>
+            <a href="police-retire.html"><span>警消退休權益</span><small>危勞降齡退休條件、年改現況</small></a>
           </details>
           <details class="nav-group" open>
             <summary>公務員</summary>
@@ -50,7 +57,19 @@
     </aside>
   <main>
     <h1>勞工權益計算機</h1>
-    <p class="sub">依勞基法規定，快速試算你的權益。</p>
+    <p class="sub">勞工、軍人、警消、公務員的薪資、年終、退休與轉職，依最新法規快速試算。</p>
+
+    <h2 class="home-sec">年終與報稅</h2>
+
+    <a class="card tool" href="year-end.html">
+      <h2>年終獎金試算</h2>
+      <p>勞工、公務員、警消、軍人都適用：年終、考績獎金扣完稅和二代健保，實際入帳多少。</p>
+    </a>
+
+    <a class="card tool" href="income-tax.html">
+      <h2>綜所稅試算</h2>
+      <p>輸入全年薪資與扶養人數，算出報稅要繳多少、會不會退稅，自動比較夫妻薪資分開計稅。</p>
+    </a>
 
     <h2 class="home-sec">一般勞工</h2>
 
@@ -79,6 +98,11 @@
       <p>試算失業給付，依你過去的產業找出適合的職業訓練與政府補助。</p>
     </a>
 
+    <a class="card tool" href="labor-pension.html">
+      <h2>勞保年金＋勞退試算</h2>
+      <p>退休後每月可以領多少？勞保老年年金、勞退月退休金一次算，還能比較幾歲領最划算。</p>
+    </a>
+
     <h2 class="home-sec">軍人</h2>
 
     <a class="card tool" href="military.html">
@@ -100,7 +124,7 @@
 
     <a class="card tool" href="police-retire.html">
       <h2>警消退休權益</h2>
-      <p>危勞職務 55 歲自願退休條件檢核、月退休金規則與年改最新現況。</p>
+      <p>危勞降齡自願退休條件檢核、月退休金規則與年改最新現況。</p>
     </a>
 
     <h2 class="home-sec">公務員</h2>
@@ -133,6 +157,6 @@
   </main>
   </div>
   <script src="counter.js"></script>
-  <script src="nav.js?v=5"></script>
+  <script src="nav.js?v=6"></script>
 </body>
 </html>

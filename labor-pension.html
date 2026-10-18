@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>勞保年金＋勞退試算｜退休後每月可以領多少？勞保老年年金、勞退月退休金一次算｜勞工權益計算機</title>
+  <meta name="description" content="輸入勞保年資、平均月投保薪資與勞退提繳狀況，試算勞保老年年金（含提前減給、延後增給）、舊制一次請領比較，以及勞退個人專戶 60 歲累積金額與月退休金，算出退休後每月大概可以領多少。">
+  <link rel="stylesheet" href="style.css?v=6">
+  <script src="data.js?v=1"></script>
+  <style>
+    .section-title { font-size: 1.05rem; margin: 22px 0 2px; }
+    .section-title:first-child { margin-top: 0; }
+    tr.sum td { font-weight: 700; border-bottom: 2px solid var(--border); }
+    .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    @media (max-width: 560px) { .row3 { grid-template-columns: 1fr; } }
+    .sec { font-size: 1.1rem; margin: 0 0 8px; }
+    .item h3 { margin: 0 0 6px; font-size: 1.05rem; }
+    .item p { margin: 6px 0 0; }
+    .tag { display: inline-block; font-size: 0.8rem; padding: 2px 8px; border-radius: 999px; margin-left: 6px; vertical-align: middle; }
+    .ok { background: #dcfce7; color: #166534; }
+    .no { background: #fee2e2; color: #991b1b; }
+    .item + .item { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+    a { color: var(--primary); }
+  </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "勞保老年年金怎麼算？",
+     "acceptedAnswer": {"@type": "Answer", "text": "勞保局用兩個公式計算，擇優發給：A 式＝平均月投保薪資 × 年資 × 0.775% ＋ 3,000 元；B 式＝平均月投保薪資 × 年資 × 1.55%。平均月投保薪資取加保期間最高 60 個月的平均，年資要滿 15 年才能領年金。"}},
+    {"@type": "Question", "name": "勞保年金幾歲可以領？",
+     "acceptedAnswer": {"@type": "Answer", "text": "1962 年（民國 51 年）以後出生的人，法定請領年齡是 65 歲。最多可以提前 5 年請領，每提前 1 年減給 4%；也可以延後最多 5 年，每延後 1 年增給 4%。"}},
+    {"@type": "Question", "name": "勞退可以領多少？",
+     "acceptedAnswer": {"@type": "Answer", "text": "勞退新制是個人專戶，雇主每月至少提繳工資的 6%，自己也可以再自提最多 6%。年滿 60 歲可以請領，勞退年資滿 15 年可以選擇月領或一次領，未滿 15 年只能一次領。月領金額依專戶累積金額、平均餘命和利率計算。"}}
+  ]
+}
+  </script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <a class="brand" href="index.html">勞工權益計算機</a>
+      <details class="nav-wrap" open>
+        <summary class="nav-toggle">☰ 選單<span class="nav-current">勞保年金＋勞退試算</span></summary>
+        <nav>
+          <a href="index.html" class="nav-home"><span>首頁</span></a>
+          <details class="nav-group">
+            <summary>年終與報稅</summary>
+            <a href="year-end.html"><span>年終獎金試算</span><small>勞工、公務員、警消、軍人</small></a>
+            <a href="income-tax.html"><span>綜所稅試算</span><small>報稅要繳多少、會不會退稅</small></a>
+          </details>
+          <details class="nav-group" open>
+            <summary>一般勞工</summary>
+            <a href="overtime.html"><span>薪資與加班費試算</span><small>當月薪水、加班費</small></a>
+            <a href="annual-leave.html"><span>特休天數試算</span><small>依到職日算特休</small></a>
+            <a href="severance.html"><span>資遣費試算</span><small>勞退新制資遣費</small></a>
+            <a href="notice-period.html"><span>離職預告期試算</span><small>最晚哪天提離職</small></a>
+            <a href="resources.html"><span>被資遣後可以申請什麼？</span><small>失業給付與職訓</small></a>
+            <a href="labor-pension.html" class="active" aria-current="page"><span>勞保年金＋勞退試算</span><small>退休後每月可以領多少</small></a>
+          </details>
+          <details class="nav-group">
+            <summary>軍人</summary>
+            <a href="military.html"><span>退伍軍人轉職資源</span><small>退輔會補助與輔導期限</small></a>
+            <a href="veteran-benefits.html"><span>榮民權益與補助</span><small>就醫、子女教育、急難救助</small></a>
+          </details>
+          <details class="nav-group">
+            <summary>警消</summary>
+            <a href="police-fire.html"><span>警消轉職資源</span><small>離職前的退撫權益、轉職方向</small></a>
+            <a href="police-retire.html"><span>警消退休權益</span><small>危勞降齡退休條件、年改現況</small></a>
+          </details>
+          <details class="nav-group">
+            <summary>公務員</summary>
+            <a href="civil-salary.html"><span>公務員薪資試算</span><small>依職等俸級算本俸與扣款</small></a>
+            <a href="civil-leave.html"><span>公務員休假天數試算</span><small>公務人員請假規則</small></a>
+            <a href="civil-retire.html"><span>公務員退休權益</span><small>退休條件檢核、年改現況</small></a>
+            <a href="civil-career.html"><span>退休後轉職資源與補助</span><small>再任限制、中高齡職訓</small></a>
+          </details>
+          <details class="nav-group">
+            <summary>其他</summary>
+            <a href="about.html"><span>關於本站</span></a>
+            <a href="privacy.html"><span>隱私權政策</span></a>
+          </details>
+        </nav>
+      </details>
+    </aside>
+  <main>
+    <h1>勞保年金＋勞退試算</h1>
+    <p class="sub">台灣勞工退休有兩筆錢：勞保老年給付和勞退個人專戶。填入你的狀況，算出退休後每月大概可以領多少。</p>
+
+    <div class="card">
+      <h2 class="section-title">基本資料</h2>
+      <div class="row2">
+        <div><label for="age">目前年齡</label><input id="age" type="number" min="15" max="80" placeholder="例如 35"></div>
+        <div><label for="salary">目前月薪（元）</label><input id="salary" type="number" min="0" placeholder="例如 42000"></div>
+      </div>
+
+      <h2 class="section-title">勞保</h2>
+      <div class="row2">
+        <div><label for="liYears">到退休時預計的勞保年資（年）</label><input id="liYears" type="number" min="0" max="50" step="0.5" placeholder="例如 30"></div>
+        <div><label for="claimAge">打算幾歲開始領勞保年金</label>
+          <select id="claimAge">
+            <option value="60">60 歲（提前 5 年，減 20%）</option>
+            <option value="61">61 歲（減 16%）</option>
+            <option value="62">62 歲（減 12%）</option>
+            <option value="63">63 歲（減 8%）</option>
+            <option value="64">64 歲（減 4%）</option>
+            <option value="65" selected>65 歲（法定請領年齡）</option>
+            <option value="66">66 歲（增 4%）</option>
+            <option value="67">67 歲（增 8%）</option>
+            <option value="68">68 歲（增 12%）</option>
+            <option value="69">69 歲（增 16%）</option>
+            <option value="70">70 歲（延後 5 年，增 20%）</option>
+          </select>
+        </div>
+      </div>
+      <label for="avgInsured">最高 60 個月的平均月投保薪資（元，選填）</label>
+      <input id="avgInsured" type="number" min="0" placeholder="不填會用目前月薪對應的投保薪資">
+      <p class="note" style="margin:6px 0 0">勞保投保薪資上限 <span data-v="laborIns.max">45,800</span> 元，月薪再高也以上限計算。可到勞保局 e 化服務系統查詢自己的投保紀錄。</p>
+      <details class="hint">
+        <summary>2008 年底以前就有勞保年資？（可比較舊制一次請領）</summary>
+        <p>2008 年 12 月 31 日以前就有勞保年資的人，退休時可以選擇年金，或舊制的「一次請領老年給付」。</p>
+        <label class="check"><input type="checkbox" id="oldSystem"> 我有 2008 年以前的勞保年資</label>
+        <div class="row2">
+          <div><label for="avg36">退休前 3 年平均月投保薪資（選填）</label><input id="avg36" type="number" min="0" placeholder="不填同上"></div>
+          <div><label for="after60">其中 60 歲以後的年資（年，選填）</label><input id="after60" type="number" min="0" step="0.5" placeholder="例如 0"></div>
+        </div>
+      </details>
+
+      <h2 class="section-title">勞退（個人專戶）</h2>
+      <div class="row2">
+        <div><label for="balance">目前專戶累積金額（元，選填）</label><input id="balance" type="number" min="0" placeholder="例如 300000"></div>
+        <div><label for="lpYears">目前勞退年資（年，選填）</label><input id="lpYears" type="number" min="0" step="0.5" placeholder="例如 10"></div>
+      </div>
+      <div class="row3">
+        <div><label for="selfRate">勞退自提</label>
+          <select id="selfRate">
+            <option value="0">不自提</option><option value="0.01">1%</option><option value="0.02">2%</option>
+            <option value="0.03">3%</option><option value="0.04">4%</option><option value="0.05">5%</option><option value="0.06">6%</option>
+          </select>
+        </div>
+        <div><label for="ret">預估年報酬率（%）</label><input id="ret" type="number" step="0.1" value="3"></div>
+        <div><label for="raise">預估每年調薪（%）</label><input id="raise" type="number" step="0.1" value="1"></div>
+      </div>
+      <p class="note" style="margin:6px 0 0">專戶餘額可以在勞保局 e 化服務系統或 App 查詢。勞退基金近年長期平均報酬約 3%～4%，但每年起伏很大；法律保證不低於 2 年期定存利率。</p>
+
+      <button id="calcBtn">開始計算</button>
+    </div>
+
+    <div id="result" hidden></div>
+
+    <p class="note">
+      勞保依勞工保險條例第 58 條之 1、58 條之 2 計算（<span data-v="YEAR">2026</span> 年起法定請領年齡 65 歲）。勞退月退休金依勞保局方式估算：平均餘命 <span data-v="laborPension.lifeYears">23</span> 年、利率 <span data-v="laborPension.annuityRate" data-f="pct">1.1473%</span>，實際每季發放。
+      未來薪資、投保薪資、報酬率都是假設值，結果只是估計。實際金額以勞保局核定為準。
+    </p>
+
+    <div class="card article" id="article"><h2>勞保年金和勞退差在哪？退休金一次搞懂</h2>
+<p>很多人以為「勞保」和「勞退」是同一筆錢，其實它們是兩個完全不同的制度，退休時可以兩筆都領。</p>
+
+<h3>勞保老年年金：社會保險，看年資和投保薪資</h3>
+<p>勞保是保險，每個月繳保費，退休時依年資和投保薪資領年金。公式有兩個，勞保局會自動選比較高的：</p>
+<ul>
+  <li>A 式：平均月投保薪資 × 年資 × 0.775% ＋ 3,000 元</li>
+  <li>B 式：平均月投保薪資 × 年資 × 1.55%</li>
+</ul>
+<p>平均月投保薪資取加保期間最高的 60 個月平均，上限 <span data-v="laborIns.max">45,800</span> 元。年資要滿 15 年才能領年金，未滿 15 年只能領一次金。</p>
+<div class="example">例：平均月投保薪資 42,000 元，年資 30 年<br>A 式 ＝ 42,000 × 30 × 0.775% ＋ 3,000 ＝ 12,765 元<br>B 式 ＝ 42,000 × 30 × 1.55% ＝ 19,530 元 → 每月領 19,530 元</div>
+
+<h3>幾歲領最划算？</h3>
+<p>1962 年以後出生的人，法定請領年齡是 65 歲。可以提前最多 5 年領，每提前 1 年少 4%；也可以延後最多 5 年，每延後 1 年多 4%。開始領之後比例就固定。身體狀況好、還有其他收入的人，延後領可以拿比較多；需要現金或健康狀況不佳的人，提前領也合理。</p>
+
+<h3>勞退：存在你自己帳戶裡的錢</h3>
+<p>勞退新制是個人專戶，雇主每月至少提繳工資的 6%，你也可以自提最多 6%。這筆錢由勞動基金運用，法律保證收益不低於 2 年期定存利率，60 歲可以請領。勞退年資滿 15 年可以選月領或一次領，未滿 15 年只能一次領。</p>
+
+<h3>自提勞退划算嗎？</h3>
+<p>自提的金額可以從當年度薪資所得中全額扣除，等於直接少繳所得稅。對適用 12% 以上稅率的人特別划算；但自提的錢要到 60 歲才能領，短期內需要用錢的人要考慮清楚。</p>
+
+<h3>怎麼查自己的年資和專戶餘額？</h3>
+<p>到勞保局 e 化服務系統，用自然人憑證或健保卡登入，就能查詢勞保投保紀錄、平均月投保薪資和勞退個人專戶餘額，把數字填進上面的工具就能算得更準。</p>
+<p class="updated">資料更新：<span data-v="UPDATED">2026-10-18</span>｜本文僅供參考，實際以主管機關規定為準。</p>
+    </div>
+
+    <footer class="site-footer">
+      <p class="footer-links"><a href="about.html">關於本站</a>｜<a href="privacy.html">隱私權政策</a></p>
+      <div id="stats"></div>
+    </footer>
+  </main>
+  </div>
+  <script src="counter.js"></script>
+  <script src="nav.js?v=6"></script>
+  <script src="share.js?v=1"></script>
+
+  <script>
+    const $ = id => document.getElementById(id);
+    const num = id => Math.max(0, Number($(id).value) || 0);
+    const fmt = TW.fmt;
+    const A = TW.laborAnnuity, LP = TW.laborPension;
+
+    function item(title, tag, body) {
+      const t = tag === true ? '<span class="tag ok">可以領</span>' : tag === false ? '<span class="tag no">不符合</span>' : "";
+      return `<div class="item"><h3>${title}${t}</h3>${body}</div>`;
+    }
+
+    // 勞退提繳工資：依月提繳工資分級表，簡化為「實際月薪，最高 15 萬」
+    const lpWage = s => Math.min(s, LP.maxWage);
+
+    $("calcBtn").addEventListener("click", () => {
+      const box = $("result");
+      box.hidden = false;
+      const age = num("age"), salary = num("salary");
+      if (!age || !salary) { box.innerHTML = '<div class="card"><p class="error">請輸入目前年齡和月薪。</p></div>'; return; }
+
+      // ── 勞保老年年金 ──
+      const years = num("liYears");
+      const avg = Math.min(num("avgInsured") || TW.gradeOf(salary, TW.laborIns.grades), TW.laborIns.max);
+      const claimAge = Number($("claimAge").value);
+      const adjYears = Math.max(-A.maxAdjustYears, Math.min(A.maxAdjustYears, claimAge - A.claimAge));
+      const factor = 1 + adjYears * A.adjustPerYear;
+      const fA = avg * years * A.rateA + A.plusA;
+      const fB = avg * years * A.rateB;
+      const baseMonthly = Math.round(Math.max(fA, fB));
+      const annuity = Math.round(baseMonthly * factor);
+      const eligible = years >= A.minYears;
+
+      let li = "";
+      if (!years) {
+        li = item("勞保老年給付", null, "<p>沒有填勞保年資，略過勞保計算。</p>");
+      } else if (eligible) {
+        li = item("勞保老年年金", true, `
+          <div class="total">每月約 ${fmt(annuity)} 元</div>
+          <table>
+            <tr><td>A 式：${fmt(avg)} × ${years} 年 × 0.775% ＋ 3,000</td><td>${fmt(fA)} 元</td></tr>
+            <tr><td>B 式：${fmt(avg)} × ${years} 年 × 1.55%</td><td>${fmt(fB)} 元</td></tr>
+            <tr><td>擇優（65 歲請領金額）</td><td>${fmt(baseMonthly)} 元</td></tr>
+            ${adjYears ? `<tr><td>${claimAge} 歲請領（${adjYears < 0 ? "減給" : "增給"} ${Math.abs(adjYears) * 4}%）</td><td>${fmt(annuity)} 元</td></tr>` : ""}
+          </table>
+          <p class="note">${fB > fA ? "年資較長，B 式比較划算。" : "A 式多了 3,000 元，年資較短的人通常 A 式比較高。"}一旦開始領，減給或增給比例就固定，不會再改。</p>`);
+      } else {
+        const lump = Math.round(avg * years);
+        li = item("勞保老年一次金", null, `
+          <p>勞保年資未滿 ${A.minYears} 年，不能領年金，只能在 ${A.claimAge} 歲時請領<strong>老年一次金</strong>：</p>
+          <div class="total">約 ${fmt(lump)} 元</div>
+          <p class="note">${fmt(avg)} × ${years} 年。還差 ${(A.minYears - years).toFixed(1).replace(/\.0$/, "")} 年就可以領年金。</p>`);
+      }
+
+      // 舊制一次請領比較
+      if (years && $("oldSystem").checked) {
+        const avg36 = Math.min(num("avg36") || avg, TW.laborIns.max);
+        const after60 = Math.min(num("after60"), 5, years);
+        const before60 = years - num("after60") > 0 ? years - Math.min(num("after60"), years) : 0;
+        let months = Math.min(before60, 15) * 1 + Math.max(0, before60 - 15) * 2;
+        months = Math.min(months, 45) + after60;
+        months = Math.min(months, 50);
+        const lumpOld = Math.round(avg36 * months);
+        const breakEven = eligible && annuity ? (lumpOld / annuity / 12) : 0;
+        li += item("比較：舊制一次請領老年給付", null, `
+          <div class="total">一次約 ${fmt(lumpOld)} 元</div>
+          <p>${fmt(avg36)} × ${months.toFixed(1).replace(/\.0$/, "")} 個月（年資 15 年以內每年 1 個月、超過的部分每年 2 個月，60 歲前最多 45 個月；60 歲以後的年資最多計 5 年，合計最多 50 個月）。</p>
+          ${breakEven ? `<p>年金領 <strong>${breakEven.toFixed(1)} 年</strong>就超過一次領的金額。以國人平均餘命來看，多數人選年金比較划算，但也要考慮自己的健康與資金需求。</p>` : ""}
+          <p class="note">舊制一次請領有年齡和年資條件，選了一次領就不能再領年金，請先向勞保局確認資格。</p>`);
+      }
+
+      // ── 勞退 ──
+      const yearsTo60 = Math.max(0, LP.claimAge - age);
+      const r = Number($("ret").value || 0) / 100;
+      const g = Number($("raise").value || 0) / 100;
+      const selfRate = Number($("selfRate").value);
+      let bal = num("balance");
+      let wage = salary;
+      const mr = Math.pow(1 + r, 1 / 12) - 1;
+      let contrib = 0;
+      for (let y = 0; y < yearsTo60; y++) {
+        const monthly = lpWage(wage) * (LP.employerRate + selfRate);
+        for (let m = 0; m < 12; m++) { bal = bal * (1 + mr) + monthly; contrib += monthly; }
+        wage *= 1 + g;
+      }
+      const lpYearsAt60 = num("lpYears") + yearsTo60;
+      const i = LP.annuityRate / 12, n = LP.lifeYears * 12;
+      const lpMonthly = Math.round(bal * i / (1 - Math.pow(1 + i, -n)));
+      const canMonthly = lpYearsAt60 >= LP.monthlyMinYears;
+
+      const lp = item("勞退個人專戶", null, `
+        <div class="total">60 歲時累積約 ${fmt(bal)} 元</div>
+        <table>
+          <tr><td>目前餘額</td><td>${fmt(num("balance"))} 元</td></tr>
+          <tr><td>未來 ${yearsTo60} 年提繳（雇主 6%${selfRate ? `＋自提 ${selfRate * 100}%` : ""}）</td><td>${fmt(contrib)} 元</td></tr>
+          <tr><td>投資收益（年報酬 ${(r * 100).toFixed(1)}%）</td><td>${fmt(bal - num("balance") - contrib)} 元</td></tr>
+        </table>
+        ${canMonthly
+          ? `<p style="margin-top:10px">勞退年資到 60 歲約 ${lpYearsAt60} 年，可以選月領：<strong>每月約 ${fmt(lpMonthly)} 元</strong>（每季發放一次），或一次領 ${fmt(bal)} 元。</p>`
+          : `<p style="margin-top:10px">勞退年資到 60 歲約 ${lpYearsAt60} 年，未滿 ${LP.monthlyMinYears} 年，只能<strong>一次領</strong> ${fmt(bal)} 元。${num("lpYears") ? "" : "（沒填目前勞退年資，以 0 年計算）"}</p>`}
+        ${selfRate ? `<p class="note">自提的部分每年可以從薪資所得中扣除，自提 ${selfRate * 100}% 每年約少繳 ${fmt(lpWage(salary) * selfRate * 12 * 0.05)}～${fmt(lpWage(salary) * selfRate * 12 * 0.12)} 元所得稅（依你的稅率）。</p>` : '<p class="note">想多存一點，可以考慮自提：自提金額可以從當年度薪資所得中全額扣除，等於邊存退休金邊節稅。</p>'}`);
+
+      // ── 合計 ──
+      const liMonthly = years && eligible ? annuity : 0;
+      const lpM = canMonthly ? lpMonthly : 0;
+      const totalMonthly = liMonthly + lpM;
+      const ratio = salary ? totalMonthly / salary : 0;
+
+      box.innerHTML = `
+        <div class="card">
+          <h2 class="sec">退休後每月約可領</h2>
+          <div class="total">${fmt(totalMonthly)} 元</div>
+          <table>
+            <tr><td>勞保老年年金（${claimAge} 歲起）</td><td>${liMonthly ? fmt(liMonthly) + " 元" : "—"}</td></tr>
+            <tr><td>勞退月退休金（60 歲起）</td><td>${lpM ? fmt(lpM) + " 元" : "—"}</td></tr>
+          </table>
+          ${totalMonthly ? `<p>約是目前月薪的 <strong>${Math.round(ratio * 100)}%</strong>。一般建議退休後每月收入至少要有退休前的 6～7 成，不足的部分可以靠自提勞退或其他投資補足。</p>` : ""}
+          <p class="note">以上是用目前的錢估算，沒有扣除物價上漲。勞保年金每年會依物價指數調整（累計成長 5% 時）。</p>
+        </div>
+        <div class="card">${li}</div>
+        <div class="card">${lp}</div>`;
+    });
+  </script>
+</body>
+</html>

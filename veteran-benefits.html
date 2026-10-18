@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>榮民權益與補助查詢｜就醫、子女教育、急難救助、就養｜勞工權益計算機</title>
   <meta name="description" content="榮民與第二類退除役官兵可以向榮民服務處申請哪些補助？依身分、有無職業、家庭經濟與子女就學狀況，列出健保補助、子女教育補助、急難救助、三節慰問、公費安養等項目與金額。">
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="style.css?v=6">
+  <script src="data.js?v=1"></script>
   <style>
     .item { margin: 0 0 14px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
     .item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
@@ -29,12 +30,18 @@
         <nav>
           <a href="index.html" class="nav-home"><span>首頁</span></a>
           <details class="nav-group">
+            <summary>年終與報稅</summary>
+            <a href="year-end.html"><span>年終獎金試算</span><small>勞工、公務員、警消、軍人</small></a>
+            <a href="income-tax.html"><span>綜所稅試算</span><small>報稅要繳多少、會不會退稅</small></a>
+          </details>
+          <details class="nav-group">
             <summary>一般勞工</summary>
             <a href="overtime.html"><span>薪資與加班費試算</span><small>當月薪水、加班費</small></a>
             <a href="annual-leave.html"><span>特休天數試算</span><small>依到職日算特休</small></a>
             <a href="severance.html"><span>資遣費試算</span><small>勞退新制資遣費</small></a>
             <a href="notice-period.html"><span>離職預告期試算</span><small>最晚哪天提離職</small></a>
             <a href="resources.html"><span>被資遣後可以申請什麼？</span><small>失業給付與職訓</small></a>
+            <a href="labor-pension.html"><span>勞保年金＋勞退試算</span><small>退休後每月可以領多少</small></a>
           </details>
           <details class="nav-group" open>
             <summary>軍人</summary>
@@ -44,7 +51,7 @@
           <details class="nav-group">
             <summary>警消</summary>
             <a href="police-fire.html"><span>警消轉職資源</span><small>離職前的退撫權益、轉職方向</small></a>
-            <a href="police-retire.html"><span>警消退休權益</span><small>危勞 55 歲退休條件、年改現況</small></a>
+            <a href="police-retire.html"><span>警消退休權益</span><small>危勞降齡退休條件、年改現況</small></a>
           </details>
           <details class="nav-group">
             <summary>公務員</summary>
@@ -124,6 +131,34 @@
       依國軍退除役官兵輔導委員會公告整理（2026 年 10 月），三節慰問依年度預算核發，公費安養等項目需經審核。
       實際資格與金額以退輔會及各地榮民服務處公告為準，本工具僅供參考。
     </p>
+    <div class="card article" id="article"><h2>榮民有哪些福利？就醫、子女教育、急難救助一次看</h2>
+<p>榮民的福利會因為「有沒有工作」「家庭經濟狀況」而不同。很多榮民和家屬不知道自己可以申請哪些補助，以下整理常見項目。</p>
+
+<h3>就醫：有職、無職差很多</h3>
+<ul>
+  <li><strong>有職榮民</strong>：到榮總、榮民醫院等退輔會醫療機構看診免掛號費，健保部分負擔全額補助；2026 年 10 月 1 日起，到國軍醫院的部分負擔也可補助。</li>
+  <li><strong>無職榮民</strong>：以榮民身分投保健保，本人保費全額補助；到任何健保特約醫療院所的部分負擔都補助。</li>
+</ul>
+
+<h3>子女教育</h3>
+<p>榮民子女就學可以申請教育補助，從國中小到大學都有，另有依成績審核的獎學金。低收入或中低收入家庭的國中小子女，還有假日午餐補助。</p>
+
+<h3>急難救助與生活照顧</h3>
+<ul>
+  <li><strong>急難救助</strong>：遇到意外、重病等導致生活困難時可以申請。</li>
+  <li><strong>三節慰問</strong>：依年度預算核發，低收入戶優先。</li>
+  <li><strong>公費就養</strong>：年滿 61 歲或因戰、因公傷殘，沒有固定職業且家庭收入符合標準的榮民，每月可領就養給付，也可申請進住榮譽國民之家。</li>
+</ul>
+
+<h3>怎麼申請？</h3>
+<ol>
+  <li>帶身分證和榮民證（或權益卡）到戶籍所在地的縣市榮民服務處。</li>
+  <li>不確定要帶什麼文件，先打免付費電話 0800-212-154 詢問。</li>
+  <li>家屬也可以代為詢問，尤其是榮民過世後的喪葬慰問，要在 6 個月內申請。</li>
+</ol>
+<p class="updated">資料更新：<span data-v="UPDATED">2026-10-18</span>｜本文僅供參考，實際以主管機關規定為準。</p>
+    </div>
+
     <footer class="site-footer">
       <p class="footer-links"><a href="about.html">關於本站</a>｜<a href="privacy.html">隱私權政策</a></p>
       <div id="stats"></div>
@@ -131,7 +166,8 @@
   </main>
   </div>
   <script src="counter.js"></script>
-  <script src="nav.js?v=5"></script>
+  <script src="nav.js?v=6"></script>
+  <script src="share.js?v=1"></script>
 
   <script>
     // eligible: true 符合、false 不符合、"maybe" 可能符合（需審核）、null 不標示

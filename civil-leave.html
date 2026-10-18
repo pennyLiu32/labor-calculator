@@ -5,14 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>公務員休假天數試算｜公務人員請假規則｜勞工權益計算機</title>
   <meta name="description" content="依公務人員請假規則第7條，輸入初任到職日，算出今年有幾天休假、休假年資，以及下次休假天數增加的年度。初任二月以後到職者自動按比例計算。">
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="style.css?v=6">
+  <script src="data.js?v=1"></script>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
     {"@type": "Question", "name": "公務人員第一年有休假嗎？",
-     "acceptedAnswer": {"@type": "Answer", "text": "到職當年沒有休假。1 月到職的人，次年起有 7 天；2 月以後到職的人，次年 1 月依到職當月到年底的在職月數比例計算。"}},
+     "acceptedAnswer": {"@type": "Answer", "text": "2026 年起，到職當年就有 3 天休假（2025 年以前到職當年沒有）。1 月到職的人，次年起有 7 天；2 月以後到職的人，次年 1 月依到職當月到年底的在職月數比例計算 7 天，算出來不到 3 天的，以 3 天計。"}},
     {"@type": "Question", "name": "按比例算出來有小數怎麼辦？",
      "acceptedAnswer": {"@type": "Answer", "text": "依公務人員請假規則第 3 條，尾數未滿半日以半日計，超過半日未滿一日以一日計。"}},
     {"@type": "Question", "name": "調到其他機關，休假會重新計算嗎？",
@@ -30,12 +31,18 @@
         <nav>
           <a href="index.html" class="nav-home"><span>首頁</span></a>
           <details class="nav-group">
+            <summary>年終與報稅</summary>
+            <a href="year-end.html"><span>年終獎金試算</span><small>勞工、公務員、警消、軍人</small></a>
+            <a href="income-tax.html"><span>綜所稅試算</span><small>報稅要繳多少、會不會退稅</small></a>
+          </details>
+          <details class="nav-group">
             <summary>一般勞工</summary>
             <a href="overtime.html"><span>薪資與加班費試算</span><small>當月薪水、加班費</small></a>
             <a href="annual-leave.html"><span>特休天數試算</span><small>依到職日算特休</small></a>
             <a href="severance.html"><span>資遣費試算</span><small>勞退新制資遣費</small></a>
             <a href="notice-period.html"><span>離職預告期試算</span><small>最晚哪天提離職</small></a>
             <a href="resources.html"><span>被資遣後可以申請什麼？</span><small>失業給付與職訓</small></a>
+            <a href="labor-pension.html"><span>勞保年金＋勞退試算</span><small>退休後每月可以領多少</small></a>
           </details>
           <details class="nav-group">
             <summary>軍人</summary>
@@ -45,7 +52,7 @@
           <details class="nav-group">
             <summary>警消</summary>
             <a href="police-fire.html"><span>警消轉職資源</span><small>離職前的退撫權益、轉職方向</small></a>
-            <a href="police-retire.html"><span>警消退休權益</span><small>危勞 55 歲退休條件、年改現況</small></a>
+            <a href="police-retire.html"><span>警消退休權益</span><small>危勞降齡退休條件、年改現況</small></a>
           </details>
           <details class="nav-group" open>
             <summary>公務員</summary>
@@ -90,6 +97,7 @@
 
     <div class="card">
       <table>
+        <tr><td>到職當年、按比例計算不足 3 天者（2026 年起）</td><td>3 天</td></tr>
         <tr><td>至年終服務滿 1 年（第 2 年起）</td><td>7 天</td></tr>
         <tr><td>滿 3 年（第 4 年起）</td><td>14 天</td></tr>
         <tr><td>滿 6 年（第 7 年起）</td><td>21 天</td></tr>
@@ -102,7 +110,7 @@
       <h2>常見問題</h2>
       <details>
         <summary>公務人員第一年有休假嗎？</summary>
-        <p>到職當年沒有休假。1 月到職的人，次年起有 7 天；2 月以後到職的人，次年 1 月依到職當月到年底的在職月數比例計算。</p>
+        <p>2026 年起，到職當年就有 3 天休假（2025 年以前到職當年沒有）。1 月到職的人，次年起有 7 天；2 月以後到職的人，次年 1 月依到職當月到年底的在職月數比例計算 7 天，算出來不到 3 天的，以 3 天計。</p>
       </details>
       <details>
         <summary>按比例算出來有小數怎麼辦？</summary>
@@ -115,9 +123,33 @@
     </div>
 
     <p class="note">
-      依公務人員請假規則（2025 年 9 月 18 日修正）計算，以曆年制、年資連續且未中斷為準。
+      依公務人員請假規則（2025 年 9 月 18 日修正，2026 年 1 月 1 日施行）計算，2026 年起未滿 3 天的年度一律給 3 天；以曆年制、年資連續且未中斷為準。
       教師、約聘僱人員等適用不同規定。本工具僅供參考，實際天數以服務機關人事單位核定為準。
     </p>
+    <div class="card article" id="article"><h2>公務員休假怎麼算？2026 年起新進人員也有假</h2>
+<p>公務員的休假（類似勞工的特休）依《公務人員請假規則》計算，採曆年制：每年 1 月 1 日依「到前一年年底的年資」核給天數。</p>
+
+<h3>休假天數</h3>
+<ul>
+  <li>至年終服務滿 1 年（第 2 年起）：7 天</li>
+  <li>滿 3 年（第 4 年起）：14 天</li>
+  <li>滿 6 年（第 7 年起）：21 天</li>
+  <li>滿 9 年（第 10 年起）：28 天</li>
+  <li>滿 14 年（第 15 年起）：30 天</li>
+</ul>
+
+<h3>2026 年新制：到職當年也有 3 天</h3>
+<p>以前新進人員到職當年沒有休假。修正後的請假規則從 2026 年 1 月 1 日施行，到職當年給 3 天休假；第 2 年依比例算出來不到 3 天的，也以 3 天計。</p>
+<div class="example">例：2026 年 10 月 1 日到職<br>2026 年：3 天（新制）<br>2027 年：7 × 3/12 ＝ 1.75 天 → 以 3 天計<br>2028 年：至 2027 年底年資 1 年 3 個月 → 7 天</div>
+
+<h3>身心調適假</h3>
+<p>2025 年 10 月 10 日起，公務員每年有 3 天身心調適假，可以按小時請、不用證明，併入事假計算，機關不能拒絕或因此給不好的考績。</p>
+
+<h3>轉調機關，休假會歸零嗎？</h3>
+<p>不會。轉調並繼續任職，或退休、辭職後再任且年資銜接的，休假接續核給。曾任軍職、公營事業、行政法人等年資，也可能可以併計休假年資，以人事單位核定為準。</p>
+<p class="updated">資料更新：<span data-v="UPDATED">2026-10-18</span>｜本文僅供參考，實際以主管機關規定為準。</p>
+    </div>
+
     <footer class="site-footer">
       <p class="footer-links"><a href="about.html">關於本站</a>｜<a href="privacy.html">隱私權政策</a></p>
       <div id="stats"></div>
@@ -125,7 +157,8 @@
   </main>
   </div>
   <script src="counter.js"></script>
-  <script src="nav.js?v=5"></script>
+  <script src="nav.js?v=6"></script>
+  <script src="share.js?v=1"></script>
 
   <script>
     // 依「至年終服務滿幾年」決定休假天數（第 7 條第 1 項）
@@ -151,7 +184,18 @@
     // 選填調整：可併計的其他年資（+）、留職停薪等不計的月數（−）
     let adj = { extra: 0, deduct: 0 };
 
+    // 2026 年起：休假不足 3 天者，每年給 3 天（請假規則第 10 條第 3 項）
+    const MIN_FROM = 2026;
+    function withMin(year, r) {
+      if (year >= MIN_FROM && r.days < 3) return { ...r, days: 3, min3: true };
+      return r;
+    }
+
     function leaveFor(year, hireYear, hireMonth) {
+      return withMin(year, rawLeave(year, hireYear, hireMonth));
+    }
+
+    function rawLeave(year, hireYear, hireMonth) {
       if (year <= hireYear) return { days: 0, months: 0, prorated: false };
 
       // 到職當月算起，到前一年年底的在職月數，再加減調整
@@ -197,9 +241,12 @@
 
       let explain;
       if (year === hireYear) {
-        explain = "到職當年沒有休假，次年 1 月起才開始核給。";
+        explain = year >= MIN_FROM
+          ? "到職當年給 3 天休假（2026 年起的新規定），次年 1 月起依年資核給。"
+          : "到職當年沒有休假（2026 年起才改為給 3 天），次年 1 月起才開始核給。";
       } else if (r.prorated) {
-        explain = `${hireMonth} 月到職，按 ${13 - hireMonth}／12 的比例計算 7 天，尾數依規定進位。`;
+        explain = `${hireMonth} 月到職，按 ${13 - hireMonth}／12 的比例計算 7 天，尾數依規定進位。`
+          + (r.min3 ? "算出來不到 3 天，2026 年起以 3 天計。" : "");
       } else {
         explain = `至 ${year - 1} 年底的休假年資為 ${fmtMonths(r.months)}`
           + (adj.extra || adj.deduct ? `（已加計 ${adj.extra} 個月、扣除 ${adj.deduct} 個月）` : "") + "。";

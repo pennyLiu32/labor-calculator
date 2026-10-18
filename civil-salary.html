@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>公務員薪資試算｜依職等俸級算本俸、加給與公保退撫健保扣款｜勞工權益計算機</title>
   <meta name="description" content="選擇職等與俸級自動算出本俸，自行輸入專業加給、主管加給等，並依現行費率試算公保、退撫基金、健保自付額，算出公務人員每月實領薪資。">
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="style.css?v=6">
+  <script src="data.js?v=1"></script>
   <style>
     .section-title { font-size: 1.05rem; margin: 22px 0 2px; }
     .section-title:first-child { margin-top: 0; }
@@ -22,7 +23,7 @@
     {"@type": "Question", "name": "公務員本俸怎麼算？",
      "acceptedAnswer": {"@type": "Answer", "text": "每個職等、俸級對應一個俸點，再依俸點折算標準換算成金額：160 點以下每點 83.6 元、161～220 點每點 54.1 元、221～790 點每點 76.6 元、791 點以上每點 327.7 元，不足 10 元以 10 元計。"}},
     {"@type": "Question", "name": "公保和退撫基金每月扣多少？",
-     "acceptedAnswer": {"@type": "Answer", "text": "公保以本俸為保險俸給，參加退撫基金的公務人員費率 7.22%（2025 年起），自付 35%。退撫基金以本俸的 2 倍乘上提撥費率（法定 12%～18%），自付 35%。"}},
+     "acceptedAnswer": {"@type": "Answer", "text": "公保以本俸為保險俸給，自付 35%。2025 年起不適用公保年金的人（一般是 2023 年 6 月 30 日以前初任、參加退撫基金者）費率 7.22%；2023 年 7 月 1 日以後初任（個人專戶制）適用公保年金，費率較高，請依薪資單修改。退撫基金以本俸的 2 倍乘上提撥費率（法定 12%～18%），自付 35%。"}},
     {"@type": "Question", "name": "專業加給為什麼要自己填？",
      "acceptedAnswer": {"@type": "Answer", "text": "專業加給依職系分成多種表別，金額不同，2026 年 7 月 1 日起又再調整，所以請以薪資單或人事單位通知的金額為準。"}}
   ]
@@ -38,12 +39,18 @@
         <nav>
           <a href="index.html" class="nav-home"><span>首頁</span></a>
           <details class="nav-group">
+            <summary>年終與報稅</summary>
+            <a href="year-end.html"><span>年終獎金試算</span><small>勞工、公務員、警消、軍人</small></a>
+            <a href="income-tax.html"><span>綜所稅試算</span><small>報稅要繳多少、會不會退稅</small></a>
+          </details>
+          <details class="nav-group">
             <summary>一般勞工</summary>
             <a href="overtime.html"><span>薪資與加班費試算</span><small>當月薪水、加班費</small></a>
             <a href="annual-leave.html"><span>特休天數試算</span><small>依到職日算特休</small></a>
             <a href="severance.html"><span>資遣費試算</span><small>勞退新制資遣費</small></a>
             <a href="notice-period.html"><span>離職預告期試算</span><small>最晚哪天提離職</small></a>
             <a href="resources.html"><span>被資遣後可以申請什麼？</span><small>失業給付與職訓</small></a>
+            <a href="labor-pension.html"><span>勞保年金＋勞退試算</span><small>退休後每月可以領多少</small></a>
           </details>
           <details class="nav-group">
             <summary>軍人</summary>
@@ -53,7 +60,7 @@
           <details class="nav-group">
             <summary>警消</summary>
             <a href="police-fire.html"><span>警消轉職資源</span><small>離職前的退撫權益、轉職方向</small></a>
-            <a href="police-retire.html"><span>警消退休權益</span><small>危勞 55 歲退休條件、年改現況</small></a>
+            <a href="police-retire.html"><span>警消退休權益</span><small>危勞降齡退休條件、年改現況</small></a>
           </details>
           <details class="nav-group" open>
             <summary>公務員</summary>
@@ -94,12 +101,12 @@
         <div><label for="sup">主管加給（選填）</label><input id="sup" type="number" min="0" placeholder="非主管填 0"></div>
         <div><label for="area">地域加給（選填）</label><input id="area" type="number" min="0" placeholder="例如 0"></div>
       </div>
-      <p class="note" style="margin:6px 0 0">專業加給依職系分很多種表，2026 年 7 月 1 日起專業加給、主管加給又各增加 2,000 元，請以薪資單金額為準。</p>
+      <p class="note" style="margin:6px 0 0">專業加給依職系分很多種表，2026 年 7 月 1 日起專業加給、主管加給各增加 2,000 元，請以薪資單金額為準。行政院已通過 2027 年軍公教調薪 4%，正式實施後本工具會更新本俸表。</p>
 
       <h2 class="section-title">扣款</h2>
       <div class="row3">
-        <div><label for="gibRate">公保費率（%）</label><input id="gibRate" type="number" step="0.01" value="7.22"></div>
-        <div><label for="pensionRate">退撫提撥費率（%）</label><input id="pensionRate" type="number" step="0.5" value="15"></div>
+        <div><label for="gibRate">公保費率（%）</label><input id="gibRate" type="number" step="0.01" value="7.22" data-default="civil.gibRate"></div>
+        <div><label for="pensionRate">退撫提撥費率（%）</label><input id="pensionRate" type="number" step="0.5" value="15" data-default="civil.pensionRate"></div>
         <div>
           <label for="deps">健保眷屬人數</label>
           <select id="deps">
@@ -127,7 +134,7 @@
       </details>
       <details>
         <summary>公保和退撫基金每月扣多少？</summary>
-        <p>公保以本俸為保險俸給，參加退撫基金的公務人員費率 7.22%（2025 年起），自付 35%。退撫基金以本俸的 2 倍乘上提撥費率（法定 12%～18%），自付 35%。</p>
+        <p>公保以本俸為保險俸給，自付 35%。2025 年起不適用公保年金的人（一般是 2023 年 6 月 30 日以前初任、參加退撫基金者）費率 7.22%；2023 年 7 月 1 日以後初任（個人專戶制）適用公保年金，費率較高，請依薪資單修改。退撫基金以本俸的 2 倍乘上提撥費率（法定 12%～18%），自付 35%。</p>
       </details>
       <details>
         <summary>專業加給為什麼要自己填？</summary>
@@ -137,9 +144,31 @@
 
     <p class="note">
       本俸依公務人員俸表的俸點，以 2025 年 1 月 1 日起的俸點折算標準計算（2026 年本俸未調整）。
-      健保依 2026 年投保金額分級表，費率 5.17%、自付 30%，眷屬最多計 3 人；投保金額以本俸加各項加給計算。
+      健保依 <span data-v="YEAR">2026</span> 年投保金額分級表，費率 <span data-v="health.rate" data-f="pct">5.17%</span>、自付 30%，眷屬最多計 3 人；投保金額以本俸加各項加給計算。
       未計入所得稅預扣。本工具僅供參考，實際金額以服務機關發放為準。
     </p>
+    <div class="card article" id="article"><h2>公務員薪水怎麼算？本俸、加給、扣款一次看懂</h2>
+<p>公務員的薪水由「本俸＋專業加給＋主管加給＋其他加給」組成。本俸看職等與俸級，加給看職系與職務，扣款則有公保、退撫和健保。</p>
+
+<h3>本俸：職等、俸級、俸點</h3>
+<p>每個職等的每個俸級，都對應一個「俸點」，再依俸點折算標準換成金額：160 點以下每點 83.6 元、161～220 點每點 54.1 元、221～790 點每點 76.6 元、791 點以上每點 327.7 元，不足 10 元以 10 元計。</p>
+<div class="example">例：委任第 5 職等本俸一級，330 俸點<br>本俸 ＝ 160 × 83.6 ＋ 60 × 54.1 ＋ 110 × 76.6 ≈ 25,050 元</div>
+
+<h3>加給：差距最大的部分</h3>
+<p>專業加給依職系分成多種表，同樣職等在不同機關可能差好幾千元。主管加給依職等與主管職務給付，地域加給則給偏遠、離島地區人員。<span data-v="civil.allowanceRaise">2026 年 7 月 1 日起專業加給、主管加給各增加 2,000 元</span>。</p>
+
+<h3>每月扣款</h3>
+<ul>
+  <li><strong>公保</strong>：本俸 × 費率 × 自付 35%。</li>
+  <li><strong>退撫基金</strong>：本俸 × 2 × 提撥費率 × 自付 35%。</li>
+  <li><strong>健保</strong>：依本俸加各項加給對應投保金額，費率 5.17%，自付 30%，有眷屬再加計。</li>
+</ul>
+
+<h3>每年怎麼調薪？</h3>
+<p>公務員除了每年考績晉級（甲等、乙等晉一級），還有行政院通案調薪。行政院已通過 2027 年軍公教調薪 4%，實施後本俸表會跟著調整。</p>
+<p class="updated">資料更新：<span data-v="UPDATED">2026-10-18</span>｜本文僅供參考，實際以主管機關規定為準。</p>
+    </div>
+
     <footer class="site-footer">
       <p class="footer-links"><a href="about.html">關於本站</a>｜<a href="privacy.html">隱私權政策</a></p>
       <div id="stats"></div>
@@ -147,44 +176,26 @@
   </main>
   </div>
   <script src="counter.js"></script>
-  <script src="nav.js?v=5"></script>
+  <script src="nav.js?v=6"></script>
+  <script src="share.js?v=1"></script>
 
   <script>
     // 公務人員俸表：各職等的本俸、年功俸俸點（公務人員俸給法附表）
-    const PAY_TABLE = {
-      1:  { base: [160, 170, 180, 190, 200, 210, 220], merit: [230, 240, 250, 260, 270, 280] },
-      2:  { base: [230, 240, 250, 260, 270], merit: [280, 290, 300, 310, 320, 330] },
-      3:  { base: [280, 290, 300, 310, 320], merit: [330, 340, 350, 360, 370, 385, 400, 415] },
-      4:  { base: [300, 310, 320, 330, 340], merit: [350, 360, 370, 385, 400, 415, 430, 445] },
-      5:  { base: [330, 340, 350, 360, 370], merit: [385, 400, 415, 430, 445, 460, 475, 490, 505, 520] },
-      6:  { base: [385, 400, 415, 430, 445], merit: [460, 475, 490, 505, 520, 535] },
-      7:  { base: [415, 430, 445, 460, 475], merit: [490, 505, 520, 535, 550, 590] },
-      8:  { base: [445, 460, 475, 490, 505], merit: [520, 535, 550, 590, 610, 630] },
-      9:  { base: [490, 505, 520, 535, 550], merit: [590, 610, 630, 650, 670, 690, 710] },
-      10: { base: [590, 610, 630, 650, 670], merit: [690, 710, 730, 750, 780] },
-      11: { base: [610, 630, 650, 670, 690], merit: [710, 730, 750, 780, 790] },
-      12: { base: [650, 670, 690, 710, 730], merit: [750, 780, 790, 800] },
-      13: { base: [710, 730, 750], merit: [780, 790, 800] },
-      14: { base: [800], merit: [] }
-    };
+    const PAY_TABLE = TW.civil.payTable;
     const RANK = g => g <= 5 ? "委任" : g <= 9 ? "薦任" : "簡任";
     const NUM = ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十"];
 
     // 俸點折算標準（2025 年 1 月 1 日起）
     function pointsToPay(p) {
-      let pay = Math.min(p, 160) * 83.6;
-      if (p > 160) pay += (Math.min(p, 220) - 160) * 54.1;
-      if (p > 220) pay += (Math.min(p, 790) - 220) * 76.6;
-      if (p > 790) pay += (p - 790) * 327.7;
+      let pay = 0, prev = 0;
+      for (const [cap, rate] of TW.civil.pointRates) {
+        if (p > prev) pay += (Math.min(p, cap) - prev) * rate;
+        prev = cap;
+      }
       return Math.ceil(Math.round(pay * 10) / 100) * 10;   // 不足 10 元以 10 元計
     }
 
-    // 健保投保金額分級表（2026 年）
-    const HEALTH_GRADES = [29500, 30300, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800,
-      48200, 50600, 53000, 55400, 57800, 60800, 63800, 66800, 69800, 72800, 76500, 80200, 83900, 87600,
-      92100, 96600, 101100, 105600, 110100, 115500, 120900, 126300, 131700, 137100, 142500, 147900, 150000,
-      156400, 162800, 169200, 175600, 182000, 189500, 197000, 204500, 212000, 219500, 228200, 236900,
-      245600, 254300, 263000, 273000, 283000, 293000, 303000, 313000];
+    const HEALTH_GRADES = TW.health.grades;
     const gradeOf = s => HEALTH_GRADES.find(g => s <= g) || HEALTH_GRADES[HEALTH_GRADES.length - 1];
 
     const gradeSel = document.getElementById("grade");
@@ -231,10 +242,10 @@
       }
 
       const gross = base + pro + sup + area;
-      const gib = Math.round(base * gibRate * 0.35);
-      const pension = Math.round(base * 2 * pensionRate * 0.35);
+      const gib = Math.round(base * gibRate * TW.civil.gibShare);
+      const pension = Math.round(base * 2 * pensionRate * TW.civil.pensionShare);
       const healthBase = gradeOf(gross);
-      const health = Math.round(healthBase * 0.0517 * 0.3) * (1 + deps);
+      const health = Math.round(healthBase * TW.health.rate * TW.health.civilShare) * (1 + deps);
       const net = gross - gib - pension - health - other;
 
       const rows = [
@@ -253,7 +264,7 @@
           <tr><td>健保自付（投保 ${fmt(healthBase)}${deps ? `，含眷屬 ${deps} 人` : ""}）</td><td>－${fmt(health)} 元</td></tr>
           ${other ? `<tr><td>其他扣款</td><td>－${fmt(other)} 元</td></tr>` : ""}
         </table>
-        ${newSystem ? '<p class="note">個人專戶制的提撥方式與比例可能不同，請以薪資單為準。</p>' : ""}
+        ${newSystem ? '<p class="note">個人專戶制的退撫提撥方式不同，公保也適用年金費率（比 7.22% 高），請依薪資單修改上面的費率。</p>' : ""}
         <p class="note">未計入所得稅預扣。</p>
       `;
     });

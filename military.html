@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>退伍軍人轉職資源試算｜退輔會補助、職訓、輔導期限｜勞工權益計算機</title>
   <meta name="description" content="志願役退伍可以申請哪些退輔會資源？輸入服役年資與軍中專長，算出輔導類別、輔導期限，並列出職訓補助、就業津貼、考試進修補助與適合的轉職方向。">
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="style.css?v=6">
+  <script src="data.js?v=1"></script>
   <style>
     .item { margin: 0 0 14px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
     .item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
@@ -28,12 +29,18 @@
         <nav>
           <a href="index.html" class="nav-home"><span>首頁</span></a>
           <details class="nav-group">
+            <summary>年終與報稅</summary>
+            <a href="year-end.html"><span>年終獎金試算</span><small>勞工、公務員、警消、軍人</small></a>
+            <a href="income-tax.html"><span>綜所稅試算</span><small>報稅要繳多少、會不會退稅</small></a>
+          </details>
+          <details class="nav-group">
             <summary>一般勞工</summary>
             <a href="overtime.html"><span>薪資與加班費試算</span><small>當月薪水、加班費</small></a>
             <a href="annual-leave.html"><span>特休天數試算</span><small>依到職日算特休</small></a>
             <a href="severance.html"><span>資遣費試算</span><small>勞退新制資遣費</small></a>
             <a href="notice-period.html"><span>離職預告期試算</span><small>最晚哪天提離職</small></a>
             <a href="resources.html"><span>被資遣後可以申請什麼？</span><small>失業給付與職訓</small></a>
+            <a href="labor-pension.html"><span>勞保年金＋勞退試算</span><small>退休後每月可以領多少</small></a>
           </details>
           <details class="nav-group" open>
             <summary>軍人</summary>
@@ -43,7 +50,7 @@
           <details class="nav-group">
             <summary>警消</summary>
             <a href="police-fire.html"><span>警消轉職資源</span><small>離職前的退撫權益、轉職方向</small></a>
-            <a href="police-retire.html"><span>警消退休權益</span><small>危勞 55 歲退休條件、年改現況</small></a>
+            <a href="police-retire.html"><span>警消退休權益</span><small>危勞降齡退休條件、年改現況</small></a>
           </details>
           <details class="nav-group">
             <summary>公務員</summary>
@@ -122,6 +129,33 @@
       依國軍退除役官兵輔導條例、退輔會「分類分級退輔措施」及「國軍退除役官兵參加職業訓練補助辦法」（2026 年 2 月修正）整理。
       各項補助有申請期限與條件，實際資格以退輔會及各地榮民服務處審核為準，本工具僅供參考。
     </p>
+    <div class="card article" id="article"><h2>退伍後怎麼找工作？退輔會資源完整整理</h2>
+<p>退伍後轉換到民間職場，退輔會（國軍退除役官兵輔導委員會）提供職訓、就業津貼和考試補助。善用這些資源，可以少走很多冤枉路。</p>
+
+<h3>先確認身分：榮民還是第二類退除役官兵？</h3>
+<ul>
+  <li><strong>榮民（第一類）</strong>：志願役服役滿 10 年，或因戰、因公致病傷或身心障礙。</li>
+  <li><strong>第二類退除役官兵</strong>：志願役服役 4 年以上未滿 10 年，在輔導期限內可以使用就業、職訓等資源。</li>
+  <li>志願役未滿 4 年或義務役，原則上改用勞動部的一般勞工資源。</li>
+</ul>
+<p>退伍後要帶身分證和退伍令到戶籍地的榮民服務處辦理身分認定。</p>
+
+<h3>職訓補助與就業津貼</h3>
+<ul>
+  <li><strong>職業訓練補助</strong>：參加退輔會公告的訓練班，榮民累計最高補助 <span data-v="veteran.trainingCap.first">120,000</span> 元，第二類 <span data-v="veteran.trainingCap.second">80,000</span> 元，每年最多申請 2 次，要在開課 7 個工作天前申請。</li>
+  <li><strong>訓後就業津貼</strong>：完成全日制職訓後 6 個月內就業，在同一家公司做滿 3 個月可以申請。</li>
+  <li><strong>推介就業津貼</strong>：由榮民服務處或職訓中心推介就業，做滿 3 個月可以申請。</li>
+</ul>
+<p>注意：訓後就業津貼和推介就業津貼<strong>只能擇一</strong>，兩者合計最多領 12 個月。</p>
+
+<h3>軍中經歷怎麼寫進履歷？</h3>
+<p>把軍中職務翻譯成民間聽得懂的語言。例如「補給士」可以寫成「倉儲物料管理、採購驗收、庫存盤點」；「車輛修護」可以寫成「設備保養維修、故障排除」。再搭配考取的技術士證照，例如堆高機、職業安全衛生業務主管，競爭力會大幅提升。</p>
+
+<h3>想當公務員？</h3>
+<p>服役滿 10 年或因戰、因公致傷病的榮民，可以報考退除役軍人轉任公務人員特考。其他人可以考一般的公務人員考試，並申請退輔會的就業考試進修補助（累計最高 50,000 元）準備。</p>
+<p class="updated">資料更新：<span data-v="UPDATED">2026-10-18</span>｜本文僅供參考，實際以主管機關規定為準。</p>
+    </div>
+
     <footer class="site-footer">
       <p class="footer-links"><a href="about.html">關於本站</a>｜<a href="privacy.html">隱私權政策</a></p>
       <div id="stats"></div>
@@ -129,7 +163,8 @@
   </main>
   </div>
   <script src="counter.js"></script>
-  <script src="nav.js?v=5"></script>
+  <script src="nav.js?v=6"></script>
+  <script src="share.js?v=1"></script>
 
   <script>
     // 第二類退除役官兵：服役年資 → 輔導期限（年）
@@ -223,7 +258,7 @@
 
       if (category === "first") {
         inPeriod = true;
-        trainingCap = 120000;
+        trainingCap = TW.veteran.trainingCap.first;
         html += `<div class="total">第一類退除役官兵（榮民）</div>
           <p>輔導不設期限，可享就學、就業、就醫、就養及服務照顧。</p>
           <p class="note">退伍後請帶身分證和退伍令到榮民服務處辦理身分認定。</p>`;
@@ -232,7 +267,7 @@
         const deadline = new Date(discharge);
         deadline.setFullYear(deadline.getFullYear() + period);
         inPeriod = today <= deadline;
-        trainingCap = 80000;
+        trainingCap = TW.veteran.trainingCap.second;
         html += `<div class="total">第二類退除役官兵</div>
           <p>輔導期限 <strong>${period} 年</strong>，到 <strong>${fmtDate(deadline)}</strong> 為止。
           ${inPeriod ? "目前在輔導期限內，可以申請以下資源。" : "已超過輔導期限，多數退輔會補助無法申請，可改用一般勞工資源。"}</p>
@@ -254,9 +289,9 @@
 
         // 榮民與第二類的就業津貼金額不同
         const first = category === "first";
-        const trainA = first ? "12,000" : "6,000";
-        const trainB = first ? "8,000" : "4,000";
-        const referral = first ? "8,000" : "4,000";
+        const V = TW.veteran;
+        const [trainA, trainB] = (first ? V.afterTraining.first : V.afterTraining.second).map(TW.fmt);
+        const referral = TW.fmt(first ? V.referral.first : V.referral.second);
 
         html += item("訓後就業津貼", inPeriod, `
           <p>完成全日制職訓、6 個月內就業並在同一家公司做滿 3 個月：前 6 個月每月 <strong>${trainA} 元</strong>，之後 6 個月每月 <strong>${trainB} 元</strong>。</p>

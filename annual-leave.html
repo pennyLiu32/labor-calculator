@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>特休天數試算｜勞工權益計算機</title>
   <meta name="description" content="依勞基法第38條，輸入到職日即可算出目前特休天數，以及下次特休增加的日期。">
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="style.css?v=6">
+  <script src="data.js?v=1"></script>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -55,6 +56,11 @@
         <summary class="nav-toggle">☰ 選單<span class="nav-current">特休天數試算</span></summary>
         <nav>
           <a href="index.html" class="nav-home"><span>首頁</span></a>
+          <details class="nav-group">
+            <summary>年終與報稅</summary>
+            <a href="year-end.html"><span>年終獎金試算</span><small>勞工、公務員、警消、軍人</small></a>
+            <a href="income-tax.html"><span>綜所稅試算</span><small>報稅要繳多少、會不會退稅</small></a>
+          </details>
           <details class="nav-group" open>
             <summary>一般勞工</summary>
             <a href="overtime.html"><span>薪資與加班費試算</span><small>當月薪水、加班費</small></a>
@@ -62,6 +68,7 @@
             <a href="severance.html"><span>資遣費試算</span><small>勞退新制資遣費</small></a>
             <a href="notice-period.html"><span>離職預告期試算</span><small>最晚哪天提離職</small></a>
             <a href="resources.html"><span>被資遣後可以申請什麼？</span><small>失業給付與職訓</small></a>
+            <a href="labor-pension.html"><span>勞保年金＋勞退試算</span><small>退休後每月可以領多少</small></a>
           </details>
           <details class="nav-group">
             <summary>軍人</summary>
@@ -71,7 +78,7 @@
           <details class="nav-group">
             <summary>警消</summary>
             <a href="police-fire.html"><span>警消轉職資源</span><small>離職前的退撫權益、轉職方向</small></a>
-            <a href="police-retire.html"><span>警消退休權益</span><small>危勞 55 歲退休條件、年改現況</small></a>
+            <a href="police-retire.html"><span>警消退休權益</span><small>危勞降齡退休條件、年改現況</small></a>
           </details>
           <details class="nav-group">
             <summary>公務員</summary>
@@ -138,6 +145,28 @@
     <p class="note">
       以週年制計算。部分公司採曆年制或會計年度制，天數分配可能不同。本工具僅供參考，實際以公司制度及勞動部規定為準。
     </p>
+    <div class="card article" id="article"><h2>特休怎麼算？到職第一年就有特休嗎？</h2>
+<p>特休（特別休假）是勞基法保障的有薪假，天數依年資增加。很多人不知道到職滿半年就有特休，也不知道沒休完可以換錢。</p>
+
+<h3>特休天數一覽</h3>
+<p>依勞基法第 38 條，在同一雇主或事業單位連續工作滿：6 個月 3 天、1 年 7 天、2 年 10 天、3 年和 4 年各 14 天、5 年到 9 年各 15 天，滿 10 年後每年多 1 天，最多 30 天。</p>
+<div class="example">例：2025 年 3 月 1 日到職<br>2025 年 9 月 1 日（滿半年）→ 3 天<br>2026 年 3 月 1 日（滿 1 年）→ 7 天<br>2027 年 3 月 1 日（滿 2 年）→ 10 天<br>2028 年 3 月 1 日（滿 3 年）→ 14 天</div>
+
+<h3>週年制、曆年制有什麼不同？</h3>
+<p>週年制是每到到職紀念日就給一次特休，最直覺。很多公司為了方便管理採曆年制（每年 1 月 1 日統一給），會先依比例給部分天數。不管哪一種，換算下來的總天數都不能比週年制少。</p>
+
+<h3>特休沒休完怎麼辦？</h3>
+<ul>
+  <li>年度結束時沒休完的天數，公司要<strong>折算工資發給</strong>，以一日工資計算。</li>
+  <li>勞資雙方可以協商把沒休完的天數<strong>遞延到下一年度</strong>，遞延後還是沒休完，一樣要發錢。</li>
+  <li>離職時還沒休的特休，也要折算工資發給。</li>
+</ul>
+
+<h3>特休可以由公司指定日期嗎？</h3>
+<p>不行。特休日期原則上由勞工自己排定，公司有急迫需求時可以和勞工協商調整，但不能片面指定或強迫用特休抵病假、事假。</p>
+<p class="updated">資料更新：<span data-v="UPDATED">2026-10-18</span>｜本文僅供參考，實際以主管機關規定為準。</p>
+    </div>
+
     <footer class="site-footer">
       <p class="footer-links"><a href="about.html">關於本站</a>｜<a href="privacy.html">隱私權政策</a></p>
       <div id="stats"></div>
@@ -145,7 +174,8 @@
   </main>
   </div>
   <script src="counter.js"></script>
-  <script src="nav.js?v=5"></script>
+  <script src="nav.js?v=6"></script>
+  <script src="share.js?v=1"></script>
 
   <script>
     // 依服務月數計算特休天數（勞基法第 38 條）

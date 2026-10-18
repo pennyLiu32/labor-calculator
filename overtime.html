@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>薪資與加班費試算｜當月薪水、平日休息日國定假日加班費｜勞工權益計算機</title>
   <meta name="description" content="試算當月薪水與加班費：輸入本薪，自由新增全勤獎金、職務加給等項目，平日、休息日、國定假日加班依勞基法第24條、第39條自動計算，並可扣除勞健保等項目算出實領金額。">
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="style.css?v=6">
+  <script src="data.js?v=1"></script>
   <style>
     .rows { display: grid; gap: 8px; margin-top: 8px; }
     .row {
@@ -67,6 +68,11 @@
         <summary class="nav-toggle">☰ 選單<span class="nav-current">薪資與加班費試算</span></summary>
         <nav>
           <a href="index.html" class="nav-home"><span>首頁</span></a>
+          <details class="nav-group">
+            <summary>年終與報稅</summary>
+            <a href="year-end.html"><span>年終獎金試算</span><small>勞工、公務員、警消、軍人</small></a>
+            <a href="income-tax.html"><span>綜所稅試算</span><small>報稅要繳多少、會不會退稅</small></a>
+          </details>
           <details class="nav-group" open>
             <summary>一般勞工</summary>
             <a href="overtime.html" class="active" aria-current="page"><span>薪資與加班費試算</span><small>當月薪水、加班費</small></a>
@@ -74,6 +80,7 @@
             <a href="severance.html"><span>資遣費試算</span><small>勞退新制資遣費</small></a>
             <a href="notice-period.html"><span>離職預告期試算</span><small>最晚哪天提離職</small></a>
             <a href="resources.html"><span>被資遣後可以申請什麼？</span><small>失業給付與職訓</small></a>
+            <a href="labor-pension.html"><span>勞保年金＋勞退試算</span><small>退休後每月可以領多少</small></a>
           </details>
           <details class="nav-group">
             <summary>軍人</summary>
@@ -83,7 +90,7 @@
           <details class="nav-group">
             <summary>警消</summary>
             <a href="police-fire.html"><span>警消轉職資源</span><small>離職前的退撫權益、轉職方向</small></a>
-            <a href="police-retire.html"><span>警消退休權益</span><small>危勞 55 歲退休條件、年改現況</small></a>
+            <a href="police-retire.html"><span>警消退休權益</span><small>危勞降齡退休條件、年改現況</small></a>
           </details>
           <details class="nav-group">
             <summary>公務員</summary>
@@ -193,10 +200,41 @@
 
     <p class="note">
       時薪以「（本薪＋算入時薪的加給）÷ 30 ÷ 8」計算，日薪以「÷ 30」計算。例假日原則上不得出勤，本工具不計算。
-      勞健保依 2026 年（115 年）費率與分級表計算：勞保普通事故 11.5%＋就業保險 1%，勞工負擔 20%；健保 5.17%，勞工負擔 30%，眷屬最多計 3 人。
+      勞健保依 <span data-v="YEAR">2026</span> 年費率與分級表計算：勞保普通事故 <span data-v="laborIns.rate" data-f="pct">11.5%</span>＋就業保險 <span data-v="laborIns.empRate" data-f="pct">1%</span>，勞工負擔 <span data-v="laborIns.workerShare" data-f="pct">20%</span>；健保 <span data-v="health.rate" data-f="pct">5.17%</span>，勞工負擔 <span data-v="health.workerShare" data-f="pct">30%</span>，眷屬最多計 3 人。
       以全月投保的全職勞工計算，65 歲以上、部分工時或當月中途加退保者金額不同。
       本工具僅供參考，實際金額以勞動部規定及公司薪資制度為準。
     </p>
+    <div class="card article" id="article"><h2>加班費怎麼算？一次看懂時薪、倍率與常見爭議</h2>
+<p>加班費是勞資爭議最常見的原因之一。只要搞懂「時薪怎麼算」和「不同日子的倍率」，就能自己核對薪資單有沒有少給。</p>
+
+<h3>第一步：算出正確的時薪</h3>
+<p>加班費的時薪要用「經常性工資」計算，不是只看底薪。按月固定發放的職務加給、全勤獎金、伙食津貼（固定發放的）都要算進去，再除以 240（30 天 × 8 小時）。</p>
+<div class="example">例：底薪 36,000 元＋全勤獎金 2,000 元 → 時薪 ＝ 38,000 ÷ 240 ≈ 158.3 元。<br>如果公司只用底薪 36,000 元算時薪（150 元），每小時加班費就少給了。</div>
+
+<h3>第二步：看加班是哪一種日子</h3>
+<ul>
+  <li><strong>平日</strong>：前 2 小時 × 1⅓，第 3、4 小時 × 1⅔。</li>
+  <li><strong>休息日</strong>（通常是週六）：前 2 小時 × 1⅓，第 3～8 小時 × 1⅔，第 9～12 小時 × 2⅔。</li>
+  <li><strong>國定假日、特休日</strong>：8 小時內不論做多久，都加發 1 日工資。</li>
+  <li><strong>例假日</strong>（通常是週日）：原則上不能叫勞工上班，只有天災、事變等突發事件才可以，而且要加倍給薪並補假。</li>
+</ul>
+<div class="example">例：時薪 158.3 元，平日加班 3 小時 ＝ 158.3 × 4/3 × 2 ＋ 158.3 × 5/3 × 1 ≈ 686 元。<br>休息日上班 6 小時 ＝ 158.3 × 4/3 × 2 ＋ 158.3 × 5/3 × 4 ≈ 1,478 元。</div>
+
+<h3>加班的上限</h3>
+<p>正常工時加上加班，一天不能超過 12 小時；一個月加班不能超過 46 小時，經工會或勞資會議同意可以放寬到 54 小時，但每 3 個月不能超過 138 小時。</p>
+
+<h3>常見問題：公司說「責任制」就不用給加班費？</h3>
+<p>不是。只有經勞動部公告、並報地方主管機關核備的特定職務（例如部分主管、專業人員）才適用勞基法第 84 條之 1，一般員工就算合約寫「責任制」，加班一樣要給加班費。</p>
+
+<h3>發現加班費少給怎麼辦？</h3>
+<ol>
+  <li>保留打卡紀錄、排班表、加班申請單、LINE 訊息等證據。</li>
+  <li>先用本工具算出應得金額，和公司人資溝通。</li>
+  <li>溝通無效，可以向地方政府勞工局申訴或申請勞資爭議調解，申訴人的身分會被保密。</li>
+</ol>
+<p class="updated">資料更新：<span data-v="UPDATED">2026-10-18</span>｜本文僅供參考，實際以主管機關規定為準。</p>
+    </div>
+
     <footer class="site-footer">
       <p class="footer-links"><a href="about.html">關於本站</a>｜<a href="privacy.html">隱私權政策</a></p>
       <div id="stats"></div>
@@ -204,7 +242,8 @@
   </main>
   </div>
   <script src="counter.js"></script>
-  <script src="nav.js?v=5"></script>
+  <script src="nav.js?v=6"></script>
+  <script src="share.js?v=1"></script>
 
   <script>
     // ── 加班倍率（勞基法第 24 條）──
@@ -239,20 +278,14 @@
       return extraDay + tierPay(Math.max(0, hours - 8), TIERS.weekday, hourly);
     }
 
-    // ── 2026 年勞健保（115 年 1 月 1 日起）──
-    // 勞保投保薪資分級（全職，第 1～11 級）
-    const LABOR_GRADES = [29500, 30300, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800];
-    // 健保投保金額分級（第 1～58 級）
-    const HEALTH_GRADES = [29500, 30300, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800,
-      48200, 50600, 53000, 55400, 57800, 60800, 63800, 66800, 69800, 72800, 76500, 80200, 83900, 87600,
-      92100, 96600, 101100, 105600, 110100, 115500, 120900, 126300, 131700, 137100, 142500, 147900, 150000,
-      156400, 162800, 169200, 175600, 182000, 189500, 197000, 204500, 212000, 219500, 228200, 236900,
-      245600, 254300, 263000, 273000, 283000, 293000, 303000, 313000];
-    const LABOR_RATE = 0.115 + 0.01;   // 普通事故 11.5% ＋ 就業保險 1%
-    const LABOR_SHARE = 0.2;           // 勞工負擔 20%
-    const HEALTH_RATE = 0.0517;        // 健保費率 5.17%
-    const HEALTH_SHARE = 0.3;          // 勞工負擔 30%
-    const PENSION_MAX = 150000;        // 勞退月提繳工資上限
+    // 勞健保數字都在 data.js（每年更新一次）
+    const LABOR_GRADES = TW.laborIns.grades;
+    const HEALTH_GRADES = TW.health.grades;
+    const LABOR_RATE = TW.laborIns.rate + TW.laborIns.empRate;
+    const LABOR_SHARE = TW.laborIns.workerShare;
+    const HEALTH_RATE = TW.health.rate;
+    const HEALTH_SHARE = TW.health.workerShare;
+    const PENSION_MAX = TW.laborPension.maxWage;
 
     // 找出 >= 薪資的最低級距，超過最高級就用最高級
     function gradeOf(salary, grades) {

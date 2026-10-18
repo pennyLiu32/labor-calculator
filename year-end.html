@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>年終獎金試算｜勞工、公務員、警消、軍人年終與考績獎金、扣稅與二代健保｜勞工權益計算機</title>
+  <meta name="description" content="一次算清楚年終獎金實際入帳多少：勞工依月數或金額計算；軍公教警消依本俸、專業加給、主管加給算 1.5 個月年終工作獎金，加上考績獎金，並扣除 5% 預扣所得稅與二代健保補充保費。">
+  <link rel="stylesheet" href="style.css?v=6">
+  <script src="data.js?v=1"></script>
+  <style>
+    .section-title { font-size: 1.05rem; margin: 22px 0 2px; }
+    .section-title:first-child { margin-top: 0; }
+    tr.sum td { font-weight: 700; border-bottom: 2px solid var(--border); }
+    .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    @media (max-width: 560px) { .row3 { grid-template-columns: 1fr; } }
+  </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "年終獎金要扣稅嗎？",
+     "acceptedAnswer": {"@type": "Answer", "text": "年終獎金屬於薪資所得。單次發放金額達 90,501 元（2026 年標準）時，公司或機關要先預扣 5% 所得稅；未達這個金額不用預扣。預扣的稅不是最後要繳的稅，隔年 5 月報稅時會多退少補。"}},
+    {"@type": "Question", "name": "年終獎金要扣二代健保補充保費嗎？",
+     "acceptedAnswer": {"@type": "Answer", "text": "當年度累計領到的獎金，超過當月健保投保金額 4 倍的部分，要扣 2.11% 補充保費。例如投保金額 45,800 元，全年獎金超過 183,200 元的部分才要扣。"}},
+    {"@type": "Question", "name": "軍公教年終工作獎金怎麼算？",
+     "acceptedAnswer": {"@type": "Answer", "text": "以 12 月的本俸（年功俸）、專業加給、主管職務加給合計，發給 1.5 個月。1 月 31 日以前到職、12 月 1 日仍在職者領全額；2 月以後到職者依在職月數比例計算。考績丙等或受記過以上懲處者不發或減發。"}},
+    {"@type": "Question", "name": "考績獎金可以領幾個月？",
+     "acceptedAnswer": {"@type": "Answer", "text": "公務人員考績甲等發 1 個月俸給總額、乙等發半個月，丙等不發；已達所敘職等年功俸最高俸級者，甲等發 2 個月、乙等發 1.5 個月。國軍志願役考績甲等以上發 1 個月、乙上發半個月，乙等以下不發，已達最高俸級者分別為 2 個月、1.5 個月。"}}
+  ]
+}
+  </script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <a class="brand" href="index.html">勞工權益計算機</a>
+      <details class="nav-wrap" open>
+        <summary class="nav-toggle">☰ 選單<span class="nav-current">年終獎金試算</span></summary>
+        <nav>
+          <a href="index.html" class="nav-home"><span>首頁</span></a>
+          <details class="nav-group" open>
+            <summary>年終與報稅</summary>
+            <a href="year-end.html" class="active" aria-current="page"><span>年終獎金試算</span><small>勞工、公務員、警消、軍人</small></a>
+            <a href="income-tax.html"><span>綜所稅試算</span><small>報稅要繳多少、會不會退稅</small></a>
+          </details>
+          <details class="nav-group">
+            <summary>一般勞工</summary>
+            <a href="overtime.html"><span>薪資與加班費試算</span><small>當月薪水、加班費</small></a>
+            <a href="annual-leave.html"><span>特休天數試算</span><small>依到職日算特休</small></a>
+            <a href="severance.html"><span>資遣費試算</span><small>勞退新制資遣費</small></a>
+            <a href="notice-period.html"><span>離職預告期試算</span><small>最晚哪天提離職</small></a>
+            <a href="resources.html"><span>被資遣後可以申請什麼？</span><small>失業給付與職訓</small></a>
+            <a href="labor-pension.html"><span>勞保年金＋勞退試算</span><small>退休後每月可以領多少</small></a>
+          </details>
+          <details class="nav-group">
+            <summary>軍人</summary>
+            <a href="military.html"><span>退伍軍人轉職資源</span><small>退輔會補助與輔導期限</small></a>
+            <a href="veteran-benefits.html"><span>榮民權益與補助</span><small>就醫、子女教育、急難救助</small></a>
+          </details>
+          <details class="nav-group">
+            <summary>警消</summary>
+            <a href="police-fire.html"><span>警消轉職資源</span><small>離職前的退撫權益、轉職方向</small></a>
+            <a href="police-retire.html"><span>警消退休權益</span><small>危勞降齡退休條件、年改現況</small></a>
+          </details>
+          <details class="nav-group">
+            <summary>公務員</summary>
+            <a href="civil-salary.html"><span>公務員薪資試算</span><small>依職等俸級算本俸與扣款</small></a>
+            <a href="civil-leave.html"><span>公務員休假天數試算</span><small>公務人員請假規則</small></a>
+            <a href="civil-retire.html"><span>公務員退休權益</span><small>退休條件檢核、年改現況</small></a>
+            <a href="civil-career.html"><span>退休後轉職資源與補助</span><small>再任限制、中高齡職訓</small></a>
+          </details>
+          <details class="nav-group">
+            <summary>其他</summary>
+            <a href="about.html"><span>關於本站</span></a>
+            <a href="privacy.html"><span>隱私權政策</span></a>
+          </details>
+        </nav>
+      </details>
+    </aside>
+  <main>
+    <h1>年終獎金試算</h1>
+    <p class="sub">選擇你的身分，算出年終（和考績獎金）扣完稅、二代健保後，實際會入帳多少。</p>
+
+    <div class="card">
+      <h2 class="section-title">你的身分</h2>
+      <div class="seg" id="roleSeg">
+        <label><input type="radio" name="role" value="labor" checked> 一般勞工</label>
+        <label><input type="radio" name="role" value="civil"> 公務員</label>
+        <label><input type="radio" name="role" value="police"> 警察、消防</label>
+        <label><input type="radio" name="role" value="military"> 軍人（志願役）</label>
+      </div>
+
+      <!-- 一般勞工 -->
+      <div id="laborBox">
+        <h2 class="section-title">年終怎麼發？</h2>
+        <div class="seg">
+          <label><input type="radio" name="laborMode" value="months" checked> 幾個月薪水</label>
+          <label><input type="radio" name="laborMode" value="amount"> 直接輸入金額</label>
+        </div>
+        <div class="row2" id="monthsRow">
+          <div><label for="monthly">月薪（元）</label><input id="monthly" type="number" min="0" placeholder="例如 40000"></div>
+          <div><label for="months">年終月數</label><input id="months" type="number" min="0" step="0.1" placeholder="例如 2"></div>
+        </div>
+        <div id="amountRow" hidden>
+          <label for="amount">年終獎金金額（元）</label>
+          <input id="amount" type="number" min="0" placeholder="例如 80000">
+        </div>
+        <p class="note" style="margin:6px 0 0">勞基法沒有規定公司一定要發年終，金額與條件依公司規定或勞動契約。</p>
+      </div>
+
+      <!-- 軍公教警消 -->
+      <div id="govBox" hidden>
+        <h2 class="section-title">12 月的俸給（照薪資單填）</h2>
+        <div class="row3">
+          <div><label for="base">本俸（年功俸）</label><input id="base" type="number" min="0" placeholder="例如 30410"></div>
+          <div><label for="pro">專業加給</label><input id="pro" type="number" min="0" placeholder="例如 28000"></div>
+          <div><label for="sup">主管加給（選填）</label><input id="sup" type="number" min="0" placeholder="非主管填 0"></div>
+        </div>
+        <p class="note" style="margin:6px 0 0" id="govNote">年終工作獎金和考績獎金都以「本俸＋專業加給＋主管加給」計算，地域加給等其他加給不算入年終工作獎金。</p>
+
+        <h2 class="section-title">今年在職情形</h2>
+        <label class="check"><input type="checkbox" id="fullYear" checked> 1 月 31 日以前就已到職，而且 12 月 1 日仍在職</label>
+        <div id="hireRow" hidden>
+          <label for="hireDate">今年的到職日</label>
+          <input id="hireDate" type="date">
+        </div>
+
+        <label for="penalty">今年有沒有懲處或曠職？</label>
+        <select id="penalty">
+          <option value="1">沒有</option>
+          <option value="0.75">受申誡懲戒判決確定（年終發 3/4）</option>
+          <option value="0.6667">平時考核累積記過一次，或曠職 3 日（年終發 2/3）</option>
+          <option value="0.3333">平時考核累積記過二次，或曠職 4 日（年終發 1/3）</option>
+          <option value="0">記過以上懲戒確定，或累積達一大過（年終不發）</option>
+        </select>
+
+        <h2 class="section-title">考績</h2>
+        <div class="row2">
+          <div>
+            <label for="meritType">考績種類</label>
+            <select id="meritType">
+              <option value="full">年終考績（全年在職）</option>
+              <option value="other">另予考績（在職 6 個月以上未滿 1 年）</option>
+              <option value="none">在職未滿 6 個月（沒有考績獎金）</option>
+            </select>
+          </div>
+          <div>
+            <label for="merit">考績等第</label>
+            <select id="merit"></select>
+          </div>
+        </div>
+        <label class="check"><input type="checkbox" id="topStep"> 已經敘到所屬職等（官階）年功俸的最高俸級</label>
+      </div>
+
+      <h2 class="section-title">二代健保（選填）</h2>
+      <div class="row2">
+        <div><label for="insured">健保投保金額（元）</label><input id="insured" type="number" min="0" placeholder="不填會依月薪自動對應"></div>
+        <div><label for="otherBonus">同一年已領的其他獎金</label><input id="otherBonus" type="number" min="0" placeholder="例如三節獎金 10000"></div>
+      </div>
+      <p class="note" style="margin:6px 0 0">年終通常在隔年 1～2 月發放，算在發放那一年。同一年的其他獎金（例如三節、績效獎金）要一起累計。</p>
+
+      <button id="calcBtn">開始計算</button>
+    </div>
+
+    <div class="card" id="result" hidden></div>
+
+    <p class="note">
+      預扣所得稅：單次給付達 <span data-v="withholding.bonusThreshold">90,501</span> 元（<span data-v="YEAR">2026</span> 年標準）扣 5%，未達不扣。
+      二代健保補充保費：全年累計獎金超過投保金額 4 倍的部分 × <span data-v="health.supplementRate" data-f="pct">2.11%</span>。
+      軍公教年終依行政院「軍公教人員年終工作獎金發給注意事項」，考績獎金依公務人員考績法、國軍志願役軍官士官及志願士兵考績作業規定。
+      本工具僅供參考，實際金額以公司、服務機關發放為準。
+    </p>
+
+    <div class="card article" id="article"><h2>年終獎金入帳為什麼比較少？扣稅、二代健保一次看懂</h2>
+<p>每年年終入帳時，常常發現金額跟想像的不一樣。原因通常是預扣所得稅和二代健保補充保費。軍公教還有考績獎金，算法也和勞工不同。</p>
+
+<h3>一般勞工：年終不是法定，但扣稅規則一樣</h3>
+<p>勞基法沒有規定公司一定要發年終，發多少、在職多久才能領，都依公司規定或勞動契約。如果合約或工作規則有寫，公司就要照發。</p>
+
+<h3>預扣 5% 所得稅</h3>
+<p>年終屬於薪資所得。單次發放金額達 <span data-v="withholding.bonusThreshold">90,501</span> 元時，公司要先預扣 5%；未達就不扣。預扣不是最後的稅，隔年 5 月報稅時多退少補，所以被扣了不用緊張。</p>
+
+<h3>二代健保補充保費</h3>
+<p>一年內累計領的獎金，超過當月健保投保金額 4 倍的部分，要扣 <span data-v="health.supplementRate" data-f="pct">2.11%</span>。</p>
+<div class="example">例：投保金額 45,800 元，門檻 ＝ 45,800 × 4 ＝ 183,200 元<br>年終 200,000 元 → (200,000 － 183,200) × 2.11% ≈ 354 元</div>
+
+<h3>軍公教警消：年終工作獎金＋考績獎金</h3>
+<ul>
+  <li><strong>年終工作獎金</strong>：以 12 月的本俸、專業加給、主管加給合計，發 1.5 個月。1 月 31 日以前到職、12 月 1 日仍在職領全額；之後到職的按比例。</li>
+  <li><strong>公務員、警消考績獎金</strong>：甲等 1 個月、乙等半個月、丙等不發；已達最高俸級的甲等 2 個月、乙等 1.5 個月。</li>
+  <li><strong>國軍考績獎金</strong>：甲等以上 1 個月、乙上半個月、乙等以下不發；已達最高俸級分別為 2 個月、1.5 個月。志願役加給不算入計算基準。</li>
+</ul>
+<div class="example">例：公務員本俸 30,410 元＋專業加給 28,000 元，考績甲等<br>年終工作獎金 ＝ 58,410 × 1.5 ＝ 87,615 元<br>考績獎金 ＝ 58,410 × 1 ＝ 58,410 元，合計約 2.5 個月</div>
+
+<h3>什麼情況會少領或領不到？</h3>
+<p>考績丙等以下、年度中受記過以上懲戒確定或平時考核累積一大過，年終工作獎金不發；記過、曠職、申誡則依程度減發 1/3 到 3/4。</p>
+<p class="updated">資料更新：<span data-v="UPDATED">2026-10-18</span>｜本文僅供參考，實際以主管機關規定為準。</p>
+    </div>
+
+    <footer class="site-footer">
+      <p class="footer-links"><a href="about.html">關於本站</a>｜<a href="privacy.html">隱私權政策</a></p>
+      <div id="stats"></div>
+    </footer>
+  </main>
+  </div>
+  <script src="counter.js"></script>
+  <script src="nav.js?v=6"></script>
+  <script src="share.js?v=1"></script>
+
+  <script>
+    const $ = id => document.getElementById(id);
+    const fmt = TW.fmt;
+    const role = () => document.querySelector('input[name="role"]:checked').value;
+    const laborMode = () => document.querySelector('input[name="laborMode"]:checked').value;
+
+    const MERIT_OPTIONS = {
+      civil: [["A", "甲等"], ["B", "乙等"], ["D", "丙等"]],
+      military: [["A", "甲等以上（含甲上）"], ["B", "乙上"], ["C", "乙等"], ["D", "丙等以下"]]
+    };
+
+    function refresh() {
+      const r = role();
+      $("laborBox").hidden = r !== "labor";
+      $("govBox").hidden = r === "labor";
+      $("monthsRow").hidden = laborMode() !== "months";
+      $("amountRow").hidden = laborMode() !== "amount";
+      $("hireRow").hidden = $("fullYear").checked;
+      const opts = MERIT_OPTIONS[r === "military" ? "military" : "civil"];
+      const cur = $("merit").value;
+      $("merit").innerHTML = opts.map(([v, t]) => `<option value="${v}">${t}</option>`).join("");
+      if (opts.some(([v]) => v === cur)) $("merit").value = cur;
+      $("merit").disabled = $("meritType").value === "none";
+      $("govNote").textContent = r === "military"
+        ? "年終工作獎金和考績獎金都以「本俸＋專業加給＋主管加給」計算，志願役加給、地域加給、勤務加給等不算入。"
+        : "年終工作獎金和考績獎金都以「本俸＋專業加給＋主管加給」計算，地域加給等其他加給不算入年終工作獎金。";
+    }
+    document.querySelectorAll('input[name="role"], input[name="laborMode"]').forEach(el => el.addEventListener("change", refresh));
+    ["fullYear", "meritType"].forEach(id => $(id).addEventListener("change", refresh));
+    refresh();
+
+    // 2 月以後到職：依實際在職月數比例，畸零日數以 30 日折算 1 個月
+    function serviceRatio(dateStr) {
+      const d = new Date(dateStr + "T00:00:00");
+      const m = d.getMonth();             // 0 = 1 月
+      if (m === 0) return 1;
+      const daysInMonth = new Date(d.getFullYear(), m + 1, 0).getDate();
+      const firstMonthDays = daysInMonth - d.getDate() + 1;
+      const firstMonth = firstMonthDays >= daysInMonth ? 1 : Math.min(firstMonthDays / 30, 1);
+      return Math.min((11 - m + firstMonth) / 12, 1);
+    }
+
+    $("calcBtn").addEventListener("click", () => {
+      const box = $("result");
+      box.hidden = false;
+      const r = role();
+      const rows = [];
+      let total = 0, monthlyPay = 0, notes = [];
+      let payments = [];   // 每一筆分開發放的獎金（預扣稅分開算）
+
+      if (r === "labor") {
+        if (laborMode() === "months") {
+          monthlyPay = Number($("monthly").value);
+          const months = Number($("months").value);
+          if (!monthlyPay || !months) { box.innerHTML = '<p class="error">請輸入月薪和年終月數。</p>'; return; }
+          total = Math.round(monthlyPay * months);
+          rows.push([`年終獎金（${fmt(monthlyPay)} × ${months} 個月）`, total]);
+        } else {
+          total = Number($("amount").value);
+          if (!total) { box.innerHTML = '<p class="error">請輸入年終獎金金額。</p>'; return; }
+          monthlyPay = Number($("monthly").value) || 0;
+          rows.push(["年終獎金", total]);
+        }
+        payments.push(total);
+      } else {
+        const base = Number($("base").value), pro = Number($("pro").value), sup = Number($("sup").value || 0);
+        if (!base || !pro) { box.innerHTML = '<p class="error">請依 12 月薪資單填寫本俸和專業加給。</p>'; return; }
+        const pay = base + pro + sup;
+        monthlyPay = pay;
+
+        let ratio = 1;
+        if (!$("fullYear").checked) {
+          if (!$("hireDate").value) { box.innerHTML = '<p class="error">請輸入今年的到職日，或勾選「1 月 31 日以前就已到職」。</p>'; return; }
+          ratio = serviceRatio($("hireDate").value);
+        }
+        const penalty = Number($("penalty").value);
+        const yearEnd = Math.round(pay * TW.bonus.yearEndMonths * ratio * penalty);
+        let label = `年終工作獎金（${fmt(pay)} × ${TW.bonus.yearEndMonths} 個月`;
+        if (ratio < 1) label += ` × 在職比例 ${(ratio * 12).toFixed(2)}／12`;
+        if (penalty < 1) label += ` × ${$("penalty").selectedOptions[0].text.match(/發 ([\d/]+)/)?.[1] || penalty}`;
+        label += "）";
+        rows.push([label, yearEnd]);
+        payments.push(yearEnd);
+        if (penalty === 0) notes.push("記過以上懲戒確定或累積一大過，年終工作獎金不發。");
+
+        const type = $("meritType").value;
+        const grade = $("merit").value;
+        let meritMonths = 0;
+        if (type !== "none") {
+          const table = r === "military" ? TW.bonus.militaryMerit : TW.bonus.civilMerit;
+          meritMonths = table[grade][type === "full" && $("topStep").checked ? 1 : 0];
+          if (grade === "C") notes.push("考績乙等沒有考績獎金，年終工作獎金照發。");
+          if (grade === "D") notes.push("考績丙等以下沒有考績獎金，年終工作獎金也不發。");
+        }
+        // 年終考績或另予考績列丙等以下：年終工作獎金不發
+        if (type !== "none" && grade === "D") {
+          rows[0][1] = 0; payments[0] = 0;
+        }
+        const merit = Math.round(pay * meritMonths);
+        const gradeText = $("merit").selectedOptions[0]?.text || "";
+        rows.push([type === "none"
+          ? "考績獎金（在職未滿 6 個月，沒有考績）"
+          : `考績獎金（${type === "other" ? "另予考績" : "年終考績"}${gradeText}，${meritMonths} 個月）`, merit]);
+        payments.push(merit);
+        total = payments.reduce((a, b) => a + b, 0);
+        notes.push("考績獎金通常隨考績結果在隔年初發放，和年終工作獎金不一定同一天入帳。");
+      }
+
+      // 預扣所得稅：每一筆分開看是否達起扣標準
+      const W = TW.withholding;
+      const tax = payments.reduce((s, p) => s + (p >= W.bonusThreshold ? Math.round(p * W.bonusRate) : 0), 0);
+
+      // 二代健保補充保費
+      const insured = Number($("insured").value) || (monthlyPay ? TW.gradeOf(monthlyPay, TW.health.grades) : 0);
+      const prior = Number($("otherBonus").value || 0);
+      let supplement = 0, threshold = 0;
+      if (insured) {
+        threshold = insured * 4;
+        const over = Math.max(0, prior + total - threshold) - Math.max(0, prior - threshold);
+        supplement = Math.round(over * TW.health.supplementRate);
+      } else {
+        notes.push("沒有填月薪或投保金額，無法計算二代健保補充保費。");
+      }
+      const net = total - tax - supplement;
+
+      box.innerHTML = `
+        <div>實際入帳約</div>
+        <div class="total">${fmt(net)} 元</div>
+        <table>
+          ${rows.map(([n, v]) => `<tr><td>${n}</td><td>${fmt(v)} 元</td></tr>`).join("")}
+          <tr class="sum"><td>獎金合計</td><td>${fmt(total)} 元</td></tr>
+          <tr><td>預扣所得稅（單筆達 ${fmt(W.bonusThreshold)} 元扣 5%）</td><td>－${fmt(tax)} 元</td></tr>
+          <tr><td>二代健保補充保費${insured ? `（超過 ${fmt(threshold)} 元的部分 × 2.11%）` : ""}</td><td>－${fmt(supplement)} 元</td></tr>
+        </table>
+        ${notes.map(n => `<p class="note">${n}</p>`).join("")}
+        <p class="note">預扣的 ${fmt(tax)} 元不是最後的稅額，報稅時會多退少補。想知道全年要繳多少稅，可以用 <a href="income-tax.html">綜所稅試算</a>。</p>
+      `;
+    });
+  </script>
+</body>
+</html>

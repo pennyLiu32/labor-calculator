@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>警消轉職資源試算｜離職退撫基金、年資保留、轉職方向｜勞工權益計算機</title>
   <meta name="description" content="警察、消防人員離職轉職前必看：輸入到職與離職日期，查看退撫基金發還或年資保留資格、可參加的職訓，並依專長找出適合的轉職方向。">
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="style.css?v=6">
+  <script src="data.js?v=1"></script>
   <style>
     .item { margin: 0 0 14px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
     .item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
@@ -28,12 +29,18 @@
         <nav>
           <a href="index.html" class="nav-home"><span>首頁</span></a>
           <details class="nav-group">
+            <summary>年終與報稅</summary>
+            <a href="year-end.html"><span>年終獎金試算</span><small>勞工、公務員、警消、軍人</small></a>
+            <a href="income-tax.html"><span>綜所稅試算</span><small>報稅要繳多少、會不會退稅</small></a>
+          </details>
+          <details class="nav-group">
             <summary>一般勞工</summary>
             <a href="overtime.html"><span>薪資與加班費試算</span><small>當月薪水、加班費</small></a>
             <a href="annual-leave.html"><span>特休天數試算</span><small>依到職日算特休</small></a>
             <a href="severance.html"><span>資遣費試算</span><small>勞退新制資遣費</small></a>
             <a href="notice-period.html"><span>離職預告期試算</span><small>最晚哪天提離職</small></a>
             <a href="resources.html"><span>被資遣後可以申請什麼？</span><small>失業給付與職訓</small></a>
+            <a href="labor-pension.html"><span>勞保年金＋勞退試算</span><small>退休後每月可以領多少</small></a>
           </details>
           <details class="nav-group">
             <summary>軍人</summary>
@@ -43,7 +50,7 @@
           <details class="nav-group" open>
             <summary>警消</summary>
             <a href="police-fire.html" class="active" aria-current="page"><span>警消轉職資源</span><small>離職前的退撫權益、轉職方向</small></a>
-            <a href="police-retire.html"><span>警消退休權益</span><small>危勞 55 歲退休條件、年改現況</small></a>
+            <a href="police-retire.html"><span>警消退休權益</span><small>危勞降齡退休條件、年改現況</small></a>
           </details>
           <details class="nav-group">
             <summary>公務員</summary>
@@ -115,6 +122,31 @@
       本工具只處理「未達退休條件而辭職」的情況；已符合退休條件者，請洽服務機關人事單位。
       實際權益以銓敘部、服務機關及臺灣銀行公教保險部審定為準，本工具僅供參考。
     </p>
+    <div class="card article" id="article"><h2>警消離職前一定要知道的事：退撫、保險與轉職</h2>
+<p>警察、消防人員工作壓力大，想轉換跑道的人不少。但警消屬於公務人員，離職的權益和一般勞工很不一樣，決定前先把這幾件事弄清楚。</p>
+
+<h3>沒有失業給付</h3>
+<p>警消參加的是公保，不是就業保險，所以辭職後<strong>不能領失業給付</strong>，也不能領職訓生活津貼。建議先找好下一份工作，或存好至少半年的生活費再離職。</p>
+
+<h3>退撫基金：發還還是保留？</h3>
+<ul>
+  <li><strong>2023 年 6 月 30 日以前初任</strong>（退撫基金制）：離職可以申請一次發還自己繳的退撫基金本息。任職滿 5 年的人，也可以選擇保留年資，到 65 歲時再申請退休金。</li>
+  <li><strong>2023 年 7 月 1 日以後初任</strong>（個人專戶制）：可以一次領回個人專戶；任職未滿 5 年也可以先不領，最晚在 60 歲時發還。</li>
+</ul>
+<p>發還和保留只能擇一。年資越長，保留通常越有利，決定前建議請人事單位試算。</p>
+
+<h3>警消經驗在民間很吃香</h3>
+<p>科技廠的緊急應變小組（ERT）、職業安全衛生、保全與企業安全管理、保險理賠調查，都很需要有警消背景的人。消防人員可以考消防設備士（師），警察可以往企業安全、稽核發展。</p>
+
+<h3>離職前的準備清單</h3>
+<ol>
+  <li>向人事單位確認退撫年資，並試算發還與保留的金額。</li>
+  <li>考取轉職需要的證照，例如職業安全衛生業務主管、防火管理人。</li>
+  <li>到新公司後投保勞保，就能使用產業人才投資方案進修，訓練費補助 80%～100%。</li>
+</ol>
+<p class="updated">資料更新：<span data-v="UPDATED">2026-10-18</span>｜本文僅供參考，實際以主管機關規定為準。</p>
+    </div>
+
     <footer class="site-footer">
       <p class="footer-links"><a href="about.html">關於本站</a>｜<a href="privacy.html">隱私權政策</a></p>
       <div id="stats"></div>
@@ -122,7 +154,8 @@
   </main>
   </div>
   <script src="counter.js"></script>
-  <script src="nav.js?v=5"></script>
+  <script src="nav.js?v=6"></script>
+  <script src="share.js?v=1"></script>
 
   <script>
     // 專長 → 民間轉職方向
@@ -240,11 +273,11 @@
 
       const youth = age <= 29;
       html += item("產業新尖兵計畫", youth, youth ? `
-        <p>15～29 歲可參加，訓練費最高補助 10 萬元，每月另有 8,000 元學習獎勵金。</p>
+        <p>15～29 歲可參加，訓練費最高補助 ${TW.fmt(TW.training.newTalentMax)} 元，每月另有 ${TW.fmt(TW.training.newTalentMonthly)} 元學習獎勵金。</p>
       ` : "<p>限 15～29 歲青年。</p>");
 
       html += item("產業人才投資方案（到新公司後）", null, `
-        <p>進入民間公司後，在職進修可補助 80%～100% 訓練費，每 3 年最高 10 萬元。</p>
+        <p>進入民間公司後，在職進修可補助 80%～100% 訓練費，每 3 年最高 ${TW.fmt(TW.training.investMax)} 元。</p>
       `);
 
       html += "</div>";
