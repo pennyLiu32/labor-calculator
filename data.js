@@ -73,6 +73,7 @@ window.TW = {
     incomeYear: 115,
     exemption: 101000,
     exemption70: 151500,
+    exemptionMinor: 151500,   // 未成年子女免稅額（2026 年 8 月修法，115 年度起適用）
     standard: 136000,
     standardMarried: 272000,
     salaryDeduction: 227000,

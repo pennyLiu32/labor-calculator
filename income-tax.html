@@ -6,7 +6,7 @@
   <title>綜所稅試算｜免稅額、扣除額、課稅級距，算報稅要繳多少或退多少｜勞工權益計算機</title>
   <meta name="description" content="輸入全年薪資、扶養人數與扣除項目，依最新免稅額、標準扣除額、薪資所得特別扣除額、基本生活費與課稅級距，試算綜合所得稅，並自動比較夫妻薪資分開計稅，算出要補稅還是退稅。">
   <link rel="stylesheet" href="style.css?v=6">
-  <script src="data.js?v=1"></script>
+  <script src="data.js?v=2"></script>
   <style>
     .section-title { font-size: 1.05rem; margin: 22px 0 2px; }
     .section-title:first-child { margin-top: 0; }
@@ -101,10 +101,13 @@
 
       <h2 class="section-title">扶養與免稅額</h2>
       <div class="row3">
-        <div><label for="dep">扶養親屬（未滿 70 歲）</label><input id="dep" type="number" min="0" value="0"></div>
+        <div><label for="minor">未成年子女（未滿 18 歲）</label><input id="minor" type="number" min="0" value="0"></div>
+        <div><label for="dep">其他扶養親屬（未滿 70 歲）</label><input id="dep" type="number" min="0" value="0"></div>
         <div><label for="dep70">扶養親屬（70 歲以上）</label><input id="dep70" type="number" min="0" value="0"></div>
-        <div><label for="self70">本人或配偶 70 歲以上的人數</label><input id="self70" type="number" min="0" max="2" value="0"></div>
       </div>
+      <label for="self70">本人或配偶 70 歲以上的人數</label>
+      <input id="self70" type="number" min="0" max="2" value="0">
+      <p class="note" style="margin:6px 0 0">2026 年 8 月修法，<span data-v="tax.incomeYear">115</span> 年度起每位未成年子女的免稅額提高到 <span data-v="tax.exemptionMinor">151,500</span> 元，不排富。</p>
 
       <h2 class="section-title">扣除額</h2>
       <label for="itemized">列舉扣除額合計（選填，例如捐款、保險費、醫藥費、房貸利息）</label>
@@ -151,6 +154,7 @@
 <h3>可以省稅的扣除項目</h3>
 <ul>
   <li><strong>扶養親屬</strong>：每扶養 1 人多 1 個免稅額，70 歲以上的直系尊親屬免稅額多 5 成。</li>
+  <li><strong>未成年子女免稅額</strong>：2026 年 8 月修法，從 <span data-v="tax.incomeYear">115</span> 年度起每位未成年子女的免稅額提高 5 成，變成 <span data-v="tax.exemptionMinor">151,500</span> 元，而且不排富。6 歲以下的子女還能再加幼兒學前特別扣除額。</li>
   <li><strong>房屋租金特別扣除額</strong>：租屋自住每年最多扣 <span data-v="tax.rent">180,000</span> 元，可以和標準扣除額一起用。</li>
   <li><strong>幼兒學前特別扣除額</strong>：6 歲以下子女，第 1 名 15 萬元，第 2 名起每人 22.5 萬元。</li>
   <li><strong>長期照顧特別扣除額</strong>：符合長照需要的家人，每人 <span data-v="tax.longTermCare">180,000</span> 元。</li>
@@ -204,7 +208,7 @@
 
     // 計算一個「申報單位」（全部合併，或扣掉分開計稅者後的其餘部分）
     function compute(p) {
-      const exemptions = p.persons * T.exemption + p.persons70 * (T.exemption70 - T.exemption);
+      const exemptions = p.persons * T.exemption + p.persons70 * (T.exemption70 - T.exemption) + p.minors * (T.exemptionMinor - T.exemption);
       const standard = p.married ? T.standardMarried : T.standard;
       const general = Math.max(standard, p.itemized);
       const usedItemized = p.itemized > standard;
@@ -242,7 +246,8 @@
       const self70 = Math.min(num("self70"), m ? 2 : 1);
       const base = {
         married: m,
-        persons: (m ? 2 : 1) + num("dep") + num("dep70"),
+        persons: (m ? 2 : 1) + num("minor") + num("dep") + num("dep70"),
+        minors: num("minor"),
         persons70: self70 + num("dep70"),
         itemized: num("itemized"), rent: num("rent"), interest: Math.min(num("interest"), o1 + o2),
         disabled: num("disabled"), kids: num("kids"), ltc: num("ltc"), college: num("college")
@@ -277,7 +282,7 @@
         <h3 style="font-size:1rem;margin:18px 0 6px">全部合併的計算明細</h3>
         <table>
           <tr><td>綜合所得總額</td><td>${fmt(s1 + o1 + s2 + o2)} 元</td></tr>
-          <tr><td>免稅額（${base.persons} 人${base.persons70 ? `，其中 70 歲以上 ${base.persons70} 人` : ""}）</td><td>－${fmt(d.exemptions)} 元</td></tr>
+          <tr><td>免稅額（${base.persons} 人${base.minors ? `，含未成年子女 ${base.minors} 人` : ""}${base.persons70 ? `，70 歲以上 ${base.persons70} 人` : ""}）</td><td>－${fmt(d.exemptions)} 元</td></tr>
           <tr><td>${d.usedItemized ? "列舉扣除額" : "標準扣除額"}</td><td>－${fmt(d.general)} 元</td></tr>
           <tr><td>薪資所得特別扣除額</td><td>－${fmt(d.salaryDed)} 元</td></tr>
           ${d.savings ? `<tr><td>儲蓄投資特別扣除額</td><td>－${fmt(d.savings)} 元</td></tr>` : ""}

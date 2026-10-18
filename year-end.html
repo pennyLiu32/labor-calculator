@@ -6,7 +6,7 @@
   <title>年終獎金試算｜勞工、公務員、警消、軍人年終與考績獎金、扣稅與二代健保｜勞工權益計算機</title>
   <meta name="description" content="一次算清楚年終獎金實際入帳多少：勞工依月數或金額計算；軍公教警消依本俸、專業加給、主管加給算 1.5 個月年終工作獎金，加上考績獎金，並扣除 5% 預扣所得稅與二代健保補充保費。">
   <link rel="stylesheet" href="style.css?v=6">
-  <script src="data.js?v=1"></script>
+  <script src="data.js?v=2"></script>
   <style>
     .section-title { font-size: 1.05rem; margin: 22px 0 2px; }
     .section-title:first-child { margin-top: 0; }
@@ -117,6 +117,10 @@
           <div><label for="pro">專業加給</label><input id="pro" type="number" min="0" placeholder="例如 28000"></div>
           <div><label for="sup">主管加給（選填）</label><input id="sup" type="number" min="0" placeholder="非主管填 0"></div>
         </div>
+        <div id="extraRow">
+          <label for="extra">其他法定加給（選填，只算入考績獎金）</label>
+          <input id="extra" type="number" min="0" placeholder="例如地域加給、警勤加給、危險職務加給">
+        </div>
         <p class="note" style="margin:6px 0 0" id="govNote">年終工作獎金和考績獎金都以「本俸＋專業加給＋主管加給」計算，地域加給等其他加給不算入年終工作獎金。</p>
 
         <h2 class="section-title">今年在職情形</h2>
@@ -187,8 +191,8 @@
 
 <h3>軍公教警消：年終工作獎金＋考績獎金</h3>
 <ul>
-  <li><strong>年終工作獎金</strong>：以 12 月的本俸、專業加給、主管加給合計，發 1.5 個月。1 月 31 日以前到職、12 月 1 日仍在職領全額；之後到職的按比例。</li>
-  <li><strong>公務員、警消考績獎金</strong>：甲等 1 個月、乙等半個月、丙等不發；已達最高俸級的甲等 2 個月、乙等 1.5 個月。</li>
+  <li><strong>年終工作獎金</strong>：以 12 月的本俸、專業加給、主管加給合計，發 1.5 個月（地域加給、警勤加給不算入）。1 月 31 日以前到職、12 月 1 日仍在職領全額；之後到職的按比例。</li>
+  <li><strong>公務員、警消考績獎金</strong>：甲等 1 個月、乙等半個月、丙等不發；已達最高俸級的甲等 2 個月、乙等 1.5 個月。這裡的「月」是俸給總額，除了本俸、專業加給、主管加給，還要加上地域加給、警勤加給、消防的危險職務加給等法定加給，所以警消的考績獎金通常比年終的「1 個月」多。</li>
   <li><strong>國軍考績獎金</strong>：甲等以上 1 個月、乙上半個月、乙等以下不發；已達最高俸級分別為 2 個月、1.5 個月。志願役加給不算入計算基準。</li>
 </ul>
 <div class="example">例：公務員本俸 30,410 元＋專業加給 28,000 元，考績甲等<br>年終工作獎金 ＝ 58,410 × 1.5 ＝ 87,615 元<br>考績獎金 ＝ 58,410 × 1 ＝ 58,410 元，合計約 2.5 個月</div>
@@ -231,9 +235,10 @@
       $("merit").innerHTML = opts.map(([v, t]) => `<option value="${v}">${t}</option>`).join("");
       if (opts.some(([v]) => v === cur)) $("merit").value = cur;
       $("merit").disabled = $("meritType").value === "none";
+      $("extraRow").hidden = r === "military";
       $("govNote").textContent = r === "military"
-        ? "年終工作獎金和考績獎金都以「本俸＋專業加給＋主管加給」計算，志願役加給、地域加給、勤務加給等不算入。"
-        : "年終工作獎金和考績獎金都以「本俸＋專業加給＋主管加給」計算，地域加給等其他加給不算入年終工作獎金。";
+        ? "年終工作獎金和考績獎金都以「本俸＋專業加給＋主管加給」計算，志願役加給、地域加給等不算入。考績獎金的俸給總額實際以國防部規定為準。"
+        : "年終工作獎金只算「本俸＋專業加給＋主管加給」，地域加給、警勤加給不算入。考績獎金的「俸給總額」則還要加上地域加給、警勤加給、危險職務加給等法定加給，請填在上面最後一格。";
     }
     document.querySelectorAll('input[name="role"], input[name="laborMode"]').forEach(el => el.addEventListener("change", refresh));
     ["fullYear", "meritType"].forEach(id => $(id).addEventListener("change", refresh));
@@ -306,11 +311,12 @@
         if (type !== "none" && grade === "D") {
           rows[0][1] = 0; payments[0] = 0;
         }
-        const merit = Math.round(pay * meritMonths);
+        const extra = r === "military" ? 0 : Number($("extra").value || 0);
+        const merit = Math.round((pay + extra) * meritMonths);
         const gradeText = $("merit").selectedOptions[0]?.text || "";
         rows.push([type === "none"
           ? "考績獎金（在職未滿 6 個月，沒有考績）"
-          : `考績獎金（${type === "other" ? "另予考績" : "年終考績"}${gradeText}，${meritMonths} 個月）`, merit]);
+          : `考績獎金（${type === "other" ? "另予考績" : "年終考績"}${gradeText}，${fmt(pay + extra)} × ${meritMonths} 個月）`, merit]);
         payments.push(merit);
         total = payments.reduce((a, b) => a + b, 0);
         notes.push("考績獎金通常隨考績結果在隔年初發放，和年終工作獎金不一定同一天入帳。");
