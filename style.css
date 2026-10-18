@@ -232,3 +232,4 @@ td:last-child { text-align: right; }
 .seg label { display: inline-flex; align-items: center; gap: 6px; margin: 0; padding: 8px 14px; border: 1px solid var(--border); border-radius: 999px; font-weight: 600; cursor: pointer; background: var(--bg); }
 .seg input { width: auto; margin: 0; }
 .seg label:has(input:checked) { border-color: var(--primary); background: var(--soft); color: var(--primary); }
+.footer-disclaimer { font-size: 0.78rem; color: var(--muted); margin: 0 0 10px; }
