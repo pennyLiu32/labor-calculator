@@ -5,6 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>年終獎金試算｜勞工、公務員、警消、軍人年終與考績獎金、扣稅與二代健保｜勞工權益計算機</title>
   <meta name="description" content="一次算清楚年終獎金實際入帳多少：勞工依月數或金額計算；軍公教警消依本俸、專業加給、主管加給算 1.5 個月年終工作獎金，加上考績獎金，並扣除 5% 預扣所得稅與二代健保補充保費。">
+  <link rel="canonical" href="https://laogongquanyi.com/year-end.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="勞工權益計算機">
+  <meta property="og:locale" content="zh_TW">
+  <meta property="og:title" content="年終獎金試算｜勞工權益計算機">
+  <meta property="og:description" content="一次算清楚年終獎金實際入帳多少：勞工依月數或金額計算；軍公教警消依本俸、專業加給、主管加給算 1.5 個月年終工作獎金，加上考績獎金，並扣除 5% 預扣所得稅與二代健保補充保費。">
+  <meta property="og:url" content="https://laogongquanyi.com/year-end.html">
+  <meta property="og:image" content="https://laogongquanyi.com/img/og-year-end.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#b45309">
   <link rel="stylesheet" href="style.css?v=6">
   <script src="data.js?v=2"></script>
   <style>
@@ -237,7 +253,7 @@
       $("merit").disabled = $("meritType").value === "none";
       $("extraRow").hidden = r === "military";
       $("govNote").textContent = r === "military"
-        ? "年終工作獎金和考績獎金都以「本俸＋專業加給＋主管加給」計算，志願役加給、地域加給等不算入。考績獎金的俸給總額實際以國防部規定為準。"
+        ? "年終工作獎金和考績獎金都以「本俸＋專業加給＋主管加給」計算（考績獎金依陸海空軍軍官士官考績績等及獎金標準第 6 條），志願役加給、地域加給等不算入。"
         : "年終工作獎金只算「本俸＋專業加給＋主管加給」，地域加給、警勤加給不算入。考績獎金的「俸給總額」則還要加上地域加給、警勤加給、危險職務加給等法定加給，請填在上面最後一格。";
     }
     document.querySelectorAll('input[name="role"], input[name="laborMode"]').forEach(el => el.addEventListener("change", refresh));

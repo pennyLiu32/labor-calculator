@@ -59,7 +59,8 @@ flowchart TD
 - **前端**：純 HTML、CSS、JavaScript，不依賴框架，載入快、維護簡單
 - **版面**：CSS Grid 左右分欄（選單 1/3、內容 2/3），大分類可收合，手機版收成「☰ 選單」；暖色調設計並支援深色模式
 - **部署**：GitHub Pages + 自訂網域（Porkbun DNS，強制 HTTPS）
-- **SEO**：每頁獨立網址、`<title>` / `description`、`sitemap.xml`、FAQPage 結構化資料（JSON-LD）
+- **SEO**：每頁獨立網址、`<title>` / `description`、canonical、`sitemap.xml`、FAQPage 結構化資料（JSON-LD）
+- **分享預覽**：每頁有 Open Graph 標籤與專屬預覽圖（1200×630），分享到 LINE、Facebook 會顯示標題和圖片
 - **數據**：GoatCounter 統計瀏覽量（不使用追蹤 Cookie）
 - **隱私**：所有計算在使用者瀏覽器端完成，不傳送也不儲存任何輸入資料
 - **年度數字集中管理**：勞健保級距、費率、稅率、俸點等每年要更新的數字都放在 `data.js`，頁面文字用 `<span data-v="...">` 自動帶入
@@ -99,6 +100,9 @@ flowchart TD
 ├── nav.js              選單互動
 ├── counter.js          瀏覽人次
 ├── sitemap.xml         網站地圖
+├── 404.html            找不到頁面時顯示（GitHub Pages 自動使用）
+├── favicon.ico、apple-touch-icon.png、site.webmanifest  網站圖示
+├── img/                分享預覽圖（og-頁面名稱.jpg）與圖示
 └── CNAME               自訂網域設定
 ```
 
