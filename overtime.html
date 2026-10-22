@@ -348,13 +348,13 @@
         <label class="inc"><input class="a-inc" type="checkbox" ${include ? "checked" : ""}> 算入時薪</label>`);
     }
 
-    function addOt(type = "weekday", hours = "", days = "") {
+    function addOt(type = "weekday", hours = "", days = "1") {
       const opts = Object.entries(OT_TYPES)
         .map(([k, v]) => `<option value="${k}" ${k === type ? "selected" : ""}>${v.label}</option>`).join("");
       makeRow(otRows, "row-ot", `
         <div><label>類型</label><select class="o-type">${opts}</select></div>
-        <div><label>每次幾小時</label><input class="o-hrs" type="number" min="0" step="0.5" placeholder="2" value="${hours}"></div>
-        <div><label>幾天</label><input class="o-days" type="number" min="0" placeholder="1" value="${days}"></div>`);
+        <div><label>每次幾小時</label><input class="o-hrs" type="number" min="0" step="0.5" placeholder="例如 2" value="${hours}"></div>
+        <div><label>幾天</label><input class="o-days" type="number" min="0" placeholder="例如 1" value="${days}"></div>`);
     }
 
     function addDed(name = "", amount = "") {
@@ -396,11 +396,17 @@
 
       // 加班
       const ots = [];
-      for (const r of otRows.children) {
+      const skipped = [];
+      [...otRows.children].forEach(r => { r.querySelector(".o-hrs").style.borderColor = ""; });
+      for (const [i, r] of [...otRows.children].entries()) {
         const type = r.querySelector(".o-type").value;
         const hrs = Number(r.querySelector(".o-hrs").value || 0);
-        const days = Number(r.querySelector(".o-days").value || 0);
-        if (hrs <= 0 || days <= 0) continue;
+        // 天數沒填就當 1 天
+        const days = r.querySelector(".o-days").value === "" ? 1 : Number(r.querySelector(".o-days").value);
+        if (hrs <= 0 || days <= 0) {
+          if (otRows.children.length > 1 || hrs > 0) { skipped.push(i + 1); r.querySelector(".o-hrs").style.borderColor = "#dc2626"; }
+          continue;
+        }
         if (hrs > OT_TYPES[type].max) {
           box.innerHTML = `<p class="error">${OT_TYPES[type].label}每天最多 ${OT_TYPES[type].max} 小時，請重新輸入。</p>`;
           return;
@@ -456,6 +462,7 @@
         <div>${deds.length ? "本月實領約" : "本月應發約"}</div>
         <div class="total">${fmt(net)} 元</div>
         ${ots.length ? `<p>其中加班費約 <strong>${fmt(otTotal)} 元</strong>。</p>` : ""}
+        ${skipped.length ? `<p class="error">第 ${skipped.join("、")} 筆加班沒有填「每次幾小時」，沒有算進去（已用紅框標示）。灰色字只是範例，請實際輸入數字。</p>` : ""}
         <table>${rows.join("")}</table>
         <p class="note">加班費時薪：（${fmt(hourlyBase)} 元）÷ 240 ＝ ${hourly.toFixed(1)} 元。</p>
         ${ins && ins.pensionFee > 0 ? `<p class="note">勞退自提的金額會存進你的勞退個人專戶，退休後領回，而且可以從當年度個人綜合所得中扣除。</p>` : ""}
